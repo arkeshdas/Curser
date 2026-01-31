@@ -160,3 +160,18 @@ def similarity_from_distance(dist: float) -> float:
     if dist == float("inf"):
         return 0.0
     return 1.0 / (1.0 + dist)
+
+def panphon_distance_norm(a: str, b: str) -> float:
+    a_n = normalize_ipa(a)
+    b_n = normalize_ipa(b)
+    if not a_n or not b_n:
+        return float("inf")
+
+    try:
+        dist = _PANPHON_DST.weighted_feature_edit_distance(a_n, b_n)
+    except Exception:
+        return float("inf")
+
+    # normalize by length so shorter candidates like "culo" are not unfairly penalized
+    denom = max(len(a_n), len(b_n), 1)
+    return dist / denom
