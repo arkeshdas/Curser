@@ -1,12 +1,21 @@
 # g2p.py
-from phonemizer import phonemize
+import subprocess
 
 LANG_MAP = {
     "en": "en-us",
     "es": "es",
-    "fr": "fr-fr",
+    "fr": "fr",
+    "de": "de",
 }
 
 def text_to_ipa(text: str, lang: str = "en") -> str:
-    espeak_lang = LANG_MAP.get(lang, "en-us")
-    return phonemize(text, language=espeak_lang, backend="espeak", with_stress=True)
+    voice = LANG_MAP.get(lang, "en-us")
+
+    # --ipa=3 gives IPA output, -q = quiet
+    p = subprocess.run(
+        ["espeak", "-v", voice, "--ipa=3", "-q", text],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    return p.stdout.strip()

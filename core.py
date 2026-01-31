@@ -1,6 +1,10 @@
 # core.py
 import math
-from typing import Callable, Iterable, Optional, Tuple, List, Dict, Any
+import re
+import unicodedata
+from typing import Callable, Optional, Tuple, List, Dict, Any
+
+import panphon.distance
 
 STOPWORDS = {
     "i", "am", "a", "the", "is", "it", "you",
@@ -8,11 +12,16 @@ STOPWORDS = {
     "for", "with", "uh", "um"
 }
 
+# Create once, reused everywhere
+_PANPHON_DST = panphon.distance.Distance()
+
+
 def tokenize(text: str) -> List[str]:
     """
     MVP tokenizer: lowercase, split on whitespace.
     """
     return [t for t in text.lower().split() if t.strip()]
+
 
 def choose_best_span(
     tokens: List[str],
@@ -51,6 +60,8 @@ def choose_best_span(
 
             stop_ratio = sum(t in stopwords for t in span_tokens) / len(span_tokens)
             penalty += 1.25 * stop_ratio
+
+            # Regularize length: extra tokens must earn their keep
             penalty += 0.40 * (len(span_tokens) - 1)
 
             match_sim = match_fn(ipa) if ipa else 0.0
@@ -64,17 +75,24 @@ def choose_best_span(
 
     return best_score, best_span, best_ipa
 
-def rank_db(user_ipa: str, db: List[Dict[str, Any]], distance_fn: Callable[[str, str], float]):
+
+def rank_db(
+    user_ipa: str,
+    db: List[Dict[str, Any]],
+    distance_fn: Callable[[str, str], float],
+    ipa_key: str = "ipa",
+):
     """
     Ranks DB entries by distance (smaller is better).
     Returns list of tuples: (distance, entry)
     """
     scored = []
     for entry in db:
-        d = distance_fn(user_ipa, entry["ipa"])
+        d = distance_fn(user_ipa, entry[ipa_key])
         scored.append((d, entry))
     scored.sort(key=lambda x: x[0])
     return scored
+
 
 def token_hamming_distance(a: str, b: str) -> int:
     ta, tb = a.split(), b.split()
@@ -82,3 +100,63 @@ def token_hamming_distance(a: str, b: str) -> int:
     ta += ["_"] * (m - len(ta))
     tb += ["_"] * (m - len(tb))
     return sum(x != y for x, y in zip(ta, tb))
+
+
+def normalize_ipa(s: str) -> str:
+    """
+    Normalizes espeak-ish IPA so panphon doesn't get wrecked by markers and invis chars.
+    """
+    if not s:
+        return ""
+
+    s = s.strip()
+
+    # remove wrappers
+    s = s.replace("/", "").replace("[", "").replace("]", "").replace("(", "").replace(")", "")
+
+    # remove invisible chars (ZWJ/ZWNJ/ZWSP/BOM, etc)
+    s = re.sub(r"[\u200B-\u200D\uFEFF]", "", s)
+
+    # remove stress + length markers
+    s = re.sub(r"[ˈˌːˑ:]", "", s)
+
+    # remove tie bars (affricates written with ties)
+    s = s.replace("͡", "").replace("͜", "")
+
+    # normalize whitespace
+    s = re.sub(r"\s+", " ", s)
+
+    # drop combining diacritics
+    s = "".join(
+        c for c in unicodedata.normalize("NFD", s)
+        if unicodedata.category(c) != "Mn"
+    )
+
+    return s.strip()
+
+
+def panphon_distance(a: str, b: str) -> float:
+    """
+    Panphon feature edit distance, smaller = closer.
+    Returns inf if panphon can't parse one of the strings.
+    """
+    a_n = normalize_ipa(a)
+    b_n = normalize_ipa(b)
+
+    if not a_n or not b_n:
+        return float("inf")
+
+    try:
+        return _PANPHON_DST.weighted_feature_edit_distance(a_n, b_n)
+    except Exception:
+        return float("inf")
+
+
+def similarity_from_distance(dist: float) -> float:
+    """
+    Convert a distance to a bounded-ish similarity score.
+    Higher = better. Stable for ranking.
+    """
+    if dist == float("inf"):
+        return 0.0
+    return 1.0 / (1.0 + dist)
