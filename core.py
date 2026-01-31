@@ -75,3 +75,10 @@ def rank_db(user_ipa: str, db: List[Dict[str, Any]], distance_fn: Callable[[str,
         scored.append((d, entry))
     scored.sort(key=lambda x: x[0])
     return scored
+
+def token_hamming_distance(a: str, b: str) -> int:
+    ta, tb = a.split(), b.split()
+    m = max(len(ta), len(tb))
+    ta += ["_"] * (m - len(ta))
+    tb += ["_"] * (m - len(tb))
+    return sum(x != y for x, y in zip(ta, tb))
