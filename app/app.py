@@ -1,8 +1,17 @@
 # app.py
+import sys
+from pathlib import Path
+
+# Add the project root (parent of /app) to Python path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+    
 import json
 import tempfile
 import time
 from datetime import datetime
+import subprocess
 
 import streamlit as st
 import numpy as np
@@ -10,15 +19,15 @@ import soundfile as sf
 import sounddevice as sd
 from langdetect import detect
 
-from asr import transcribe_audio_file
-from core import (
+from scr.asr import transcribe_audio_file
+from scr.core import (
     tokenize,
     choose_best_span,
     windowed_panphon_distance_tokens,
     similarity_from_distance,
     normalize_ipa,
 )
-from g2p import text_to_ipa
+from scr.g2p import text_to_ipa
 
 
 def infer_lang(text: str) -> str:
@@ -30,7 +39,7 @@ def infer_lang(text: str) -> str:
 
 @st.cache_data
 def load_db():
-    with open("db.json", "r", encoding="utf-8") as f:
+    with open("db/db.json", "r", encoding="utf-8") as f:
         db = json.load(f)
     for e in db:
         if "ipa_norm" not in e:
@@ -40,6 +49,39 @@ def load_db():
 
 DB = load_db()
 st.title("Curserio, prototype")
+
+# -----------------------
+# TTS helpers (espeak -> wav bytes)
+# -----------------------
+ESPEAK_VOICE_MAP = {
+    "en": "en-us",
+    "es": "es",
+    "fr": "fr",
+    "de": "de",
+    "it": "it",
+    "pt": "pt",
+    "ru": "ru",
+    "ja": "ja",
+    "hi": "hi",
+    "ko": "ko",
+}
+
+def tts_espeak_wav_bytes(text: str, lang_code: str) -> bytes | None:
+    """
+    Generate wav audio via `espeak --stdout` and return bytes, or None on failure.
+    """
+    if not text:
+        return None
+    voice = ESPEAK_VOICE_MAP.get(lang_code, "en-us")
+    cmd = ["espeak", "-v", voice, "--stdout", text]
+    try:
+        p = subprocess.run(cmd, capture_output=True, check=False)
+    except Exception:
+        return None
+    if p.returncode != 0 or not p.stdout:
+        return None
+    return p.stdout
+
 
 # -----------------------
 # Session state
@@ -521,6 +563,18 @@ if result:
             st.markdown(f"**Similarity:** `{top1['similarity']:.3f}`")
             st.markdown(f"**Distance:** `{top1['distance']:.3f}`")
 
+        # TTS for top match
+        colT1, colT2 = st.columns([1, 2])
+        with colT1:
+            if st.button("Speak top match", key="speak_top_match"):
+                wav_bytes = tts_espeak_wav_bytes(top1["word"], top1["lang"])
+                if wav_bytes:
+                    st.audio(wav_bytes, format="audio/wav")
+                else:
+                    st.warning("TTS failed for this word/voice.")
+        with colT2:
+            st.caption("Uses espeak voices, some languages may not be installed or may differ.")
+
         st.subheader("Top matches")
         rows = result["top"]
 
@@ -540,6 +594,25 @@ if result:
                 "severity": st.column_config.NumberColumn("severity", format="%d"),
             },
         )
+
+        # Per-row speak controls (since dataframe can't have buttons)
+        with st.expander("Speak a match"):
+            st.write("Click Speak to hear espeak pronounce the word using its language voice.")
+            for i, r in enumerate(rows[:10]):
+                cA, cB, cC, cD = st.columns([1.2, 0.8, 3.0, 1.0])
+                with cA:
+                    st.write(f"**{r['word']}**")
+                with cB:
+                    st.write(r["lang"])
+                with cC:
+                    st.write(r.get("meaning", ""))
+                with cD:
+                    if st.button("Speak", key=f"speak_row_{i}_{r['word']}_{r['lang']}"):
+                        wav_bytes = tts_espeak_wav_bytes(r["word"], r["lang"])
+                        if wav_bytes:
+                            st.audio(wav_bytes, format="audio/wav")
+                        else:
+                            st.warning("TTS failed for this word/voice.")
 
         with st.expander("Why this match?"):
             st.write("User IPA (raw):", why["user_ipa_raw"])

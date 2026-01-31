@@ -9,7 +9,9 @@ def load_model(name: str = "base"):
         _model = whisper.load_model(name)
     return _model
 
-def transcribe_audio_file(path: str, model_name: str = "base") -> str:
+def transcribe_audio_file(path: str, model_name: str = "base"):
     model = load_model(model_name)
     result = model.transcribe(path, fp16=False)
-    return (result.get("text") or "").strip()
+    text = (result.get("text") or "").strip()
+    lang = result.get("language")  # like "ko", "en"
+    return text, lang

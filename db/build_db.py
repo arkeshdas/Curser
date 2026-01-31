@@ -1,7 +1,7 @@
 # build_db.py
 import json
-from g2p import text_to_ipa
-from core import normalize_ipa
+from scr.g2p import text_to_ipa
+from scr.core import normalize_ipa
 
 IN_PATH = "db_seed.json"
 OUT_PATH = "db.json"
