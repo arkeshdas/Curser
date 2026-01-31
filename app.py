@@ -1,9 +1,10 @@
 # app.py
-# Placeholder so the project structure is valid.
-# We will build the Streamlit app later, after tests pass.
+from core import tokenize, choose_best_span
 
 def main():
-    print("Sound-alike app placeholder")
+    print("App placeholder. Core imports work.")
+    tokens = tokenize("it is the cool-io")
+    print(tokens)
 
 if __name__ == "__main__":
     main()
