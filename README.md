@@ -30,9 +30,11 @@ In other words, this is a nickname QA tool that accidentally doubles as a bad id
 
 In its current state, this project is an interactive web application that takes spoken or typed input and identifies the closest potentially offensive or curse-like words across multiple languages based on phonetic similarity.
 
-At a high level, the app records or accepts audio, transcribes speech locally using Whisper, converts candidate text spans into IPA phonemes using eSpeak, and compares them against a curated multilingual database of words. PanPhon is then used to compute phonetic distances between the input and database entries. Results are ranked by similarity and presented through an interactive interface with explanations, sortable tables, and optional text-to-speech playback.
+At a high level, the app records or accepts audio, transcribes speech locally using Whisper, converts candidate text spans into IPA phonemes, and compares them against a curated multilingual database of words. PanPhon is used to compute phonetic distances between the input and database entries, allowing results to be ranked by similarity and surfaced through an interactive interface with explanations, sortable tables, and session-level history tracking.
 
-The entire pipeline runs locally by default and supports live microphone input, one-shot recording, and audio uploads, complete with real-time level metering and session-based history tracking. The interface is built entirely with Streamlit, while speech recognition is powered by OpenAI’s Whisper. Together, these components make Curser a practical tool for detecting accidental phonetic collisions across languages, especially useful when evaluating names, brands, or terminology that must avoid unintended offensive meanings.
+In addition to analysis, Curser supports optional text-to-speech playback of matched words. By default, pronunciation is handled locally using eSpeak, but the app can also integrate ElevenLabs for higher-quality, neural voice synthesis when enabled. This makes it possible to hear how flagged words actually sound across different languages and voices, which is often critical when evaluating phonetic ambiguity in spoken contexts.
+
+The entire pipeline runs locally by default and supports live microphone input, one-shot recording, and audio uploads, complete with real-time level metering. The interface is built entirely with Streamlit, while speech recognition is powered by Whisper. Together, these components make Curser a practical tool for detecting accidental phonetic collisions across languages, especially when evaluating names, brands, or terminology that must avoid unintended or offensive interpretations.
 
 ## Set-up
 
@@ -51,6 +53,27 @@ pip install -r requirements.txt
 ```
 
 Now, you should have all the packages to run the Curser application locally . Navigate to the **Quick Start** section for instructions on how to do that. 
+
+### Optional: ElevenLabs text-to-speech integration
+
+Curser supports optional neural text-to-speech playback using ElevenLabs. This is not required for the core phonetic analysis pipeline. If no ElevenLabs API key is provided, the app will fall back to local eSpeak-based pronunciation.
+
+To enable ElevenLabs voice output:
+	1.	Create an ElevenLabs account and generate an API key.
+	2.	Add the key to Streamlit secrets.
+
+For local development, create a file at:
+```
+.streamlit/secrets.toml
+```
+and add:
+```
+ELEVENLABS_API_KEY = "your_api_key_here"
+```
+When an API key is present, an additional toggle will appear in the interface allowing you to switch between local eSpeak voices and ElevenLabs neural voices for pronunciation playback.
+
+The ElevenLabs integration is intended for demonstration and qualitative evaluation of phonetic ambiguity, especially in spoken contexts. The core analysis, transcription, and scoring logic does not depend on ElevenLabs and runs fully locally by default.
+
 
 ## Structure
 
@@ -179,9 +202,20 @@ This project was a much bigger learning experience than I initially expected. I 
 
 This was also my first time deploying a web application, and my first project where the explicit goal was to make the code safe and reproducible so that other people could run it locally (learned about virtual environments 2 weeks ago in one of my data science classes). Managing virtual environments, dependencies, and setup instructions showed me how easily projects can break without careful environment control, and why reproducibility is a core part of real software development.
 
+I also learned a lot about working with third-party APIs through integrating ElevenLabs for text-to-speech. This was my first time using an API that required authentication via a private token, and it forced me to think more carefully about security and configuration. I learned how to manage API keys without hard-coding them into the repository, including using Streamlit’s secrets.toml system and environment-specific configuration. More generally, working with the ElevenLabs API helped me understand how external services expose functionality, how client libraries can return streamed or chunked data instead of simple values, and how small interface assumptions can break an application if they are not handled carefully.
+
 I also learned how to independently manage and iterate on a large project. Working alone, I had to define a minimal viable product, get a full pipeline working, then incrementally add new technologies and features while breaking and fixing things along the way. This process taught me how to scope work realistically, debug systematically, and prioritize stability and clarity over adding features too quickly.
 
+
 ## What's next for Curser
+
+	•	**Ship a proper hosted version.** Right now it works great locally and hosted on streamlit's cloud servers, but a deployed version with a real backend would make it easier for other people to try. A more dynamic frontend (React) could also make the live mic experience smoother and less hacky than Streamlit reruns.
+
+	•	**Make scoring customizable instead of “one size fits all.”** I want to expose the knobs behind the matching: weighting vowels vs consonants, rewarding same syllable counts, penalizing stress mismatches, preferring longer spans, or applying language-specific penalties. This would let users tune Curser for different naming scenarios (drug names vs startups vs product features).
+	•	**Explain results better**. The distance score is useful, but I want to show more interpretability: which phoneme substitutions mattered most, where the best window alignment was found, and why one candidate outranked another.
+	•	**Expand and maintain the database.** Long-term, I’d like a repeatable pipeline for adding new languages and maybe regional dialects from sources cleanly.
+	•	**Automate name checks from real workflows**. A simple “paste a list of candidate names” mode, plus a CSV export, would make it feel more like an actual tool. A stretch goal is integrating lightweight web scraping, like pulling candidate names from a page or a doc, but only if it supports a real use case and doesn’t turn into a brittle gimmick.
+
 
 ## Data Sources and Credits
 
