@@ -6,7 +6,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-    
+
+import os
 import json
 import tempfile
 import time
@@ -15,7 +16,6 @@ import subprocess
 
 import streamlit as st
 import numpy as np
-import sounddevice as sd
 from langdetect import detect
 from scipy.io.wavfile import write as wav_write
 
@@ -30,6 +30,21 @@ from src.core import (
 from src.g2p import text_to_ipa
 
 
+# -----------------------
+# Optional mic support (often unavailable on Streamlit Cloud)
+# -----------------------
+SD_AVAILABLE = False
+sd = None
+try:
+    import sounddevice as _sd  # type: ignore
+
+    sd = _sd
+    SD_AVAILABLE = True
+except Exception:
+    SD_AVAILABLE = False
+    sd = None
+
+
 def infer_lang(text: str) -> str:
     try:
         return detect(text)
@@ -39,7 +54,8 @@ def infer_lang(text: str) -> str:
 
 @st.cache_data
 def load_db():
-    with open("db/db.json", "r", encoding="utf-8") as f:
+    db_path = ROOT / "db" / "db.json"
+    with open(db_path, "r", encoding="utf-8") as f:
         db = json.load(f)
     for e in db:
         if "ipa_norm" not in e:
@@ -52,26 +68,37 @@ DB = load_db()
 # -----------------------
 # Page config + CSS theme
 # -----------------------
-st.set_page_config(page_title="Curser", page_icon="🖱️", layout="wide")
-
+st.set_page_config(page_title="Curser", page_icon="🖱️", layout="centered")
 st.markdown(
     """
     <style>
-      /* App background gradient */
+      /* Pixel font */
+      @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+      :root {
+        --curser-font: 'Press Start 2P', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+
+      /* Force pixel font everywhere (Streamlit can be stubborn) */
+      html, body, .stApp, .stApp * {
+        font-family: var(--curser-font) !important;
+      }
+
+      /* Background gradient: top (red) to bottom (gray) */
       .stApp {
-        background: linear-gradient(to bottom, #ff4646 0%, #bdbdbd 100%);
+        background: linear-gradient(180deg, #ff4646 0%, #bdbdbd 100%);
       }
 
-      /* Make main content a little easier to read on gradient */
-      section.main > div {
-        background: rgba(255, 255, 255, 0.78);
-        padding: 1.25rem 1.25rem;
-        border-radius: 16px;
-      }
-
-      /* Tighten top padding */
+      /* Center column, more vertical */
       .block-container {
-        padding-top: 1.2rem;
+        max-width: 980px;
+        padding-top: 1.1rem;
+        padding-bottom: 2.5rem;
+      }
+
+      /* Remove default header background */
+      header[data-testid="stHeader"] {
+        background: transparent;
       }
 
       /* Header row: logo + title */
@@ -79,28 +106,138 @@ st.markdown(
         display: flex;
         align-items: center;
         gap: 14px;
-        margin-bottom: 0.5rem;
+        margin: 0 0 12px 0;
+      }
+      .curser-title {
+        font-family: var(--curser-font) !important;
+        font-size: 26px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        margin: 0;
+        line-height: 1.05;
+        color: rgba(255,255,255,0.96);
+        text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+      }
+      .curser-subtitle {
+        font-family: var(--curser-font) !important;
+        font-size: 10px;
+        letter-spacing: 0.25px;
+        margin-top: 6px;
+        color: rgba(255,255,255,0.85);
       }
 
-      .curser-title {
-        font-size: 2.1rem;
-        font-weight: 800;
-        margin: 0;
-        line-height: 1.1;
+      /* Force crisp logo rendering */
+      img {
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+      }
+
+      /* Dark translucent cards */
+      .curser-card {
+        background: rgba(10, 10, 12, 0.58);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        padding: 16px 16px 12px 16px;
+        box-shadow: 0 10px 28px rgba(0,0,0,0.24);
+        backdrop-filter: blur(7px);
+        -webkit-backdrop-filter: blur(7px);
+        margin: 12px 0;
+      }
+
+      /* Make text readable on dark cards */
+      .curser-card label,
+      .curser-card p,
+      .curser-card span,
+      .curser-card div,
+      .curser-card h1,
+      .curser-card h2,
+      .curser-card h3 {
+        color: rgba(255,255,255,0.92) !important;
+      }
+
+      /* Inputs: darker, clear borders */
+      .stTextInput input,
+      .stSelectbox div[data-baseweb="select"] > div,
+      .stTextArea textarea {
+        background: rgba(15,15,18,0.92) !important;
+        color: rgba(255,255,255,0.96) !important;
+        border: 1px solid rgba(255,255,255,0.18) !important;
+        border-radius: 12px !important;
+      }
+
+      /* Buttons: dark with red accent */
+      .stButton > button {
+        background: rgba(15,15,18,0.92) !important;
+        color: rgba(255,255,255,0.96) !important;
+        border: 1px solid rgba(255,70,70,0.78) !important;
+        border-radius: 12px !important;
+        padding: 10px 14px !important;
+        box-shadow: 0 7px 20px rgba(0,0,0,0.28);
+      }
+      .stButton > button:hover {
+        border-color: rgba(255,70,70,1.0) !important;
+        transform: translateY(-1px);
+      }
+
+      /* Sliders: increase contrast */
+      div[data-testid="stSlider"] > div {
+        color: rgba(255,255,255,0.92) !important;
+      }
+      div[data-testid="stSlider"] [role="slider"] {
+        background: rgba(255,70,70,0.98) !important;
+        border: 2px solid rgba(0,0,0,0.40) !important;
+      }
+
+      /* Dataframe: dark-ish */
+      [data-testid="stDataFrame"] {
+        background: rgba(15,15,18,0.62) !important;
+        border-radius: 14px !important;
+        border: 1px solid rgba(255,255,255,0.10) !important;
+        overflow: hidden;
+      }
+
+      /* Tighten headings */
+      h2, h3 {
+        margin-top: 0.65rem !important;
       }
     </style>
     """,
     unsafe_allow_html=True,
 )
+# -----------------------
+# Helpers: card wrappers
+# -----------------------
+def card_open():
+    st.markdown('<div class="curser-card">', unsafe_allow_html=True)
+
+
+def card_close():
+    st.markdown("</div>", unsafe_allow_html=True)
+
 
 # -----------------------
-# Header: logo + title
+# Header: logo + title (no clipping)
 # -----------------------
-col_logo, col_title = st.columns([1, 8], vertical_alignment="center")
+logo_path = Path(__file__).resolve().parent / "static" / "curser-logo.png"
+
+col_logo, col_text = st.columns([0.12, 0.88], vertical_alignment="center")
 with col_logo:
-    st.image(str(ROOT / "curser-logo.png"), width=64)
-with col_title:
-    st.markdown("<div class='curser-title'>Curser</div>", unsafe_allow_html=True)
+    if logo_path.exists():
+        st.image(str(logo_path), width=48)
+    else:
+        st.write("")
+
+with col_text:
+    st.markdown(
+        """
+        <div>
+          <div class="curser-title">Curser</div>
+          <div class="curser-subtitle">Stop embarrassing names before they launch</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
 
 # -----------------------
 # TTS helpers (espeak -> wav bytes)
@@ -118,10 +255,8 @@ ESPEAK_VOICE_MAP = {
     "ko": "ko",
 }
 
+
 def tts_espeak_wav_bytes(text: str, lang_code: str) -> bytes | None:
-    """
-    Generate wav audio via `espeak --stdout` and return bytes, or None on failure.
-    """
     if not text:
         return None
     voice = ESPEAK_VOICE_MAP.get(lang_code, "en-us")
@@ -153,7 +288,6 @@ if "last_live_text" not in st.session_state:
 if "current_result" not in st.session_state:
     st.session_state["current_result"] = None
 
-# We will set this to True when Listen mode wants another loop
 do_rerun = False
 rerun_sleep_s = 0.0
 
@@ -183,6 +317,9 @@ def record_audio_with_meter(
     meter_placeholder=None,
     meter_label: str = "Level",
 ) -> np.ndarray:
+    if not SD_AVAILABLE or sd is None:
+        return np.array([], dtype=np.float32)
+
     blocksize = max(1, int(fs * block_ms / 1000))
     frames = []
     t0 = time.time()
@@ -208,9 +345,7 @@ def record_audio_with_meter(
                 meter_val = rms_to_meter(rms)
 
                 if meter_placeholder is not None:
-                    meter_placeholder.progress(
-                        meter_val, text=f"{meter_label}: {meter_val:.2f}"
-                    )
+                    meter_placeholder.progress(meter_val, text=f"{meter_label}: {meter_val:.2f}")
     except Exception:
         return np.array([], dtype=np.float32)
 
@@ -269,10 +404,6 @@ def trim_silence(
     end = min(len(x), end_f * hop + frame + pad)
     return x[start:end]
 
-
-# -----------------------
-# Recording helpers
-# -----------------------
 
 def write_temp_wav(x: np.ndarray, fs: int = 16000) -> str:
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
@@ -334,6 +465,7 @@ def compute_results(text: str, chosen_override_lang: str | None) -> dict:
     top10 = scored[:10]
 
     best_dist, best_sim, best_win, best_tok, best_e = top10[0]
+    
     why = {
         "user_ipa_raw": ipa,
         "user_ipa_norm": normalize_ipa(ipa),
