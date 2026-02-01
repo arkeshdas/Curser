@@ -1,6 +1,6 @@
 # demo_text.py
-from src.core import tokenize, choose_best_span, rank_db, token_hamming_distance
-from src.g2p import text_to_ipa
+from scr.core import tokenize, choose_best_span, rank_db, token_hamming_distance
+from scr.g2p import text_to_ipa
 
 DB = [
     {"word": "culo", "lang": "es", "ipa": "k u l o", "meaning": "vulgar slang", "severity": 2},
