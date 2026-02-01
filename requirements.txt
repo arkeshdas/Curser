@@ -8,3 +8,4 @@ panphon==0.22.2
 hangul-romanize==0.1.0
 streamlit-mic-recorder
 sounddevice
+elevenlabs
