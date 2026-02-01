@@ -126,3 +126,11 @@ The output database adds 2 new categories and reformats the data so that the app
 The `ipa` category is the `ipa` pronunciation of the word. This contains stress marks, tone indicators, and other subtle markers (I'm not a linguistics expert) that reflect closely how the word is pronounced in the standard pronunciation of whatever language the word comes from.
 
 Unfortunately, this alone does not guarantee accurate analysis, since there are various ways that words can be pronounced. This problem is usually addressed in larger (and more complicated) language detection models by encoding multiple `ipa` pronunciations, however, for the purposes of this app, the best compromise that I found was just using a category called `ipa_norm`, which is essentially the IPA pronunciation without the additional pronunciation markers. 
+
+## Challenges I ran into
+
+
+## What I learned
+
+
+## What's next for Curser
