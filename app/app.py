@@ -28,9 +28,9 @@ import subprocess
 import hashlib
 
 import streamlit as st
-k = st.secrets["ELEVENLABS_API_KEY"]
-st.write("Key length:", len(k))
-st.write("Key preview:", repr(k[:6] + "..." + k[-4:]))
+import elevenlabs
+
+st.write("elevenlabs version:", getattr(elevenlabs, "__version__", "unknown"))
 
 # ElevenLabs is optional, keep app runnable even if not installed
 try:
