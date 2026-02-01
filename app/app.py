@@ -1,12 +1,25 @@
+#app.py
 # app.py
 import sys
 from pathlib import Path
 
-# Add the project root (parent of /app) to Python path
-ROOT = Path(__file__).resolve().parents[1]
+# -----------------------
+# Path setup so `import src.*` works no matter where you run from
+# -----------------------
+HERE = Path(__file__).resolve()
+
+ROOT = None
+for p in [HERE.parent] + list(HERE.parents):
+    if (p / "src").is_dir():
+        ROOT = p
+        break
+
+if ROOT is None:
+    raise RuntimeError(f"Could not find project root containing `src/` starting from: {HERE}")
+
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-
+    
 import json
 import tempfile
 import time
@@ -15,6 +28,16 @@ import subprocess
 import hashlib
 
 import streamlit as st
+
+# ElevenLabs is optional, keep app runnable even if not installed
+try:
+    from elevenlabs.client import ElevenLabs  # type: ignore
+
+    ELEVENLABS_AVAILABLE = True
+except Exception:
+    ElevenLabs = None  # type: ignore
+    ELEVENLABS_AVAILABLE = False
+
 import numpy as np
 import html
 import pandas as pd
@@ -284,7 +307,7 @@ with col_text:
 st.write("")
 
 # -----------------------
-# TTS helpers (espeak -> wav bytes)
+# TTS helpers
 # -----------------------
 ESPEAK_VOICE_MAP = {
     "en": "en-us",
@@ -299,6 +322,10 @@ ESPEAK_VOICE_MAP = {
     "ko": "ko",
 }
 
+# For demo, pick a single voice id and keep it stable.
+# You can replace this with your chosen ElevenLabs voice id later.
+DEFAULT_ELEVEN_VOICE_ID = "EXAVITQu4vr4xnSDxMaL"
+DEFAULT_ELEVEN_MODEL_ID = "eleven_multilingual_v2"
 
 def tts_espeak_wav_bytes(text: str, lang_code: str) -> bytes | None:
     if not text:
@@ -312,8 +339,64 @@ def tts_espeak_wav_bytes(text: str, lang_code: str) -> bytes | None:
     if p.returncode != 0 or not p.stdout:
         return None
     return p.stdout
+def tts_elevenlabs_bytes(
+    text: str, *, voice_id: str | None = None, model_id: str | None = None
+) -> bytes | None:
+    text = (text or "").strip()
+    if not text:
+        return None
 
+    if not ELEVENLABS_AVAILABLE or ElevenLabs is None:
+        return None
 
+    api_key = st.secrets.get("ELEVENLABS_API_KEY", None)
+    if not api_key:
+        return None
+
+    vid = voice_id or DEFAULT_ELEVEN_VOICE_ID
+    mid = model_id or DEFAULT_ELEVEN_MODEL_ID
+
+    try:
+        client = ElevenLabs(api_key=api_key)
+        audio = client.text_to_speech.convert(
+            text=text,
+            voice_id=vid,
+            model_id=mid,
+        )
+
+        # ElevenLabs SDK may return bytes OR an iterator/generator of byte chunks.
+        if isinstance(audio, (bytes, bytearray)):
+            return bytes(audio)
+
+        # If it's an iterator/generator of chunks, join them.
+        try:
+            return b"".join(audio)
+        except TypeError:
+            # Last resort: try reading if it's file-like
+            try:
+                return audio.read()
+            except Exception:
+                return None
+
+    except Exception:
+        return None
+
+def tts_bytes(
+    text: str, lang_code: str, *, prefer_elevenlabs: bool
+) -> tuple[bytes | None, str]:
+    """
+    Returns (audio_bytes, mime_format)
+    """
+    if prefer_elevenlabs:
+        b = tts_elevenlabs_bytes(text)
+        if b:
+            return b, "audio/mpeg"  # ElevenLabs commonly returns mp3
+
+    b2 = tts_espeak_wav_bytes(text, lang_code)
+    if b2:
+        return b2, "audio/wav"
+
+    return None, "audio/wav"
 # -----------------------
 # Session state
 # -----------------------
@@ -640,6 +723,14 @@ st.session_state["sfw_mode"] = st.toggle(
     value=bool(st.session_state.get("sfw_mode", True)),
 )
 
+prefer_elevenlabs = st.toggle(
+    "Use ElevenLabs for voice (fallback to espeak)",
+    value=False,
+    disabled=not ELEVENLABS_AVAILABLE,
+)
+
+if prefer_elevenlabs and not st.secrets.get("ELEVENLABS_API_KEY", None):
+    st.warning("ElevenLabs toggle is on, but ELEVENLABS_API_KEY is missing in Streamlit secrets.")
 # -----------------------
 # Mode: Upload
 # -----------------------
@@ -969,11 +1060,12 @@ if result:
             colT1, colT2 = st.columns([1, 2])
             with colT1:
                 if st.button("Speak top match", key="speak_top_match"):
-                    wav_bytes = tts_espeak_wav_bytes(top1["word"], top1["lang"])
-                    if wav_bytes:
-                        st.audio(wav_bytes, format="audio/wav")
+                    audio_bytes, audio_fmt = tts_bytes(top1["word"], top1["lang"], prefer_elevenlabs=prefer_elevenlabs)
+                    if audio_bytes:
+                        st.audio(audio_bytes, format=audio_fmt)
                     else:
                         st.warning("TTS failed for this word/voice.")
+
             with colT2:
                 st.caption("Uses espeak voices, some languages may not be installed or may differ.")
 
@@ -1052,22 +1144,30 @@ if result:
             )
 
             with st.expander("Speak a match"):
-                st.write("Click Speak to hear espeak pronounce the word using its language voice.")
+                st.write("Click Speak to hear the selected word.")
                 for i, r in enumerate(rows[:10]):
                     shown = r.get("display", r.get("word", ""))
                     raw = r.get("word", "")
+                    r_lang = r.get("lang", "en")
+
                     cA, cB, cC, cD = st.columns([1.2, 0.8, 3.0, 1.0])
                     with cA:
                         st.write(f"**{shown}**")
                     with cB:
-                        st.write(r.get("lang", ""))
+                        st.write(r_lang)
                     with cC:
                         st.write(r.get("meaning", ""))
                     with cD:
-                        if st.button("Speak", key=f"speak_row_{i}_{raw}_{r.get('lang','')}"):
-                            wav_bytes = tts_espeak_wav_bytes(raw, r.get("lang", "en"))
-                            if wav_bytes:
-                                st.audio(wav_bytes, format="audio/wav")
+                        if st.button("Speak", key=f"speak_row_{i}_{raw}_{r_lang}"):
+                            # DEBUG: confirm which word is being sent to TTS
+                            st.caption(f"DEBUG speaking: '{raw}' ({r_lang})")
+                            audio_bytes, audio_fmt = tts_bytes(
+                                raw,
+                                r_lang,
+                                prefer_elevenlabs=prefer_elevenlabs,
+                            )
+                            if audio_bytes:
+                                st.audio(audio_bytes, format=audio_fmt)
                             else:
                                 st.warning("TTS failed for this word/voice.")
 
