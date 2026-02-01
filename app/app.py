@@ -15,19 +15,19 @@ import subprocess
 
 import streamlit as st
 import numpy as np
-import soundfile as sf
 import sounddevice as sd
 from langdetect import detect
+from scipy.io.wavfile import write as wav_write
 
-from scr.asr import transcribe_audio_file
-from scr.core import (
+from src.asr import transcribe_audio_file
+from src.core import (
     tokenize,
     choose_best_span,
     windowed_panphon_distance_tokens,
     similarity_from_distance,
     normalize_ipa,
 )
-from scr.g2p import text_to_ipa
+from src.g2p import text_to_ipa
 
 
 def infer_lang(text: str) -> str:
@@ -48,7 +48,59 @@ def load_db():
 
 
 DB = load_db()
-st.title("Curserio, prototype")
+
+# -----------------------
+# Page config + CSS theme
+# -----------------------
+st.set_page_config(page_title="Curser", page_icon="🖱️", layout="wide")
+
+st.markdown(
+    """
+    <style>
+      /* App background gradient */
+      .stApp {
+        background: linear-gradient(to bottom, #ff4646 0%, #bdbdbd 100%);
+      }
+
+      /* Make main content a little easier to read on gradient */
+      section.main > div {
+        background: rgba(255, 255, 255, 0.78);
+        padding: 1.25rem 1.25rem;
+        border-radius: 16px;
+      }
+
+      /* Tighten top padding */
+      .block-container {
+        padding-top: 1.2rem;
+      }
+
+      /* Header row: logo + title */
+      .curser-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 0.5rem;
+      }
+
+      .curser-title {
+        font-size: 2.1rem;
+        font-weight: 800;
+        margin: 0;
+        line-height: 1.1;
+      }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# -----------------------
+# Header: logo + title
+# -----------------------
+col_logo, col_title = st.columns([1, 8], vertical_alignment="center")
+with col_logo:
+    st.image(str(ROOT / "curser-logo.png"), width=64)
+with col_title:
+    st.markdown("<div class='curser-title'>Curser</div>", unsafe_allow_html=True)
 
 # -----------------------
 # TTS helpers (espeak -> wav bytes)
@@ -221,9 +273,10 @@ def trim_silence(
 # -----------------------
 # Recording helpers
 # -----------------------
+
 def write_temp_wav(x: np.ndarray, fs: int = 16000) -> str:
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
-        sf.write(tmp.name, x, fs)
+        wav_write(tmp.name, fs, (x * 32767).astype(np.int16))
         return tmp.name
 
 
@@ -284,7 +337,8 @@ def compute_results(text: str, chosen_override_lang: str | None) -> dict:
     why = {
         "user_ipa_raw": ipa,
         "user_ipa_norm": normalize_ipa(ipa),
-        "candidate_word": best_e.get("word"),
+        "candidate_word": best_e.get("display", best_e.get("word")),
+        "candidate_word_raw": best_e.get("word"),
         "candidate_lang": best_e.get("lang"),
         "candidate_ipa_raw": best_e.get("ipa", ""),
         "candidate_ipa_norm": best_e.get("ipa_norm", ""),
@@ -297,18 +351,20 @@ def compute_results(text: str, chosen_override_lang: str | None) -> dict:
     top_rows = []
     for dist, sim, win, tok, e in top10:
         top_rows.append(
-            {
-                "word": e.get("word"),
-                "lang": e.get("lang"),
-                "meaning": e.get("meaning", ""),
-                "severity": e.get("severity", ""),
-                "ipa": e.get("ipa", ""),
-                "source_token": tok,
-                "best_window": win,
-                "distance": float(dist),
-                "similarity": float(sim),
-            }
-        )
+    {
+        "display": e.get("display", e.get("word")),
+        "word": e.get("word"),
+        "lang": e.get("lang"),
+        "meaning": e.get("meaning", ""),
+        "severity": e.get("severity", ""),
+        "ipa": e.get("ipa", ""),
+        "source_token": tok,
+        "best_window": win,
+        "distance": float(dist),
+        "similarity": float(sim),
+    }
+)
+
 
     return {
         "ok": True,
@@ -556,7 +612,7 @@ if result:
             st.markdown(f"**G2P lang:** `{result['g2p_lang']}`")
             st.markdown(f"**IPA:** `{result['ipa']}`")
         with c2:
-            st.markdown(f"**Top match:** `{top1['word']}`")
+            st.markdown(f"**Top match:** `{top1.get('display', top1['word'])}`")
             st.markdown(f"**Lang:** `{top1['lang']}`")
             st.markdown(f"**Severity:** `{top1.get('severity','')}`")
         with c3:
@@ -578,37 +634,43 @@ if result:
         st.subheader("Top matches")
         rows = result["top"]
 
+        # normalize types for display
         for r in rows:
             r["distance"] = float(r.get("distance", 0.0))
             r["similarity"] = float(r.get("similarity", 0.0))
             sev = r.get("severity", "")
             r["severity"] = int(sev) if str(sev).strip().isdigit() else 0
+            if "display" not in r:
+                r["display"] = r.get("word", "")
 
         st.dataframe(
             rows,
             use_container_width=True,
             hide_index=True,
             column_config={
+                "display": st.column_config.TextColumn("word"),
+                "word": st.column_config.TextColumn("word_raw"),
                 "distance": st.column_config.NumberColumn("distance", format="%.3f"),
                 "similarity": st.column_config.NumberColumn("similarity", format="%.3f"),
                 "severity": st.column_config.NumberColumn("severity", format="%d"),
             },
         )
 
-        # Per-row speak controls (since dataframe can't have buttons)
         with st.expander("Speak a match"):
             st.write("Click Speak to hear espeak pronounce the word using its language voice.")
             for i, r in enumerate(rows[:10]):
+                shown = r.get("display", r.get("word", ""))
+                raw = r.get("word", "")
                 cA, cB, cC, cD = st.columns([1.2, 0.8, 3.0, 1.0])
                 with cA:
-                    st.write(f"**{r['word']}**")
+                    st.write(f"**{shown}**")
                 with cB:
-                    st.write(r["lang"])
+                    st.write(r.get("lang", ""))
                 with cC:
                     st.write(r.get("meaning", ""))
                 with cD:
-                    if st.button("Speak", key=f"speak_row_{i}_{r['word']}_{r['lang']}"):
-                        wav_bytes = tts_espeak_wav_bytes(r["word"], r["lang"])
+                    if st.button("Speak", key=f"speak_row_{i}_{raw}_{r.get('lang','')}"):
+                        wav_bytes = tts_espeak_wav_bytes(raw, r.get("lang", "en"))
                         if wav_bytes:
                             st.audio(wav_bytes, format="audio/wav")
                         else:
@@ -657,7 +719,8 @@ if not st.session_state["history"]:
 else:
     for item in st.session_state["history"]:
         top1 = item.get("top1") or {}
-        title = f"{item['ts']} | {top1.get('word','')} [{top1.get('lang','')}] | {item.get('text','')}"
+        shown = top1.get("display", top1.get("word", ""))
+        title = f"{item['ts']} | {shown} [{top1.get('lang','')}] | {item.get('text','')}"
         with st.expander(title):
             st.write("Text:", item.get("text"))
             st.write("Best span:", item.get("best_span"))

@@ -1,5 +1,5 @@
 # test_soundalike.py
-from core import tokenize, choose_best_span, rank_db
+from src.core import tokenize, choose_best_span, rank_db
 
 def test_tokenize_basic():
     tokens = tokenize("Hello world")

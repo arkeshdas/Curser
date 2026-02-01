@@ -1,6 +1,7 @@
 [
   {
     "word": "fuck",
+    "display": "fuck",
     "lang": "en",
     "meaning": "strong vulgar intensifier",
     "severity": 3,
@@ -10,6 +11,7 @@
   },
   {
     "word": "shit",
+    "display": "shit",
     "lang": "en",
     "meaning": "feces, vulgar expletive",
     "severity": 2,
@@ -19,6 +21,7 @@
   },
   {
     "word": "ass",
+    "display": "ass",
     "lang": "en",
     "meaning": "butt, mild insult",
     "severity": 1,
@@ -28,6 +31,7 @@
   },
   {
     "word": "bastard",
+    "display": "bastard",
     "lang": "en",
     "meaning": "insult",
     "severity": 2,
@@ -37,6 +41,7 @@
   },
   {
     "word": "damn",
+    "display": "damn",
     "lang": "en",
     "meaning": "mild expletive",
     "severity": 1,
@@ -46,6 +51,7 @@
   },
   {
     "word": "crap",
+    "display": "crap",
     "lang": "en",
     "meaning": "mild expletive",
     "severity": 1,
@@ -55,6 +61,7 @@
   },
   {
     "word": "piss",
+    "display": "piss",
     "lang": "en",
     "meaning": "urinate, rude",
     "severity": 1,
@@ -64,6 +71,7 @@
   },
   {
     "word": "jerk",
+    "display": "jerk",
     "lang": "en",
     "meaning": "mild insult",
     "severity": 1,
@@ -73,6 +81,7 @@
   },
   {
     "word": "idiot",
+    "display": "idiot",
     "lang": "en",
     "meaning": "insult",
     "severity": 1,
@@ -82,6 +91,7 @@
   },
   {
     "word": "moron",
+    "display": "moron",
     "lang": "en",
     "meaning": "insult",
     "severity": 1,
@@ -90,151 +100,898 @@
     "ipa_norm": "mɔɹɑn"
   },
   {
-    "word": "culo",
-    "lang": "es",
-    "meaning": "ass, vulgar slang",
-    "severity": 2,
-    "category": "bodily",
-    "ipa": "kˈulo",
-    "ipa_norm": "kulo"
-  },
-  {
     "word": "mierda",
+    "display": "mierda",
     "lang": "es",
-    "meaning": "shit",
+    "meaning": "shit (expletive or literal)",
     "severity": 2,
     "category": "bodily",
     "ipa": "mjˈeɾða",
     "ipa_norm": "mjeɾða"
   },
   {
-    "word": "joder",
+    "word": "cabrón",
+    "display": "cabrón",
     "lang": "es",
-    "meaning": "to fuck, strong vulgarity",
-    "severity": 3,
-    "category": "sexual",
-    "ipa": "xoðˈeɾ",
-    "ipa_norm": "xoðeɾ"
+    "meaning": "bastard / asshole (strong insult)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kaβɾˈon",
+    "ipa_norm": "kaβɾon"
   },
   {
     "word": "puta",
+    "display": "puta",
     "lang": "es",
-    "meaning": "whore, insult",
+    "meaning": "whore / bitch (highly offensive)",
     "severity": 3,
     "category": "sexual",
     "ipa": "pˈuta",
     "ipa_norm": "puta"
   },
   {
-    "word": "coño",
-    "lang": "es",
-    "meaning": "cunt, strong vulgarity",
-    "severity": 3,
-    "category": "sexual",
-    "ipa": "kˈoɲo",
-    "ipa_norm": "koɲo"
-  },
-  {
-    "word": "cabron",
-    "lang": "es",
-    "meaning": "bastard, insult",
-    "severity": 2,
-    "category": "general",
-    "ipa": "kˈaβɾon",
-    "ipa_norm": "kaβɾon"
-  },
-  {
-    "word": "gilipollas",
-    "lang": "es",
-    "meaning": "jerk, idiot (Spain)",
-    "severity": 2,
-    "category": "general",
-    "ipa": "xˌilipˈoʎas",
-    "ipa_norm": "xilipoʎas"
-  },
-  {
     "word": "pendejo",
+    "display": "pendejo",
     "lang": "es",
-    "meaning": "idiot, jerk (regional)",
+    "meaning": "idiot / asshole (regional, strong)",
     "severity": 2,
     "category": "general",
     "ipa": "pendˈexo",
     "ipa_norm": "pendexo"
   },
   {
+    "word": "coño",
+    "display": "coño",
+    "lang": "es",
+    "meaning": "cunt / pussy / damn (vulgar)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "kˈoɲo",
+    "ipa_norm": "koɲo"
+  },
+  {
+    "word": "hostia",
+    "display": "hostia",
+    "lang": "es",
+    "meaning": "host / damn / fuck (expletive)",
+    "severity": 2,
+    "category": "religious",
+    "ipa": "ˈostja",
+    "ipa_norm": "ostja"
+  },
+  {
+    "word": "joder",
+    "display": "joder",
+    "lang": "es",
+    "meaning": "to fuck / damn / fuck it (strong vulgar)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "xoðˈeɾ",
+    "ipa_norm": "xoðeɾ"
+  },
+  {
+    "word": "maricón",
+    "display": "maricón",
+    "lang": "es",
+    "meaning": "fag / queer (homophobic slur)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "mˌaɾikˈon",
+    "ipa_norm": "maɾikon"
+  },
+  {
+    "word": "cagada",
+    "display": "cagada",
+    "lang": "es",
+    "meaning": "shit / fuck-up / mess",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kaɣˈaða",
+    "ipa_norm": "kaɣaða"
+  },
+  {
+    "word": "guarrada",
+    "display": "guarrada",
+    "lang": "es",
+    "meaning": "filth / dirty thing / obscenity",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "ɡwarˈaða",
+    "ipa_norm": "ɡwaraða"
+  },
+  {
+    "word": "chupapollas",
+    "display": "chupapollas",
+    "lang": "es",
+    "meaning": "cocksucker (strong)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "tʃˌupapˈoʎas",
+    "ipa_norm": "tʃupapoʎas"
+  },
+  {
+    "word": "polla",
+    "display": "polla",
+    "lang": "es",
+    "meaning": "dick / cock",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "pˈoʎa",
+    "ipa_norm": "poʎa"
+  },
+  {
+    "word": "cojones",
+    "display": "cojones",
+    "lang": "es",
+    "meaning": "balls / courage (vulgar)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "koxˈones",
+    "ipa_norm": "koxones"
+  },
+  {
+    "word": "carajo",
+    "display": "carajo",
+    "lang": "es",
+    "meaning": "damn / fuck / dick (expletive)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kaɾˈaxo",
+    "ipa_norm": "kaɾaxo"
+  },
+  {
+    "word": "chingar",
+    "display": "chingar",
+    "lang": "es",
+    "meaning": "to fuck (Mexican strong verb)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "tʃiŋɡˈaɾ",
+    "ipa_norm": "tʃiŋɡaɾ"
+  },
+  {
+    "word": "mamada",
+    "display": "mamada",
+    "lang": "es",
+    "meaning": "blowjob / bullshit",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "mamˈaða",
+    "ipa_norm": "mamaða"
+  },
+  {
+    "word": "pelotudo",
+    "display": "pelotudo",
+    "lang": "es",
+    "meaning": "idiot / dickhead (Argentine)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "pˌelotˈuðo",
+    "ipa_norm": "pelotuðo"
+  },
+  {
+    "word": "desgraciado",
+    "display": "desgraciado",
+    "lang": "es",
+    "meaning": "wretch / bastard",
+    "severity": 2,
+    "category": "general",
+    "ipa": "dˌesɣɾaθjˈaðo",
+    "ipa_norm": "desɣɾaθjaðo"
+  },
+  {
+    "word": "culo",
+    "display": "culo",
+    "lang": "es",
+    "meaning": "ass / butt",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kˈulo",
+    "ipa_norm": "kulo"
+  },
+  {
+    "word": "pinche",
+    "display": "pinche",
+    "lang": "es",
+    "meaning": "fucking / damn (Mexican intensifier)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "pˈintʃe",
+    "ipa_norm": "pintʃe"
+  },
+  {
+    "word": "pendejada",
+    "display": "pendejada",
+    "lang": "es",
+    "meaning": "stupidity / bullshit",
+    "severity": 2,
+    "category": "general",
+    "ipa": "pˌendexˈaða",
+    "ipa_norm": "pendexaða"
+  },
+  {
+    "word": "pedo",
+    "display": "pedo",
+    "lang": "es",
+    "meaning": "fart / problem (mild vulgar)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "pˈeðo",
+    "ipa_norm": "peðo"
+  },
+  {
+    "word": "perra",
+    "display": "perra",
+    "lang": "es",
+    "meaning": "bitch (female dog/insult)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "pˈera",
+    "ipa_norm": "pera"
+  },
+  {
+    "word": "zorra",
+    "display": "zorra",
+    "lang": "es",
+    "meaning": "fox / slut / bitch",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "θˈora",
+    "ipa_norm": "θora"
+  },
+  {
+    "word": "cochino",
+    "display": "cochino",
+    "lang": "es",
+    "meaning": "pig / filthy person",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kotʃˈino",
+    "ipa_norm": "kotʃino"
+  },
+  {
+    "word": "panocha",
+    "display": "panocha",
+    "lang": "es",
+    "meaning": "pussy / cunt (vulgar)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "panˈotʃa",
+    "ipa_norm": "panotʃa"
+  },
+  {
+    "word": "puto",
+    "display": "puto",
+    "lang": "es",
+    "meaning": "fag / whore (masculine, strong)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "pˈuto",
+    "ipa_norm": "puto"
+  },
+  {
+    "word": "estúpido",
+    "display": "estúpido",
+    "lang": "es",
+    "meaning": "stupid",
+    "severity": 1,
+    "category": "general",
+    "ipa": "estˈupiðo",
+    "ipa_norm": "estupiðo"
+  },
+  {
+    "word": "cabronazo",
+    "display": "cabronazo",
+    "lang": "es",
+    "meaning": "big bastard / asshole (augmented)",
+    "severity": 3,
+    "category": "general",
+    "ipa": "kˌaβɾonˈaθo",
+    "ipa_norm": "kaβɾonaθo"
+  },
+  {
+    "word": "chingada",
+    "display": "chingada",
+    "lang": "es",
+    "meaning": "fuck / fucked up (Mexican)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "tʃiŋɡˈaða",
+    "ipa_norm": "tʃiŋɡaða"
+  },
+  {
+    "word": "culear",
+    "display": "culear",
+    "lang": "es",
+    "meaning": "to fuck in the ass",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "kˌuleˈaɾ",
+    "ipa_norm": "kuleaɾ"
+  },
+  {
+    "word": "verga",
+    "display": "verga",
+    "lang": "es",
+    "meaning": "dick / cock (strong vulgar)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "bˈeɾɣa",
+    "ipa_norm": "beɾɣa"
+  },
+  {
+    "word": "chucha",
+    "display": "chucha",
+    "lang": "es",
+    "meaning": "damn / pussy (regional expletive)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "tʃˈutʃa",
+    "ipa_norm": "tʃutʃa"
+  },
+  {
+    "word": "cagado",
+    "display": "cagado",
+    "lang": "es",
+    "meaning": "shitted / scaredy-cat",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kaɣˈaðo",
+    "ipa_norm": "kaɣaðo"
+  },
+  {
+    "word": "marica",
+    "display": "marica",
+    "lang": "es",
+    "meaning": "sissy / fag (milder homophobic)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "maɾˈika",
+    "ipa_norm": "maɾika"
+  },
+  {
+    "word": "pendejos",
+    "display": "pendejos",
+    "lang": "es",
+    "meaning": "idiots / assholes (plural)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "pendˈexos",
+    "ipa_norm": "pendexos"
+  },
+  {
+    "word": "mamón",
+    "display": "mamón",
+    "lang": "es",
+    "meaning": "sucker / arrogant prick",
+    "severity": 2,
+    "category": "general",
+    "ipa": "mamˈon",
+    "ipa_norm": "mamon"
+  },
+  {
+    "word": "gilipollas",
+    "display": "gilipollas",
+    "lang": "es",
+    "meaning": "jerk / asshole (Spain)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "xˌilipˈoʎas",
+    "ipa_norm": "xilipoʎas"
+  },
+  {
+    "word": "idiota",
+    "display": "idiota",
+    "lang": "es",
+    "meaning": "idiot",
+    "severity": 1,
+    "category": "general",
+    "ipa": "iðjˈota",
+    "ipa_norm": "iðjota"
+  },
+  {
+    "word": "tonto",
+    "display": "tonto",
+    "lang": "es",
+    "meaning": "fool / stupid (mild)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "tˈonto",
+    "ipa_norm": "tonto"
+  },
+  {
+    "word": "imbécil",
+    "display": "imbécil",
+    "lang": "es",
+    "meaning": "imbecile",
+    "severity": 1,
+    "category": "general",
+    "ipa": "imbˈeθil",
+    "ipa_norm": "imbeθil"
+  },
+  {
     "word": "merde",
+    "display": "merde",
     "lang": "fr",
-    "meaning": "shit",
+    "meaning": "shit (expletive or literal)",
     "severity": 2,
     "category": "bodily",
     "ipa": "mˈɛʁd",
     "ipa_norm": "mɛʁd"
   },
   {
-    "word": "putain",
-    "lang": "fr",
-    "meaning": "damn, whore (contextual)",
-    "severity": 2,
-    "category": "general",
-    "ipa": "pytˈɛ̃",
-    "ipa_norm": "pytɛ"
-  },
-  {
     "word": "connard",
+    "display": "connard",
     "lang": "fr",
-    "meaning": "asshole, insult",
+    "meaning": "asshole / jerk (strong insult)",
     "severity": 3,
     "category": "general",
     "ipa": "kɔnˈaʁ",
     "ipa_norm": "kɔnaʁ"
   },
   {
-    "word": "salope",
+    "word": "enculé",
+    "display": "enculé",
     "lang": "fr",
-    "meaning": "bitch, insult",
+    "meaning": "fucked in the ass / cocksucker (very offensive)",
     "severity": 3,
-    "category": "general",
-    "ipa": "salˈɔp",
-    "ipa_norm": "salɔp"
+    "category": "sexual",
+    "ipa": "ɑ̃kylˈe",
+    "ipa_norm": "ɑkyle"
+  },
+  {
+    "word": "pute",
+    "display": "pute",
+    "lang": "fr",
+    "meaning": "whore / slut (direct)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "pˈyt",
+    "ipa_norm": "pyt"
   },
   {
     "word": "bordel",
+    "display": "bordel",
     "lang": "fr",
-    "meaning": "mess, damn (slang)",
+    "meaning": "brothel / mess / damn (slang expletive)",
     "severity": 2,
     "category": "general",
     "ipa": "bɔʁdˈɛl",
     "ipa_norm": "bɔʁdɛl"
   },
   {
-    "word": "scheisse",
+    "word": "foutre",
+    "display": "foutre",
+    "lang": "fr",
+    "meaning": "fuck / semen (vulgar verb/noun)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "fˈutʁ",
+    "ipa_norm": "futʁ"
+  },
+  {
+    "word": "sale",
+    "display": "sale",
+    "lang": "fr",
+    "meaning": "dirty/filthy",
+    "severity": 1,
+    "category": "bodily",
+    "ipa": "sˈal",
+    "ipa_norm": "sal"
+  },
+  {
+    "word": "connasse",
+    "display": "connasse",
+    "lang": "fr",
+    "meaning": "cunt / bitch (feminine asshole)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "kɔnˈas",
+    "ipa_norm": "kɔnas"
+  },
+  {
+    "word": "salope",
+    "display": "salope",
+    "lang": "fr",
+    "meaning": "bitch / slut (highly offensive)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "salˈɔp",
+    "ipa_norm": "salɔp"
+  },
+  {
+    "word": "crétin",
+    "display": "crétin",
+    "lang": "fr",
+    "meaning": "cretin / idiot (mild)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "kʁetˈɛ̃",
+    "ipa_norm": "kʁetɛ"
+  },
+  {
+    "word": "enculée",
+    "display": "enculée",
+    "lang": "fr",
+    "meaning": "fucked in the ass (feminine)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ɑ̃kylˈe",
+    "ipa_norm": "ɑkyle"
+  },
+  {
+    "word": "conne",
+    "display": "conne",
+    "lang": "fr",
+    "meaning": "cunt / stupid (feminine)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "kˈɔn",
+    "ipa_norm": "kɔn"
+  },
+  {
+    "word": "sucer",
+    "display": "sucer",
+    "lang": "fr",
+    "meaning": "to suck (blowjob, vulgar)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "sysˈe",
+    "ipa_norm": "syse"
+  },
+  {
+    "word": "bite",
+    "display": "bite",
+    "lang": "fr",
+    "meaning": "dick / cock",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "bˈit",
+    "ipa_norm": "bit"
+  },
+  {
+    "word": "salaud",
+    "display": "salaud",
+    "lang": "fr",
+    "meaning": "bastard / scumbag",
+    "severity": 2,
+    "category": "general",
+    "ipa": "salˈo",
+    "ipa_norm": "salo"
+  },
+  {
+    "word": "couillon",
+    "display": "couillon",
+    "lang": "fr",
+    "meaning": "idiot / balls (mild vulgar)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kujˈɔ̃",
+    "ipa_norm": "kujɔ"
+  },
+  {
+    "word": "tête de nœud",
+    "display": "tête de nœud",
+    "lang": "fr",
+    "meaning": "dickhead (head of knot)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "tˈɛt də- nˈø",
+    "ipa_norm": "tɛt də- nø"
+  },
+  {
+    "word": "enculé de ta mère",
+    "display": "enculé de ta mère",
+    "lang": "fr",
+    "meaning": "motherfucker (ass-fucked your mother)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ɑ̃kylˈe də- ta- mˈɛʁ",
+    "ipa_norm": "ɑkyle də- ta- mɛʁ"
+  },
+  {
+    "word": "putain",
+    "display": "putain",
+    "lang": "fr",
+    "meaning": "whore / fuck / damn (versatile expletive)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "pytˈɛ̃",
+    "ipa_norm": "pytɛ"
+  },
+  {
+    "word": "enculer",
+    "display": "enculer",
+    "lang": "fr",
+    "meaning": "to fuck in the ass / sodomize (verb)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ɑ̃kylˈe",
+    "ipa_norm": "ɑkyle"
+  },
+  {
+    "word": "enculer ta mère",
+    "display": "enculer ta mère",
+    "lang": "fr",
+    "meaning": "fuck your mother in the ass",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ɑ̃kylˈe ta- mˈɛʁ",
+    "ipa_norm": "ɑkyle ta- mɛʁ"
+  },
+  {
+    "word": "pétasse",
+    "display": "pétasse",
+    "lang": "fr",
+    "meaning": "slut / cheap whore",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "petˈas",
+    "ipa_norm": "petas"
+  },
+  {
+    "word": "fils de pute",
+    "display": "fils de pute",
+    "lang": "fr",
+    "meaning": "son of a whore (bastard)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "fˈil də- pˈyt",
+    "ipa_norm": "fil də- pyt"
+  },
+  {
+    "word": "cul",
+    "display": "cul",
+    "lang": "fr",
+    "meaning": "ass / butt (vulgar)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kˈy",
+    "ipa_norm": "ky"
+  },
+  {
+    "word": "fiotte",
+    "display": "fiotte",
+    "lang": "fr",
+    "meaning": "fag / sissy (homophobic slur)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "fjˈɔt",
+    "ipa_norm": "fjɔt"
+  },
+  {
+    "word": "trou du cul",
+    "display": "trou du cul",
+    "lang": "fr",
+    "meaning": "asshole (literal hole)",
+    "severity": 3,
+    "category": "bodily",
+    "ipa": "tʁˈu dy- kˈy",
+    "ipa_norm": "tʁu dy- ky"
+  },
+  {
+    "word": "enculé de tes morts",
+    "display": "enculé de tes morts",
+    "lang": "fr",
+    "meaning": "fucker of your dead (extreme ancestral insult)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ɑ̃kylˈe də- te- mˈɔʁ",
+    "ipa_norm": "ɑkyle də- te- mɔʁ"
+  },
+  {
+    "word": "enfoiré",
+    "display": "enfoiré",
+    "lang": "fr",
+    "meaning": "shitty / bastard (covered in shit)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "ɑ̃fwaʁˈe",
+    "ipa_norm": "ɑfwaʁe"
+  },
+  {
+    "word": "nique",
+    "display": "nique",
+    "lang": "fr",
+    "meaning": "fuck (imperative of niquer)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "nˈik",
+    "ipa_norm": "nik"
+  },
+  {
+    "word": "putain de merde",
+    "display": "putain de merde",
+    "lang": "fr",
+    "meaning": "fucking shit (combined expletive)",
+    "severity": 3,
+    "category": "general",
+    "ipa": "pytˈɛ̃ də- mˈɛʁd",
+    "ipa_norm": "pytɛ də- mɛʁd"
+  },
+  {
+    "word": "ta gueule",
+    "display": "ta gueule",
+    "lang": "fr",
+    "meaning": "shut your mouth / shut up (rude)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "ta- ɡˈœl",
+    "ipa_norm": "ta- ɡœl"
+  },
+  {
+    "word": "bâtard",
+    "display": "bâtard",
+    "lang": "fr",
+    "meaning": "bastard",
+    "severity": 2,
+    "category": "general",
+    "ipa": "batˈaʁ",
+    "ipa_norm": "bataʁ"
+  },
+  {
+    "word": "foutu",
+    "display": "foutu",
+    "lang": "fr",
+    "meaning": "fucked / damned (adjective)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "futˈy",
+    "ipa_norm": "futy"
+  },
+  {
+    "word": "espèce de con",
+    "display": "espèce de con",
+    "lang": "fr",
+    "meaning": "kind of idiot / fucking idiot",
+    "severity": 2,
+    "category": "general",
+    "ipa": "ɛspˈɛs də- kˈɔ̃",
+    "ipa_norm": "ɛspɛs də- kɔ"
+  },
+  {
+    "word": "con",
+    "display": "con",
+    "lang": "fr",
+    "meaning": "cunt / idiot / stupid",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kˈɔ̃",
+    "ipa_norm": "kɔ"
+  },
+  {
+    "word": "salopard",
+    "display": "salopard",
+    "lang": "fr",
+    "meaning": "bastard / scoundrel",
+    "severity": 2,
+    "category": "general",
+    "ipa": "salopˈaʁ",
+    "ipa_norm": "salopaʁ"
+  },
+  {
+    "word": "foutue",
+    "display": "foutue",
+    "lang": "fr",
+    "meaning": "fucked / damned (feminine)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "futˈy",
+    "ipa_norm": "futy"
+  },
+  {
+    "word": "putain de con",
+    "display": "putain de con",
+    "lang": "fr",
+    "meaning": "fucking idiot",
+    "severity": 3,
+    "category": "general",
+    "ipa": "pytˈɛ̃ də- kˈɔ̃",
+    "ipa_norm": "pytɛ də- kɔ"
+  },
+  {
+    "word": "fils de chien",
+    "display": "fils de chien",
+    "lang": "fr",
+    "meaning": "son of a dog (bastard)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "fˈil də- ʃjˈɛ̃",
+    "ipa_norm": "fil də- ʃjɛ"
+  },
+  {
+    "word": "saloperie",
+    "display": "saloperie",
+    "lang": "fr",
+    "meaning": "filth / crap / bitch (thing/person)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "salopʁˈi",
+    "ipa_norm": "salopʁi"
+  },
+  {
+    "word": "scheiße",
+    "display": "Scheiße",
     "lang": "de",
-    "meaning": "shit",
+    "meaning": "shit (expletive or literal)",
     "severity": 2,
     "category": "bodily",
     "ipa": "ʃˈaɪsə",
     "ipa_norm": "ʃaɪsə"
   },
   {
-    "word": "arsch",
+    "word": "arschloch",
+    "display": "Arschloch",
     "lang": "de",
-    "meaning": "ass",
+    "meaning": "asshole (strong insult)",
     "severity": 2,
     "category": "bodily",
-    "ipa": "ˈaɾʃ",
-    "ipa_norm": "aɾʃ"
+    "ipa": "ˈaɾʃlɔx",
+    "ipa_norm": "aɾʃlɔx"
   },
   {
-    "word": "verdammt",
+    "word": "schwanz",
+    "display": "Schwanz",
     "lang": "de",
-    "meaning": "damn",
+    "meaning": "dick / cock (vulgar)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ʃvˈants",
+    "ipa_norm": "ʃvants"
+  },
+  {
+    "word": "hurensohn",
+    "display": "Hurensohn",
+    "lang": "de",
+    "meaning": "son of a whore / bastard (very offensive)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "hˈuːrənzˌoːn",
+    "ipa_norm": "hurənzon"
+  },
+  {
+    "word": "blödmann",
+    "display": "Blödmann",
+    "lang": "de",
+    "meaning": "stupid guy / idiot (mild)",
     "severity": 1,
-    "category": "religious",
-    "ipa": "fɛɾdˈamt",
-    "ipa_norm": "fɛɾdamt"
+    "category": "general",
+    "ipa": "blˈœdman",
+    "ipa_norm": "blœdman"
+  },
+  {
+    "word": "schlampig",
+    "display": "Schlampig",
+    "lang": "de",
+    "meaning": "sloppy / slutty (adjective, insulting)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "ʃlˈampɪç",
+    "ipa_norm": "ʃlampɪc"
+  },
+  {
+    "word": "fotze",
+    "display": "Fotze",
+    "lang": "de",
+    "meaning": "cunt (extremely vulgar)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "fˈɔtsə",
+    "ipa_norm": "fɔtsə"
+  },
+  {
+    "word": "vollidiot",
+    "display": "Vollidiot",
+    "lang": "de",
+    "meaning": "complete idiot",
+    "severity": 1,
+    "category": "general",
+    "ipa": "fˈɔliːdˌɪoːt",
+    "ipa_norm": "fɔlidɪot"
   },
   {
     "word": "idiot",
+    "display": "Idiot",
     "lang": "de",
     "meaning": "idiot",
     "severity": 1,
@@ -243,18 +1000,330 @@
     "ipa_norm": "idɪot"
   },
   {
-    "word": "mist",
+    "word": "pisser",
+    "display": "Pisser",
     "lang": "de",
-    "meaning": "crap",
+    "meaning": "pisser / wimp (derogatory)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "pˈɪsɜ",
+    "ipa_norm": "pɪsɜ"
+  },
+  {
+    "word": "doof",
+    "display": "Doof",
+    "lang": "de",
+    "meaning": "dumb / stupid (mild)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "dˈoːf",
+    "ipa_norm": "dof"
+  },
+  {
+    "word": "verdammt",
+    "display": "Verdammt",
+    "lang": "de",
+    "meaning": "damn / cursed (mild expletive)",
+    "severity": 1,
+    "category": "religious",
+    "ipa": "fɛɾdˈamt",
+    "ipa_norm": "fɛɾdamt"
+  },
+  {
+    "word": "sackgesicht",
+    "display": "Sackgesicht",
+    "lang": "de",
+    "meaning": "balls face / dickhead (vulgar insult)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "zˈakɡeːzˌɪçt",
+    "ipa_norm": "zakɡezɪct"
+  },
+  {
+    "word": "kacke",
+    "display": "Kacke",
+    "lang": "de",
+    "meaning": "crap / shit (milder than Scheiße)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kˈakə",
+    "ipa_norm": "kakə"
+  },
+  {
+    "word": "gefickt",
+    "display": "Gefickt",
+    "lang": "de",
+    "meaning": "fucked (past tense vulgar)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ɡəfˈɪkt",
+    "ipa_norm": "ɡəfɪkt"
+  },
+  {
+    "word": "verfickt",
+    "display": "Verfickt",
+    "lang": "de",
+    "meaning": "fucked up / damn (intensified)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "fɛɾfˈɪkt",
+    "ipa_norm": "fɛɾfɪkt"
+  },
+  {
+    "word": "trottel",
+    "display": "Trottel",
+    "lang": "de",
+    "meaning": "fool / idiot (mild)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "tɾˈɔtəl",
+    "ipa_norm": "tɾɔtəl"
+  },
+  {
+    "word": "hure",
+    "display": "Hure",
+    "lang": "de",
+    "meaning": "whore / prostitute",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "hˈuːrə",
+    "ipa_norm": "hurə"
+  },
+  {
+    "word": "mistkerl",
+    "display": "Mistkerl",
+    "lang": "de",
+    "meaning": "bastard (mildly rude)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "mˈɪstkɜl",
+    "ipa_norm": "mɪstkɜl"
+  },
+  {
+    "word": "fiesling",
+    "display": "Fiesling",
+    "lang": "de",
+    "meaning": "mean person / nasty (mild)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "fˈiːslɪŋ",
+    "ipa_norm": "fislɪŋ"
+  },
+  {
+    "word": "maul",
+    "display": "Maul",
+    "lang": "de",
+    "meaning": "maw / mouth (shut your trap)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "mˈaʊl",
+    "ipa_norm": "maʊl"
+  },
+  {
+    "word": "spasti",
+    "display": "Spasti",
+    "lang": "de",
+    "meaning": "spaz / ableist insult",
+    "severity": 2,
+    "category": "general",
+    "ipa": "ʃpˈastiː",
+    "ipa_norm": "ʃpasti"
+  },
+  {
+    "word": "geisteskrank",
+    "display": "Geisteskrank",
+    "lang": "de",
+    "meaning": "crazy / mentally ill (insulting)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "ɡˈaɪstɛskɾˌaŋk",
+    "ipa_norm": "ɡaɪstɛskɾaŋk"
+  },
+  {
+    "word": "wichser",
+    "display": "Wichser",
+    "lang": "de",
+    "meaning": "wanker / jerk-off (insult)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "vˈɪksɜ",
+    "ipa_norm": "vɪksɜ"
+  },
+  {
+    "word": "penis",
+    "display": "Penis",
+    "lang": "de",
+    "meaning": "penis (vulgar term)",
+    "severity": 2,
+    "category": "sexual",
+    "ipa": "pˈeːnɪs",
+    "ipa_norm": "penɪs"
+  },
+  {
+    "word": "neger",
+    "display": "Neger",
+    "lang": "de",
+    "meaning": "racist slur (highly offensive)",
+    "severity": 3,
+    "category": "general",
+    "ipa": "nˈeːɡɜ",
+    "ipa_norm": "neɡɜ"
+  },
+  {
+    "word": "kackstelze",
+    "display": "Kackstelze",
+    "lang": "de",
+    "meaning": "awkward person (vulgar)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kˈakstɛltsə",
+    "ipa_norm": "kakstɛltsə"
+  },
+  {
+    "word": "verrecken",
+    "display": "Verrecken",
+    "lang": "de",
+    "meaning": "croak / die (curse)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "fɛɾrˈɛkən",
+    "ipa_norm": "fɛɾrɛkən"
+  },
+  {
+    "word": "ferkel",
+    "display": "Ferkel",
+    "lang": "de",
+    "meaning": "piglet / filthy person (mild)",
     "severity": 1,
     "category": "bodily",
-    "ipa": "mˈɪst",
-    "ipa_norm": "mɪst"
+    "ipa": "fˈɛɾkəl",
+    "ipa_norm": "fɛɾkəl"
+  },
+  {
+    "word": "mutterficker",
+    "display": "Mutterficker",
+    "lang": "de",
+    "meaning": "motherfucker",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "mˈʊtɜfˌɪkɜ",
+    "ipa_norm": "mʊtɜfɪkɜ"
+  },
+  {
+    "word": "vollpfosten",
+    "display": "Vollpfosten",
+    "lang": "de",
+    "meaning": "total idiot",
+    "severity": 1,
+    "category": "general",
+    "ipa": "fˈɔlpfˌɔstən",
+    "ipa_norm": "fɔlpfɔstən"
+  },
+  {
+    "word": "fick",
+    "display": "Fick",
+    "lang": "de",
+    "meaning": "fuck (noun/verb)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "fˈɪk",
+    "ipa_norm": "fɪk"
+  },
+  {
+    "word": "schlampe",
+    "display": "Schlampe",
+    "lang": "de",
+    "meaning": "slut / bitch",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ʃlˈampə",
+    "ipa_norm": "ʃlampə"
+  },
+  {
+    "word": "geil",
+    "display": "Geil",
+    "lang": "de",
+    "meaning": "horny / cool (contextual vulgar)",
+    "severity": 2,
+    "category": "sexual",
+    "ipa": "ɡˈaɪl",
+    "ipa_norm": "ɡaɪl"
+  },
+  {
+    "word": "dreck",
+    "display": "Dreck",
+    "lang": "de",
+    "meaning": "dirt / filth (insult)",
+    "severity": 1,
+    "category": "bodily",
+    "ipa": "dɾˈɛk",
+    "ipa_norm": "dɾɛk"
+  },
+  {
+    "word": "penner",
+    "display": "Penner",
+    "lang": "de",
+    "meaning": "bum / loser (derogatory)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "pˈɛnɜ",
+    "ipa_norm": "pɛnɜ"
+  },
+  {
+    "word": "affenarsch",
+    "display": "Affenarsch",
+    "lang": "de",
+    "meaning": "monkey ass (stupid)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "ˈafənˌaɾʃ",
+    "ipa_norm": "afənaɾʃ"
+  },
+  {
+    "word": "flachwichser",
+    "display": "Flachwichser",
+    "lang": "de",
+    "meaning": "flat wanker / idiot (vulgar)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "flˈaxvɪksɜ",
+    "ipa_norm": "flaxvɪksɜ"
+  },
+  {
+    "word": "mutterfotze",
+    "display": "Mutterfotze",
+    "lang": "de",
+    "meaning": "mother cunt (extreme)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "mˈʊtɜfˌɔtsə",
+    "ipa_norm": "mʊtɜfɔtsə"
+  },
+  {
+    "word": "drecksau",
+    "display": "Drecksau",
+    "lang": "de",
+    "meaning": "dirty pig / filthy person",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "dɾˈɛkzaʊ",
+    "ipa_norm": "dɾɛkzaʊ"
+  },
+  {
+    "word": "wixer",
+    "display": "Wixer",
+    "lang": "de",
+    "meaning": "wanker (variant of Wichser)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "vˈɪksɜ",
+    "ipa_norm": "vɪksɜ"
   },
   {
     "word": "cazzo",
+    "display": "Cazzo",
     "lang": "it",
-    "meaning": "dick, strong vulgarity",
+    "meaning": "dick / fuck / damn (versatile)",
     "severity": 3,
     "category": "sexual",
     "ipa": "kˈatsːo",
@@ -262,6 +1331,7 @@
   },
   {
     "word": "merda",
+    "display": "Merda",
     "lang": "it",
     "meaning": "shit",
     "severity": 2,
@@ -271,8 +1341,9 @@
   },
   {
     "word": "stronzo",
+    "display": "Stronzo",
     "lang": "it",
-    "meaning": "asshole, jerk",
+    "meaning": "asshole / turd",
     "severity": 3,
     "category": "general",
     "ipa": "strˈontso",
@@ -280,80 +1351,1019 @@
   },
   {
     "word": "coglione",
+    "display": "Coglione",
     "lang": "it",
-    "meaning": "idiot, vulgar insult",
-    "severity": 3,
+    "meaning": "idiot / balls",
+    "severity": 2,
     "category": "general",
     "ipa": "koʎˈone",
     "ipa_norm": "koʎone"
   },
   {
-    "word": "porra",
-    "lang": "pt",
-    "meaning": "damn, also semen (regional)",
+    "word": "culo",
+    "display": "Culo",
+    "lang": "it",
+    "meaning": "ass / butt",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kˈulo",
+    "ipa_norm": "kulo"
+  },
+  {
+    "word": "fica",
+    "display": "Fica",
+    "lang": "it",
+    "meaning": "pussy",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "fˈika",
+    "ipa_norm": "fika"
+  },
+  {
+    "word": "troia",
+    "display": "Troia",
+    "lang": "it",
+    "meaning": "whore / bitch",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "trˈɔia",
+    "ipa_norm": "trɔia"
+  },
+  {
+    "word": "puttana",
+    "display": "Puttana",
+    "lang": "it",
+    "meaning": "whore / bitch",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "pʊtːˈana",
+    "ipa_norm": "pʊtana"
+  },
+  {
+    "word": "minchia",
+    "display": "Minchia",
+    "lang": "it",
+    "meaning": "dick (southern)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "mˈinkia",
+    "ipa_norm": "minkia"
+  },
+  {
+    "word": "fottere",
+    "display": "Fottere",
+    "lang": "it",
+    "meaning": "to fuck",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "fˈotːere",
+    "ipa_norm": "fotere"
+  },
+  {
+    "word": "scopare",
+    "display": "Scopare",
+    "lang": "it",
+    "meaning": "to fuck",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "skopˈare",
+    "ipa_norm": "skopare"
+  },
+  {
+    "word": "trombare",
+    "display": "Trombare",
+    "lang": "it",
+    "meaning": "to fuck",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "trombˈare",
+    "ipa_norm": "trombare"
+  },
+  {
+    "word": "vaffanculo",
+    "display": "Vaffanculo",
+    "lang": "it",
+    "meaning": "fuck off",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "vaffankˈuːlo",
+    "ipa_norm": "vaffankulo"
+  },
+  {
+    "word": "checca",
+    "display": "Checca",
+    "lang": "it",
+    "meaning": "fag / queer (slur)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "kˈɛkːa",
+    "ipa_norm": "kɛka"
+  },
+  {
+    "word": "frocio",
+    "display": "Frocio",
+    "lang": "it",
+    "meaning": "fag / queer (slur)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "frˈotʃo",
+    "ipa_norm": "frotʃo"
+  },
+  {
+    "word": "finocchio",
+    "display": "Finocchio",
+    "lang": "it",
+    "meaning": "fag (slur)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "finˈɔkːio",
+    "ipa_norm": "finɔkio"
+  },
+  {
+    "word": "imbecille",
+    "display": "Imbecille",
+    "lang": "it",
+    "meaning": "idiot",
+    "severity": 1,
+    "category": "general",
+    "ipa": "imbetʃˈille",
+    "ipa_norm": "imbetʃille"
+  },
+  {
+    "word": "pirla",
+    "display": "Pirla",
+    "lang": "it",
+    "meaning": "idiot / dickhead",
     "severity": 2,
     "category": "general",
-    "ipa": "pˈoʁɐ",
-    "ipa_norm": "poʁɐ"
+    "ipa": "pˈirla",
+    "ipa_norm": "pirla"
+  },
+  {
+    "word": "rompiballe",
+    "display": "Rompiballe",
+    "lang": "it",
+    "meaning": "pain in the ass / nuisance",
+    "severity": 2,
+    "category": "general",
+    "ipa": "rompibˈalle",
+    "ipa_norm": "rompiballe"
+  },
+  {
+    "word": "palle",
+    "display": "Palle",
+    "lang": "it",
+    "meaning": "balls / bullshit",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "pˈalle",
+    "ipa_norm": "palle"
+  },
+  {
+    "word": "pisciare",
+    "display": "Pisciare",
+    "lang": "it",
+    "meaning": "to piss",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "piʃˈare",
+    "ipa_norm": "piʃare"
+  },
+  {
+    "word": "pipì",
+    "display": "Pipì",
+    "lang": "it",
+    "meaning": "pee (childish)",
+    "severity": 1,
+    "category": "bodily",
+    "ipa": "pipˈi",
+    "ipa_norm": "pipi"
+  },
+  {
+    "word": "cacca",
+    "display": "Cacca",
+    "lang": "it",
+    "meaning": "poop (childish)",
+    "severity": 1,
+    "category": "bodily",
+    "ipa": "kˈakːa",
+    "ipa_norm": "kaka"
+  },
+  {
+    "word": "cesso",
+    "display": "Cesso",
+    "lang": "it",
+    "meaning": "toilet / shithole (insult)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "tʃˈɛsso",
+    "ipa_norm": "tʃɛsso"
+  },
+  {
+    "word": "sborra",
+    "display": "Sborra",
+    "lang": "it",
+    "meaning": "cum",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "zbˈɔrɾa",
+    "ipa_norm": "zbɔrɾa"
+  },
+  {
+    "word": "sega",
+    "display": "Sega",
+    "lang": "it",
+    "meaning": "handjob / wank",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "sˈeɡa",
+    "ipa_norm": "seɡa"
+  },
+  {
+    "word": "pompa",
+    "display": "Pompa",
+    "lang": "it",
+    "meaning": "blowjob",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "pˈompa",
+    "ipa_norm": "pompa"
+  },
+  {
+    "word": "pompino",
+    "display": "Pompino",
+    "lang": "it",
+    "meaning": "blowjob",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "pompˈino",
+    "ipa_norm": "pompino"
+  },
+  {
+    "word": "tette",
+    "display": "Tette",
+    "lang": "it",
+    "meaning": "tits / boobs",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "tˈetːe",
+    "ipa_norm": "tete"
+  },
+  {
+    "word": "topa",
+    "display": "Topa",
+    "lang": "it",
+    "meaning": "pussy",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "tˈɔpa",
+    "ipa_norm": "tɔpa"
+  },
+  {
+    "word": "vacca",
+    "display": "Vacca",
+    "lang": "it",
+    "meaning": "cow / whore (insult)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "vˈakːa",
+    "ipa_norm": "vaka"
+  },
+  {
+    "word": "zoccola",
+    "display": "Zoccola",
+    "lang": "it",
+    "meaning": "whore / slut",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "dzˈɔkːola",
+    "ipa_norm": "dzɔkola"
+  },
+  {
+    "word": "terrone",
+    "display": "Terrone",
+    "lang": "it",
+    "meaning": "southerner (derogatory)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "terɾˈone",
+    "ipa_norm": "terɾone"
+  },
+  {
+    "word": "mannaggia",
+    "display": "Mannaggia",
+    "lang": "it",
+    "meaning": "damn / curse",
+    "severity": 1,
+    "category": "general",
+    "ipa": "mannˈadʒːa",
+    "ipa_norm": "mannadʒa"
+  },
+  {
+    "word": "porco",
+    "display": "Porco",
+    "lang": "it",
+    "meaning": "pig / damn (intensifier)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "pˈɔrko",
+    "ipa_norm": "pɔrko"
+  },
+  {
+    "word": "stronzata",
+    "display": "Stronzata",
+    "lang": "it",
+    "meaning": "bullshit / stupidity",
+    "severity": 2,
+    "category": "general",
+    "ipa": "strontsˈata",
+    "ipa_norm": "strontsata"
+  },
+  {
+    "word": "cazzata",
+    "display": "Cazzata",
+    "lang": "it",
+    "meaning": "bullshit / stupidity",
+    "severity": 2,
+    "category": "general",
+    "ipa": "katsːˈata",
+    "ipa_norm": "katsata"
   },
   {
     "word": "merda",
+    "display": "Merda",
     "lang": "pt",
-    "meaning": "shit",
+    "meaning": "shit (expletive or literal)",
     "severity": 2,
     "category": "bodily",
     "ipa": "mˈɛɾədɐ",
     "ipa_norm": "mɛɾədɐ"
   },
   {
-    "word": "caralho",
+    "word": "bosta",
+    "display": "Bosta",
     "lang": "pt",
-    "meaning": "dick, strong vulgarity",
+    "meaning": "crap / shit",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "bˈɔʃtɐ",
+    "ipa_norm": "bɔʃtɐ"
+  },
+  {
+    "word": "caralho",
+    "display": "Caralho",
+    "lang": "pt",
+    "meaning": "dick / fuck / damn (strong expletive)",
     "severity": 3,
     "category": "sexual",
     "ipa": "kˌɐɾˈaʎʊ",
     "ipa_norm": "kɐɾaʎʊ"
   },
   {
-    "word": "puta",
+    "word": "buceta",
+    "display": "Buceta",
     "lang": "pt",
-    "meaning": "whore, insult",
+    "meaning": "pussy / cunt (vulgar)",
     "severity": 3,
     "category": "sexual",
-    "ipa": "pˈutɐ",
-    "ipa_norm": "putɐ"
+    "ipa": "bˌusˈetɐ",
+    "ipa_norm": "busetɐ"
   },
   {
-    "word": "blyat",
+    "word": "piroca",
+    "display": "Piroca",
+    "lang": "pt",
+    "meaning": "dick / cock",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "pˌiɾˈɔkɐ",
+    "ipa_norm": "piɾɔkɐ"
+  },
+  {
+    "word": "escroto",
+    "display": "Escroto",
+    "lang": "pt",
+    "meaning": "scrotum / asshole (insult)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ʃkɹˈotʊ",
+    "ipa_norm": "ʃkɹotʊ"
+  },
+  {
+    "word": "cuzão",
+    "display": "Cuzão",
+    "lang": "pt",
+    "meaning": "big asshole",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kuzˈɐ̃ʊ̃",
+    "ipa_norm": "kuzɐʊ"
+  },
+  {
+    "word": "cusão",
+    "display": "Cusāo",
+    "lang": "pt",
+    "meaning": "asshole (big ass)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kuzˈɐ̃ʊ̃",
+    "ipa_norm": "kuzɐʊ"
+  },
+  {
+    "word": "cagão",
+    "display": "Cagão",
+    "lang": "pt",
+    "meaning": "coward / shitter",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kɐɡˈɐ̃ʊ̃",
+    "ipa_norm": "kɐɡɐʊ"
+  },
+  {
+    "word": "porcaria",
+    "display": "Porcaria",
+    "lang": "pt",
+    "meaning": "filth / crap",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "pˌuɾəkɐɾˈiɐ",
+    "ipa_norm": "puɾəkɐɾiɐ"
+  },
+  {
+    "word": "tarado",
+    "display": "Tarado",
+    "lang": "pt",
+    "meaning": "pervert / creep",
+    "severity": 2,
+    "category": "sexual",
+    "ipa": "tˌɐɾˈadʊ",
+    "ipa_norm": "tɐɾadʊ"
+  },
+  {
+    "word": "piranha",
+    "display": "Piranha",
+    "lang": "pt",
+    "meaning": "slut / whore",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "pˌiɾˈɐ̃ɲɐ",
+    "ipa_norm": "piɾɐɲɐ"
+  },
+  {
+    "word": "arrombado",
+    "display": "Arrombado",
+    "lang": "pt",
+    "meaning": "asshole (strong insult)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ˌɐʁumbˈadʊ",
+    "ipa_norm": "ɐʁumbadʊ"
+  },
+  {
+    "word": "safado",
+    "display": "Safado",
+    "lang": "pt",
+    "meaning": "sleazy / dishonest",
+    "severity": 2,
+    "category": "general",
+    "ipa": "sˌɐfˈadʊ",
+    "ipa_norm": "sɐfadʊ"
+  },
+  {
+    "word": "sacana",
+    "display": "Sacana",
+    "lang": "pt",
+    "meaning": "bastard / pervert",
+    "severity": 2,
+    "category": "general",
+    "ipa": "sˌɐkˈɐ̃nɐ",
+    "ipa_norm": "sɐkɐnɐ"
+  },
+  {
+    "word": "vagabundo",
+    "display": "Vagabundo",
+    "lang": "pt",
+    "meaning": "bum / worthless person",
+    "severity": 1,
+    "category": "general",
+    "ipa": "vˌɐɡɐbˈũŋdʊ",
+    "ipa_norm": "vɐɡɐbuŋdʊ"
+  },
+  {
+    "word": "desgraçado",
+    "display": "Desgraçado",
+    "lang": "pt",
+    "meaning": "wretch / bastard",
+    "severity": 2,
+    "category": "general",
+    "ipa": "dˌeʒɡɹɐsˈadʊ",
+    "ipa_norm": "deʒɡɹɐsadʊ"
+  },
+  {
+    "word": "imbecil",
+    "display": "Imbecil",
+    "lang": "pt",
+    "meaning": "idiot",
+    "severity": 1,
+    "category": "general",
+    "ipa": "ˌimbɨsˈil",
+    "ipa_norm": "imbɨsil"
+  },
+  {
+    "word": "otário",
+    "display": "Otário",
+    "lang": "pt",
+    "meaning": "sucker / fool",
+    "severity": 1,
+    "category": "general",
+    "ipa": "ˌɔtˈaɾjʊ",
+    "ipa_norm": "ɔtaɾjʊ"
+  },
+  {
+    "word": "pilantra",
+    "display": "Pilantra",
+    "lang": "pt",
+    "meaning": "crook / lowlife",
+    "severity": 1,
+    "category": "general",
+    "ipa": "pˌilˈɐ̃ŋtɹɐ",
+    "ipa_norm": "pilɐŋtɹɐ"
+  },
+  {
+    "word": "palhaço",
+    "display": "Palhaço",
+    "lang": "pt",
+    "meaning": "clown / fool",
+    "severity": 1,
+    "category": "general",
+    "ipa": "pˌɐʎˈasʊ",
+    "ipa_norm": "pɐʎasʊ"
+  },
+  {
+    "word": "lixo",
+    "display": "Lixo",
+    "lang": "pt",
+    "meaning": "trash / worthless person",
+    "severity": 2,
+    "category": "general",
+    "ipa": "lˈiʃʊ",
+    "ipa_norm": "liʃʊ"
+  },
+  {
+    "word": "cornudo",
+    "display": "Cornudo",
+    "lang": "pt",
+    "meaning": "cuckold",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kˌuɾənˈudʊ",
+    "ipa_norm": "kuɾənudʊ"
+  },
+  {
+    "word": "chifrudo",
+    "display": "Chifrudo",
+    "lang": "pt",
+    "meaning": "horned / cuckold",
+    "severity": 2,
+    "category": "general",
+    "ipa": "ʃˌifɹˈudʊ",
+    "ipa_norm": "ʃifɹudʊ"
+  },
+  {
+    "word": "camelo",
+    "display": "Camelo",
+    "lang": "pt",
+    "meaning": "camel (ugly person insult)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "kɐmˈelʊ",
+    "ipa_norm": "kɐmelʊ"
+  },
+  {
+    "word": "bostão",
+    "display": "Bostão",
+    "lang": "pt",
+    "meaning": "big shit / coward",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "buʃtˈɐ̃ʊ̃",
+    "ipa_norm": "buʃtɐʊ"
+  },
+  {
+    "word": "cagalhão",
+    "display": "Cagalhão",
+    "lang": "pt",
+    "meaning": "big shitter",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kˌɐɡɐʎˈɐ̃ʊ̃",
+    "ipa_norm": "kɐɡɐʎɐʊ"
+  },
+  {
+    "word": "pirocudo",
+    "display": "Pirocudo",
+    "lang": "pt",
+    "meaning": "big-dicked (vulgar)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "pˌiɾukˈudʊ",
+    "ipa_norm": "piɾukudʊ"
+  },
+  {
+    "word": "meretriz",
+    "display": "Meretriz",
+    "lang": "pt",
+    "meaning": "prostitute / whore",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "mˌeɾɨtɹˈiʃ",
+    "ipa_norm": "meɾɨtɹiʃ"
+  },
+  {
+    "word": "paspalho",
+    "display": "Paspalho",
+    "lang": "pt",
+    "meaning": "clumsy idiot",
+    "severity": 1,
+    "category": "general",
+    "ipa": "pˌɐʃpˈaʎʊ",
+    "ipa_norm": "pɐʃpaʎʊ"
+  },
+  {
+    "word": "cambada",
+    "display": "Cambada",
+    "lang": "pt",
+    "meaning": "bunch / gang (derogatory)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "kˌɐ̃mbˈadɐ",
+    "ipa_norm": "kɐmbadɐ"
+  },
+  {
+    "word": "sacanagem",
+    "display": "Sacanagem",
+    "lang": "pt",
+    "meaning": "dirty trick / sleazy act",
+    "severity": 2,
+    "category": "general",
+    "ipa": "sˌɐkɐnˈaʒeɪŋ",
+    "ipa_norm": "sɐkɐnaʒeɪŋ"
+  },
+  {
+    "word": "блядь",
+    "display": "Блядь",
     "lang": "ru",
-    "meaning": "strong expletive (loaned as slang)",
+    "meaning": "whore / fuck / damn (strong expletive)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "bɭʲˈɑtʲ",
+    "ipa_norm": "bɭʲɑtʲ"
+  },
+  {
+    "word": "сука",
+    "display": "Сука",
+    "lang": "ru",
+    "meaning": "bitch / female dog (insult)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "sˈuka",
+    "ipa_norm": "suka"
+  },
+  {
+    "word": "пизда",
+    "display": "Пизда",
+    "lang": "ru",
+    "meaning": "cunt / pussy",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "pʲizdˈɑ",
+    "ipa_norm": "pʲizdɑ"
+  },
+  {
+    "word": "хуй",
+    "display": "Хуй",
+    "lang": "ru",
+    "meaning": "dick / cock",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "xˈuj",
+    "ipa_norm": "xuj"
+  },
+  {
+    "word": "ебать",
+    "display": "Ебать",
+    "lang": "ru",
+    "meaning": "to fuck",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "jɪbˈɑtʲ",
+    "ipa_norm": "jɪbɑtʲ"
+  },
+  {
+    "word": "пидор",
+    "display": "Пидор",
+    "lang": "ru",
+    "meaning": "fag / slur",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "pʲˈidʌr",
+    "ipa_norm": "pʲidʌr"
+  },
+  {
+    "word": "дрочить",
+    "display": "Дрочить",
+    "lang": "ru",
+    "meaning": "to jerk off",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "drʌtʃʲˈitʲ",
+    "ipa_norm": "drʌtʃʲitʲ"
+  },
+  {
+    "word": "залупа",
+    "display": "Залупа",
+    "lang": "ru",
+    "meaning": "foreskin / dickhead",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "zaɭˈupa",
+    "ipa_norm": "zaɭupa"
+  },
+  {
+    "word": "гандон",
+    "display": "Гандон",
+    "lang": "ru",
+    "meaning": "condom / jerk (insult)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "ɡandˈon",
+    "ipa_norm": "ɡandon"
+  },
+  {
+    "word": "мудак",
+    "display": "Мудак",
+    "lang": "ru",
+    "meaning": "asshole / dickhead",
     "severity": 3,
     "category": "general",
-    "ipa": "blˈaɪat",
-    "ipa_norm": "blaɪat"
+    "ipa": "mudˈɑk",
+    "ipa_norm": "mudɑk"
   },
   {
-    "word": "govno",
+    "word": "долбоеб",
+    "display": "Долбоеб",
+    "lang": "ru",
+    "meaning": "fucking idiot",
+    "severity": 3,
+    "category": "general",
+    "ipa": "dʌɭbʌjˈep",
+    "ipa_norm": "dʌɭbʌjep"
+  },
+  {
+    "word": "еблан",
+    "display": "Еблан",
+    "lang": "ru",
+    "meaning": "dumbass (vulgar)",
+    "severity": 3,
+    "category": "general",
+    "ipa": "jɪbɭˈɑn",
+    "ipa_norm": "jɪbɭɑn"
+  },
+  {
+    "word": "говно",
+    "display": "Говно",
     "lang": "ru",
     "meaning": "shit",
     "severity": 2,
     "category": "bodily",
-    "ipa": "ɡˈɒvnəʊ",
-    "ipa_norm": "ɡɒvnəʊ"
+    "ipa": "ɡʌvnˈo",
+    "ipa_norm": "ɡʌvno"
   },
   {
-    "word": "durak",
+    "word": "срань",
+    "display": "Срань",
     "lang": "ru",
-    "meaning": "fool",
+    "meaning": "shit / filth",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "srˈɑn",
+    "ipa_norm": "srɑn"
+  },
+  {
+    "word": "говнюк",
+    "display": "Говнюк",
+    "lang": "ru",
+    "meaning": "little shit / shitty person",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "ɡʌvnʲˈu\"k",
+    "ipa_norm": "ɡʌvnʲu\"k"
+  },
+  {
+    "word": "засранец",
+    "display": "Засранец",
+    "lang": "ru",
+    "meaning": "shithead",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "zasrˈɑnʲits",
+    "ipa_norm": "zasrɑnʲits"
+  },
+  {
+    "word": "пердеть",
+    "display": "Пердеть",
+    "lang": "ru",
+    "meaning": "to fart",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "pʲirdʲˈetʲ",
+    "ipa_norm": "pʲirdʲetʲ"
+  },
+  {
+    "word": "бздеть",
+    "display": "Бздеть",
+    "lang": "ru",
+    "meaning": "to fart quietly / be scared",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "bʑdʲˈetʲ",
+    "ipa_norm": "bʑdʲetʲ"
+  },
+  {
+    "word": "обоссаться",
+    "display": "Обоссаться",
+    "lang": "ru",
+    "meaning": "to piss oneself",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "ʌbˈossʌtsˌʌ",
+    "ipa_norm": "ʌbossʌtsʌ"
+  },
+  {
+    "word": "дебил",
+    "display": "Дебил",
+    "lang": "ru",
+    "meaning": "moron",
     "severity": 1,
     "category": "general",
-    "ipa": "djˈʊəɹak",
-    "ipa_norm": "djʊəɹak"
+    "ipa": "dʲibʲˈiɭ",
+    "ipa_norm": "dʲibʲiɭ"
+  },
+  {
+    "word": "дурак",
+    "display": "Дурак",
+    "lang": "ru",
+    "meaning": "fool / idiot",
+    "severity": 1,
+    "category": "general",
+    "ipa": "durˈɑk",
+    "ipa_norm": "durɑk"
+  },
+  {
+    "word": "лох",
+    "display": "Лох",
+    "lang": "ru",
+    "meaning": "loser / sucker",
+    "severity": 1,
+    "category": "general",
+    "ipa": "ɭˈox",
+    "ipa_norm": "ɭox"
+  },
+  {
+    "word": "тупой",
+    "display": "Тупой",
+    "lang": "ru",
+    "meaning": "stupid",
+    "severity": 1,
+    "category": "general",
+    "ipa": "tupˈoj",
+    "ipa_norm": "tupoj"
+  },
+  {
+    "word": "болван",
+    "display": "Болван",
+    "lang": "ru",
+    "meaning": "blockhead",
+    "severity": 1,
+    "category": "general",
+    "ipa": "bʌɭvˈɑn",
+    "ipa_norm": "bʌɭvɑn"
+  },
+  {
+    "word": "падла",
+    "display": "Падла",
+    "lang": "ru",
+    "meaning": "scum / lowlife",
+    "severity": 2,
+    "category": "general",
+    "ipa": "pˈɑdɭa",
+    "ipa_norm": "pɑdɭa"
+  },
+  {
+    "word": "чмо",
+    "display": "Чмо",
+    "lang": "ru",
+    "meaning": "loser / scum",
+    "severity": 2,
+    "category": "general",
+    "ipa": "tʃʲmˈo",
+    "ipa_norm": "tʃʲmo"
+  },
+  {
+    "word": "мразь",
+    "display": "Мразь",
+    "lang": "ru",
+    "meaning": "scum / filth",
+    "severity": 2,
+    "category": "general",
+    "ipa": "mrˈɑʑ",
+    "ipa_norm": "mrɑʑ"
+  },
+  {
+    "word": "гнида",
+    "display": "Гнида",
+    "lang": "ru",
+    "meaning": "louse / scum",
+    "severity": 2,
+    "category": "general",
+    "ipa": "ɡnʲˈida",
+    "ipa_norm": "ɡnʲida"
+  },
+  {
+    "word": "скотина",
+    "display": "Скотина",
+    "lang": "ru",
+    "meaning": "beast / bastard",
+    "severity": 2,
+    "category": "general",
+    "ipa": "skʌtʲˈina",
+    "ipa_norm": "skʌtʲina"
+  },
+  {
+    "word": "тварь",
+    "display": "Тварь",
+    "lang": "ru",
+    "meaning": "creature / scum",
+    "severity": 2,
+    "category": "general",
+    "ipa": "tvˈɑrɪ^",
+    "ipa_norm": "tvɑrɪ^"
+  },
+  {
+    "word": "быдло",
+    "display": "Быдло",
+    "lang": "ru",
+    "meaning": "low-class scum",
+    "severity": 2,
+    "category": "general",
+    "ipa": "bˈydɭʌ",
+    "ipa_norm": "bydɭʌ"
+  },
+  {
+    "word": "баран",
+    "display": "Баран",
+    "lang": "ru",
+    "meaning": "ram / idiot",
+    "severity": 1,
+    "category": "general",
+    "ipa": "barˈɑn",
+    "ipa_norm": "barɑn"
+  },
+  {
+    "word": "урод",
+    "display": "Урод",
+    "lang": "ru",
+    "meaning": "freak / ugly person",
+    "severity": 2,
+    "category": "general",
+    "ipa": "urˈot",
+    "ipa_norm": "urot"
+  },
+  {
+    "word": "бухой",
+    "display": "Бухой",
+    "lang": "ru",
+    "meaning": "drunk",
+    "severity": 1,
+    "category": "general",
+    "ipa": "buxˈoj",
+    "ipa_norm": "buxoj"
+  },
+  {
+    "word": "сраный",
+    "display": "Сраный",
+    "lang": "ru",
+    "meaning": "shitty (intensifier)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "srˈɑnyj",
+    "ipa_norm": "srɑnyj"
   },
   {
     "word": "kuso",
+    "display": "くそ",
     "lang": "ja",
-    "meaning": "shit (casual vulgar)",
+    "meaning": "shit / damn",
     "severity": 2,
     "category": "bodily",
     "ipa": "kˈeɪ jˈuː ˈɛs ˈəʊ",
@@ -361,56 +2371,1492 @@
   },
   {
     "word": "baka",
+    "display": "バカ",
     "lang": "ja",
-    "meaning": "idiot (mild)",
+    "meaning": "idiot / stupid",
     "severity": 1,
     "category": "general",
     "ipa": "bˈiː ˈeɪ kˈeɪ ˈeɪ",
     "ipa_norm": "bi eɪ keɪ eɪ"
   },
   {
-    "word": "yaro",
+    "word": "shine",
+    "display": "死ね",
     "lang": "ja",
-    "meaning": "jerk, bastard (contextual)",
-    "severity": 2,
+    "meaning": "die / drop dead",
+    "severity": 3,
     "category": "general",
-    "ipa": "wˈaɪ ˈeɪ ˈɑː ˈəʊ",
-    "ipa_norm": "waɪ eɪ ɑ əʊ"
+    "ipa": "ˈɛs ˈeɪtʃ ˈaɪ ˈɛn ˈiː",
+    "ipa_norm": "ɛs eɪtʃ aɪ ɛn i"
   },
   {
-    "word": "gandu",
-    "lang": "hi",
-    "meaning": "ass, vulgar slang",
+    "word": "kusogaki",
+    "display": "クソガキ",
+    "lang": "ja",
+    "meaning": "shitty brat",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kˈeɪ jˈuː ˈɛs ˈəʊ dʒˈiː ˈeɪ kˈeɪ ˈaɪ",
+    "ipa_norm": "keɪ ju ɛs əʊ dʒi eɪ keɪ aɪ"
+  },
+  {
+    "word": "boke",
+    "display": "ボケ",
+    "lang": "ja",
+    "meaning": "fool / idiot (mild)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "bˈiː ˈəʊ kˈeɪ ˈiː",
+    "ipa_norm": "bi əʊ keɪ i"
+  },
+  {
+    "word": "kasu",
+    "display": "カス",
+    "lang": "ja",
+    "meaning": "scum / trash",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kˈeɪ ˈeɪ ˈɛs jˈuː",
+    "ipa_norm": "keɪ eɪ ɛs ju"
+  },
+  {
+    "word": "yariman",
+    "display": "ヤリマン",
+    "lang": "ja",
+    "meaning": "slut / promiscuous woman",
     "severity": 3,
+    "category": "sexual",
+    "ipa": "wˈaɪ ˈeɪ ˈɑː ˈaɪ ˈɛm ˈeɪ ˈɛn",
+    "ipa_norm": "waɪ eɪ ɑ aɪ ɛm eɪ ɛn"
+  },
+  {
+    "word": "kimoi",
+    "display": "キモイ",
+    "lang": "ja",
+    "meaning": "gross / creepy",
+    "severity": 1,
+    "category": "general",
+    "ipa": "kˈeɪ ˈaɪ ˈɛm ˈəʊ ˈaɪ",
+    "ipa_norm": "keɪ aɪ ɛm əʊ aɪ"
+  },
+  {
+    "word": "kutabare",
+    "display": "くたばれ",
+    "lang": "ja",
+    "meaning": "drop dead / fuck off",
+    "severity": 3,
+    "category": "general",
+    "ipa": "kˈeɪ jˈuː tˈiː ˈeɪ bˈiː ˈeɪ ˈɑː ˈiː",
+    "ipa_norm": "keɪ ju ti eɪ bi eɪ ɑ i"
+  },
+  {
+    "word": "chinchin",
+    "display": "ちんちん",
+    "lang": "ja",
+    "meaning": "penis (childish)",
+    "severity": 2,
+    "category": "sexual",
+    "ipa": "sˈiː ˈeɪtʃ ˈaɪ ˈɛn sˈiː ˈeɪtʃ ˈaɪ ˈɛn",
+    "ipa_norm": "si eɪtʃ aɪ ɛn si eɪtʃ aɪ ɛn"
+  },
+  {
+    "word": "gaki",
+    "display": "ガキ",
+    "lang": "ja",
+    "meaning": "brat / kid (derogatory)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "dʒˈiː ˈeɪ kˈeɪ ˈaɪ",
+    "ipa_norm": "dʒi eɪ keɪ aɪ"
+  },
+  {
+    "word": "babaa",
+    "display": "ばばあ",
+    "lang": "ja",
+    "meaning": "old hag",
+    "severity": 2,
+    "category": "general",
+    "ipa": "bˈiː ˈeɪ bˈiː ˈeɪ ˈeɪ",
+    "ipa_norm": "bi eɪ bi eɪ eɪ"
+  },
+  {
+    "word": "hetakuso",
+    "display": "ヘタクソ",
+    "lang": "ja",
+    "meaning": "clumsy / sucks at something",
+    "severity": 1,
+    "category": "general",
+    "ipa": "ˈeɪtʃ ˈiː tˈiː ˈeɪ kˈeɪ jˈuː ˈɛs ˈəʊ",
+    "ipa_norm": "eɪtʃ i ti eɪ keɪ ju ɛs əʊ"
+  },
+  {
+    "word": "zako",
+    "display": "ザコ",
+    "lang": "ja",
+    "meaning": "weakling / small fry",
+    "severity": 1,
+    "category": "general",
+    "ipa": "zˈɛd ˈeɪ kˈeɪ ˈəʊ",
+    "ipa_norm": "zɛd eɪ keɪ əʊ"
+  },
+  {
+    "word": "debu",
+    "display": "でぶ",
+    "lang": "ja",
+    "meaning": "fatty",
+    "severity": 1,
     "category": "bodily",
-    "ipa": "ɡˈanduː",
-    "ipa_norm": "ɡandu"
+    "ipa": "dˈiː ˈiː bˈiː jˈuː",
+    "ipa_norm": "di i bi ju"
+  },
+  {
+    "word": "aho",
+    "display": "アホ",
+    "lang": "ja",
+    "meaning": "idiot (Kansai)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "ˈeɪ ˈeɪtʃ ˈəʊ",
+    "ipa_norm": "eɪ eɪtʃ əʊ"
+  },
+  {
+    "word": "iraira",
+    "display": "イライラ",
+    "lang": "ja",
+    "meaning": "annoyed / irritated",
+    "severity": 1,
+    "category": "general",
+    "ipa": "ˈaɪ ˈɑː ˈeɪ ˈaɪ ˈɑː ˈeɪ",
+    "ipa_norm": "aɪ ɑ eɪ aɪ ɑ eɪ"
+  },
+  {
+    "word": "kichigai",
+    "display": "キチガイ",
+    "lang": "ja",
+    "meaning": "crazy / lunatic (ableist)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kˈeɪ ˈaɪ sˈiː ˈeɪtʃ ˈaɪ dʒˈiː ˈeɪ ˈaɪ",
+    "ipa_norm": "keɪ aɪ si eɪtʃ aɪ dʒi eɪ aɪ"
+  },
+  {
+    "word": "bakayarou",
+    "display": "バカヤロウ",
+    "lang": "ja",
+    "meaning": "stupid bastard",
+    "severity": 2,
+    "category": "general",
+    "ipa": "bˈiː ˈeɪ kˈeɪ ˈeɪ wˈaɪ ˈeɪ ˈɑː ˈəʊ jˈuː",
+    "ipa_norm": "bi eɪ keɪ eɪ waɪ eɪ ɑ əʊ ju"
+  },
+  {
+    "word": "omee",
+    "display": "おめえ",
+    "lang": "ja",
+    "meaning": "you (very rude)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "ˈəʊ ˈɛm ˈiː ˈiː",
+    "ipa_norm": "əʊ ɛm i i"
+  },
+  {
+    "word": "shonben",
+    "display": "ションベン",
+    "lang": "ja",
+    "meaning": "piss / urine",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "ˈɛs ˈeɪtʃ ˈəʊ ˈɛn bˈiː ˈiː ˈɛn",
+    "ipa_norm": "ɛs eɪtʃ əʊ ɛn bi i ɛn"
+  },
+  {
+    "word": "unko",
+    "display": "ウンコ",
+    "lang": "ja",
+    "meaning": "poop / shit",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "jˈuː ˈɛn kˈeɪ ˈəʊ",
+    "ipa_norm": "ju ɛn keɪ əʊ"
+  },
+  {
+    "word": "unchi",
+    "display": "うんち",
+    "lang": "ja",
+    "meaning": "poop (childish)",
+    "severity": 1,
+    "category": "bodily",
+    "ipa": "jˈuː ˈɛn sˈiː ˈeɪtʃ ˈaɪ",
+    "ipa_norm": "ju ɛn si eɪtʃ aɪ"
+  },
+  {
+    "word": "onanii",
+    "display": "オナニー",
+    "lang": "ja",
+    "meaning": "masturbation",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ˈəʊ ˈɛn ˈeɪ ˈɛn ˈaɪ ˈaɪ",
+    "ipa_norm": "əʊ ɛn eɪ ɛn aɪ aɪ"
+  },
+  {
+    "word": "ikareta",
+    "display": "イカレタ",
+    "lang": "ja",
+    "meaning": "crazy / messed up",
+    "severity": 2,
+    "category": "general",
+    "ipa": "ˈaɪ kˈeɪ ˈeɪ ˈɑː ˈiː tˈiː ˈeɪ",
+    "ipa_norm": "aɪ keɪ eɪ ɑ i ti eɪ"
+  },
+  {
+    "word": "ero",
+    "display": "エロ",
+    "lang": "ja",
+    "meaning": "erotic / pervy",
+    "severity": 2,
+    "category": "sexual",
+    "ipa": "ˈiː ˈɑː ˈəʊ",
+    "ipa_norm": "i ɑ əʊ"
+  },
+  {
+    "word": "chikusho",
+    "display": "ちくしょう",
+    "lang": "ja",
+    "meaning": "damn it",
+    "severity": 2,
+    "category": "general",
+    "ipa": "sˈiː ˈeɪtʃ ˈaɪ kˈeɪ jˈuː ˈɛs ˈeɪtʃ ˈəʊ",
+    "ipa_norm": "si eɪtʃ aɪ keɪ ju ɛs eɪtʃ əʊ"
+  },
+  {
+    "word": "fuzakenna",
+    "display": "ふざけんな",
+    "lang": "ja",
+    "meaning": "don't mess with me",
+    "severity": 2,
+    "category": "general",
+    "ipa": "ˈɛf jˈuː zˈɛd ˈeɪ kˈeɪ ˈiː ˈɛn ˈɛn ˈeɪ",
+    "ipa_norm": "ɛf ju zɛd eɪ keɪ i ɛn ɛn eɪ"
+  },
+  {
+    "word": "kuzu",
+    "display": "クズ",
+    "lang": "ja",
+    "meaning": "trash / scum",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kˈeɪ jˈuː zˈɛd jˈuː",
+    "ipa_norm": "keɪ ju zɛd ju"
+  },
+  {
+    "word": "gesu",
+    "display": "ゲス",
+    "lang": "ja",
+    "meaning": "lowlife / sleaze",
+    "severity": 2,
+    "category": "general",
+    "ipa": "dʒˈiː ˈiː ˈɛs jˈuː",
+    "ipa_norm": "dʒi i ɛs ju"
+  },
+  {
+    "word": "kusottare",
+    "display": "クソッタレ",
+    "lang": "ja",
+    "meaning": "shithead",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kˈeɪ jˈuː ˈɛs ˈəʊ tˈiː tˈiː ˈeɪ ˈɑː ˈiː",
+    "ipa_norm": "keɪ ju ɛs əʊ ti ti eɪ ɑ i"
   },
   {
     "word": "chutiya",
+    "display": "चूतिया",
     "lang": "hi",
-    "meaning": "idiot (vulgar)",
+    "meaning": "idiot / fool (vulgar)",
     "severity": 3,
     "category": "general",
     "ipa": "tʃˈuːtɪjə",
     "ipa_norm": "tʃutɪjə"
   },
   {
-    "word": "saala",
+    "word": "bhenchod",
+    "display": "भेंचोद",
     "lang": "hi",
-    "meaning": "bastard (contextual)",
+    "meaning": "sisterfucker",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "bˈɛntʃɒd",
+    "ipa_norm": "bɛntʃɒd"
+  },
+  {
+    "word": "bhosdike",
+    "display": "भोसड़ीके",
+    "lang": "hi",
+    "meaning": "son of a loose pussy",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "bˈɒsdaɪk",
+    "ipa_norm": "bɒsdaɪk"
+  },
+  {
+    "word": "lauda",
+    "display": "लौड़ा",
+    "lang": "hi",
+    "meaning": "dick / cock",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "lˈɔːdə",
+    "ipa_norm": "lɔdə"
+  },
+  {
+    "word": "madarchod",
+    "display": "मादरचोद",
+    "lang": "hi",
+    "meaning": "motherfucker",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "mˈadɑːtʃˌɒd",
+    "ipa_norm": "madɑtʃɒd"
+  },
+  {
+    "word": "gandu",
+    "display": "गांडू",
+    "lang": "hi",
+    "meaning": "asshole",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "ɡˈanduː",
+    "ipa_norm": "ɡandu"
+  },
+  {
+    "word": "badhwa",
+    "display": "भड़वा",
+    "lang": "hi",
+    "meaning": "pimp / cuckold",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "bˈadwə",
+    "ipa_norm": "badwə"
+  },
+  {
+    "word": "phattu",
+    "display": "फट्टू",
+    "lang": "hi",
+    "meaning": "coward / weakling",
+    "severity": 1,
+    "category": "general",
+    "ipa": "fˈatuː",
+    "ipa_norm": "fatu"
+  },
+  {
+    "word": "sala",
+    "display": "साला",
+    "lang": "hi",
+    "meaning": "bastard (contextual insult)",
     "severity": 2,
     "category": "general",
     "ipa": "sˈɑːlə",
     "ipa_norm": "sɑlə"
   },
   {
-    "word": "kameena",
+    "word": "kamina",
+    "display": "कमीना",
     "lang": "hi",
-    "meaning": "jerk, scoundrel",
+    "meaning": "rascal / lowlife",
     "severity": 2,
     "category": "general",
-    "ipa": "kˈamiːnə",
-    "ipa_norm": "kaminə"
+    "ipa": "kˈamɪnə",
+    "ipa_norm": "kamɪnə"
+  },
+  {
+    "word": "bakwas",
+    "display": "बकवास",
+    "lang": "hi",
+    "meaning": "nonsense / bullshit",
+    "severity": 1,
+    "category": "general",
+    "ipa": "bˈakwəz",
+    "ipa_norm": "bakwəz"
+  },
+  {
+    "word": "randi",
+    "display": "रंडी",
+    "lang": "hi",
+    "meaning": "whore / slut",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ɹˈandi",
+    "ipa_norm": "ɹandi"
+  },
+  {
+    "word": "gaand",
+    "display": "गांड",
+    "lang": "hi",
+    "meaning": "ass (vulgar)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "ɡˈɑːnd",
+    "ipa_norm": "ɡɑnd"
+  },
+  {
+    "word": "choot",
+    "display": "चूत",
+    "lang": "hi",
+    "meaning": "pussy / cunt",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "tʃˈuːt",
+    "ipa_norm": "tʃut"
+  },
+  {
+    "word": "chor",
+    "display": "चोर",
+    "lang": "hi",
+    "meaning": "thief (insult)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "tʃˈɔː",
+    "ipa_norm": "tʃɔ"
+  },
+  {
+    "word": "chut",
+    "display": "छुट",
+    "lang": "hi",
+    "meaning": "cunt (short form)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "tʃˈʌt",
+    "ipa_norm": "tʃʌt"
+  },
+  {
+    "word": "bakchod",
+    "display": "बकचोद",
+    "lang": "hi",
+    "meaning": "bullshit talker",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "bˈaktʃɒd",
+    "ipa_norm": "baktʃɒd"
+  },
+  {
+    "word": "lund",
+    "display": "लुंड",
+    "lang": "hi",
+    "meaning": "dick / cock",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "lˈʌnd",
+    "ipa_norm": "lʌnd"
+  },
+  {
+    "word": "chod",
+    "display": "चोद",
+    "lang": "hi",
+    "meaning": "fuck (verb root)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "tʃˈɒd",
+    "ipa_norm": "tʃɒd"
+  },
+  {
+    "word": "maal",
+    "display": "माल",
+    "lang": "hi",
+    "meaning": "hot chick (objectifying slang)",
+    "severity": 2,
+    "category": "sexual",
+    "ipa": "mˈɑːl",
+    "ipa_norm": "mɑl"
+  },
+  {
+    "word": "saali",
+    "display": "साली",
+    "lang": "hi",
+    "meaning": "bitch (feminine insult)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "sˈɑːli",
+    "ipa_norm": "sɑli"
+  },
+  {
+    "word": "suvar",
+    "display": "सुअर",
+    "lang": "hi",
+    "meaning": "pig (dirty insult)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "sˈuːvɑː",
+    "ipa_norm": "suvɑ"
+  },
+  {
+    "word": "murkh",
+    "display": "मूर्ख",
+    "lang": "hi",
+    "meaning": "fool / idiot",
+    "severity": 1,
+    "category": "general",
+    "ipa": "mˈɜːk",
+    "ipa_norm": "mɜk"
+  },
+  {
+    "word": "kameeni",
+    "display": "कमीनी",
+    "lang": "hi",
+    "meaning": "lowly woman / bitch",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kˈamiːni",
+    "ipa_norm": "kamini"
+  },
+  {
+    "word": "gand",
+    "display": "गंद",
+    "lang": "hi",
+    "meaning": "filth / dirt (insult)",
+    "severity": 1,
+    "category": "bodily",
+    "ipa": "ɡˈand",
+    "ipa_norm": "ɡand"
+  },
+  {
+    "word": "bakwasi",
+    "display": "बकवासी",
+    "lang": "hi",
+    "meaning": "nonsensical talker",
+    "severity": 1,
+    "category": "general",
+    "ipa": "bakwˈɑːsi",
+    "ipa_norm": "bakwɑsi"
+  },
+  {
+    "word": "khara",
+    "display": "خرة",
+    "lang": "ar",
+    "meaning": "shit / crap",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kˈɑːɹɹə",
+    "ipa_norm": "kɑɹɹə"
+  },
+  {
+    "word": "kalb",
+    "display": "كلب",
+    "lang": "ar",
+    "meaning": "dog (insult)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kˈælb",
+    "ipa_norm": "kælb"
+  },
+  {
+    "word": "himar",
+    "display": "حمار",
+    "lang": "ar",
+    "meaning": "donkey / idiot",
+    "severity": 1,
+    "category": "general",
+    "ipa": "hˈɪmɚ",
+    "ipa_norm": "hɪmɚ"
+  },
+  {
+    "word": "jahsh",
+    "display": "جحش",
+    "lang": "ar",
+    "meaning": "mule / jackass",
+    "severity": 1,
+    "category": "general",
+    "ipa": "dʒˈɑːʃ",
+    "ipa_norm": "dʒɑʃ"
+  },
+  {
+    "word": "qahba",
+    "display": "قحبة",
+    "lang": "ar",
+    "meaning": "whore",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "kˈɑːbə",
+    "ipa_norm": "kɑbə"
+  },
+  {
+    "word": "sharmuta",
+    "display": "شرموطة",
+    "lang": "ar",
+    "meaning": "whore / slut",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ʃˈɑːɹmjuːɾə",
+    "ipa_norm": "ʃɑɹmjuɾə"
+  },
+  {
+    "word": "sharmut",
+    "display": "شرموط",
+    "lang": "ar",
+    "meaning": "male slut / pimp (slur)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ʃˈɑːɹmʌt",
+    "ipa_norm": "ʃɑɹmʌt"
+  },
+  {
+    "word": "safil",
+    "display": "سافل",
+    "lang": "ar",
+    "meaning": "lowlife / scoundrel",
+    "severity": 2,
+    "category": "general",
+    "ipa": "sˈæfɪl",
+    "ipa_norm": "sæfɪl"
+  },
+  {
+    "word": "zindiq",
+    "display": "زنديق",
+    "lang": "ar",
+    "meaning": "heretic",
+    "severity": 2,
+    "category": "religious",
+    "ipa": "zˈɪndɪk",
+    "ipa_norm": "zɪndɪk"
+  },
+  {
+    "word": "haqir",
+    "display": "حقير",
+    "lang": "ar",
+    "meaning": "despicable / contemptible",
+    "severity": 2,
+    "category": "general",
+    "ipa": "hˈækɪɹ",
+    "ipa_norm": "hækɪɹ"
+  },
+  {
+    "word": "jaban",
+    "display": "جبان",
+    "lang": "ar",
+    "meaning": "coward",
+    "severity": 1,
+    "category": "general",
+    "ipa": "dʒˈæbən",
+    "ipa_norm": "dʒæbən"
+  },
+  {
+    "word": "kafir",
+    "display": "كافر",
+    "lang": "ar",
+    "meaning": "infidel (religious insult)",
+    "severity": 2,
+    "category": "religious",
+    "ipa": "kˈæfɪɹ",
+    "ipa_norm": "kæfɪɹ"
+  },
+  {
+    "word": "zubala",
+    "display": "زبالة",
+    "lang": "ar",
+    "meaning": "garbage / trash",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "zjuːbˈɑːlə",
+    "ipa_norm": "zjubɑlə"
+  },
+  {
+    "word": "khanzir",
+    "display": "خنزير",
+    "lang": "ar",
+    "meaning": "pig (dirty insult)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "kˈɑːnzɪɹ",
+    "ipa_norm": "kɑnzɪɹ"
+  },
+  {
+    "word": "ahir",
+    "display": "عاهر",
+    "lang": "ar",
+    "meaning": "fornicator / lewd man",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ˈæhɪɹ",
+    "ipa_norm": "æhɪɹ"
+  },
+  {
+    "word": "mukhannath",
+    "display": "مخنث",
+    "lang": "ar",
+    "meaning": "effeminate (homophobic slur)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "mˈʌkhɐnˌæθ",
+    "ipa_norm": "mʌkhɐnæθ"
+  },
+  {
+    "word": "shadh",
+    "display": "شاذ",
+    "lang": "ar",
+    "meaning": "deviant / homosexual slur",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ʃˈæd",
+    "ipa_norm": "ʃæd"
+  },
+  {
+    "word": "saqita",
+    "display": "ساقطة",
+    "lang": "ar",
+    "meaning": "fallen woman / degenerate",
+    "severity": 2,
+    "category": "general",
+    "ipa": "sækˈiːɾə",
+    "ipa_norm": "sækiɾə"
+  },
+  {
+    "word": "zabbal",
+    "display": "زبال",
+    "lang": "ar",
+    "meaning": "trash person",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "zˈæbəl",
+    "ipa_norm": "zæbəl"
+  },
+  {
+    "word": "bazr",
+    "display": "بزر",
+    "lang": "ar",
+    "meaning": "little shit / brat",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "bˈæzɚ",
+    "ipa_norm": "bæzɚ"
+  },
+  {
+    "word": "wasikh",
+    "display": "وسخ",
+    "lang": "ar",
+    "meaning": "filthy / dirty",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "wˈɑːsɪk",
+    "ipa_norm": "wɑsɪk"
+  },
+  {
+    "word": "wasikha",
+    "display": "وسخة",
+    "lang": "ar",
+    "meaning": "filthy (feminine)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "wˈɑːsɪkə",
+    "ipa_norm": "wɑsɪkə"
+  },
+  {
+    "word": "zift",
+    "display": "زفت",
+    "lang": "ar",
+    "meaning": "crap / worthless",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "zˈɪft",
+    "ipa_norm": "zɪft"
+  },
+  {
+    "word": "hashar",
+    "display": "حشر",
+    "lang": "ar",
+    "meaning": "pest / insect",
+    "severity": 1,
+    "category": "general",
+    "ipa": "hˈæʃɑːɹ",
+    "ipa_norm": "hæʃɑɹ"
+  },
+  {
+    "word": "zaqq",
+    "display": "زق",
+    "lang": "ar",
+    "meaning": "shit / fart (vulgar)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "zˈæk",
+    "ipa_norm": "zæk"
+  },
+  {
+    "word": "salakh",
+    "display": "سلخ",
+    "lang": "ar",
+    "meaning": "worthless person",
+    "severity": 2,
+    "category": "general",
+    "ipa": "sˈælæk",
+    "ipa_norm": "sælæk"
+  },
+  {
+    "word": "choda",
+    "display": "চোদা",
+    "lang": "bn",
+    "meaning": "fuck / fucker (vulgar)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "tʃˈoʊdə",
+    "ipa_norm": "tʃoʊdə"
+  },
+  {
+    "word": "bachcha",
+    "display": "বাচ্চা",
+    "lang": "bn",
+    "meaning": "kid / brat (derogatory)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "bˈɑːktʃə",
+    "ipa_norm": "bɑktʃə"
+  },
+  {
+    "word": "bal",
+    "display": "বাল",
+    "lang": "bn",
+    "meaning": "pubic hair / bullshit (vulgar dismissive)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "bˈæl",
+    "ipa_norm": "bæl"
+  },
+  {
+    "word": "bhanda",
+    "display": "ভাণ্ডা",
+    "lang": "bn",
+    "meaning": "idiot / fool",
+    "severity": 1,
+    "category": "general",
+    "ipa": "bˈændə",
+    "ipa_norm": "bændə"
+  },
+  {
+    "word": "magi",
+    "display": "মাগী",
+    "lang": "bn",
+    "meaning": "whore / slut",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "mˈeɪdʒaɪ",
+    "ipa_norm": "meɪdʒaɪ"
+  },
+  {
+    "word": "gandu",
+    "display": "গান্ডু",
+    "lang": "bn",
+    "meaning": "asshole",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "ɡˈænduː",
+    "ipa_norm": "ɡændu"
+  },
+  {
+    "word": "mal",
+    "display": "মাল",
+    "lang": "bn",
+    "meaning": "semen / worthless person (slang)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "mˈæl",
+    "ipa_norm": "mæl"
+  },
+  {
+    "word": "madarchod",
+    "display": "মাদার চোদ",
+    "lang": "bn",
+    "meaning": "motherfucker",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "mˈædɑːɹtʃˌɑːd",
+    "ipa_norm": "mædɑɹtʃɑd"
+  },
+  {
+    "word": "ma-choda",
+    "display": "মা চোদা",
+    "lang": "bn",
+    "meaning": "motherfucker",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "mˈɑːtʃˈoʊdə",
+    "ipa_norm": "mɑtʃoʊdə"
+  },
+  {
+    "word": "godha",
+    "display": "গোদা",
+    "lang": "bn",
+    "meaning": "fat / stupid",
+    "severity": 1,
+    "category": "general",
+    "ipa": "ɡˈɑːdhə",
+    "ipa_norm": "ɡɑdhə"
+  },
+  {
+    "word": "pishach",
+    "display": "পিশাচ",
+    "lang": "bn",
+    "meaning": "demon / evil person",
+    "severity": 1,
+    "category": "general",
+    "ipa": "pˈɪʃætʃ",
+    "ipa_norm": "pɪʃætʃ"
+  },
+  {
+    "word": "pagol",
+    "display": "পাগল",
+    "lang": "bn",
+    "meaning": "crazy / mad",
+    "severity": 1,
+    "category": "general",
+    "ipa": "pˈæɡɑːl",
+    "ipa_norm": "pæɡɑl"
+  },
+  {
+    "word": "chhagol",
+    "display": "ছাগল",
+    "lang": "bn",
+    "meaning": "goat (foolish person)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "sˌiːˈeɪtʃhˈæɡɑːl",
+    "ipa_norm": "sieɪtʃhæɡɑl"
+  },
+  {
+    "word": "basta",
+    "display": "বাস্তা",
+    "lang": "bn",
+    "meaning": "bastard / illegitimate",
+    "severity": 2,
+    "category": "general",
+    "ipa": "bˈæstə",
+    "ipa_norm": "bæstə"
+  },
+  {
+    "word": "shuor",
+    "display": "শুয়োর",
+    "lang": "bn",
+    "meaning": "pig (dirty person)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "ʃjˈuːɚ",
+    "ipa_norm": "ʃjuɚ"
+  },
+  {
+    "word": "behaia",
+    "display": "বেহায়া",
+    "lang": "bn",
+    "meaning": "shameless person",
+    "severity": 1,
+    "category": "general",
+    "ipa": "bᵻhˈeɪə",
+    "ipa_norm": "bᵻheɪə"
+  },
+  {
+    "word": "pakostholi",
+    "display": "পাকস্থলী",
+    "lang": "bn",
+    "meaning": "gut / stomach (sarcastic insult)",
+    "severity": 1,
+    "category": "bodily",
+    "ipa": "pˈækəsθˌɑːli",
+    "ipa_norm": "pækəsθɑli"
+  },
+  {
+    "word": "bandor",
+    "display": "বাঁদর",
+    "lang": "bn",
+    "meaning": "monkey (foolish/ugly person)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "bˈændɔːɹ",
+    "ipa_norm": "bændɔɹ"
+  },
+  {
+    "word": "nunu",
+    "display": "নুনু",
+    "lang": "bn",
+    "meaning": "penis (childish slang)",
+    "severity": 2,
+    "category": "sexual",
+    "ipa": "nˈuːnuː",
+    "ipa_norm": "nunu"
+  },
+  {
+    "word": "shabi",
+    "display": "傻逼",
+    "lang": "zh",
+    "meaning": "stupid cunt / idiot (vulgar)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ʃˈæbaɪ",
+    "ipa_norm": "ʃæbaɪ"
+  },
+  {
+    "word": "goushi",
+    "display": "狗屎",
+    "lang": "zh",
+    "meaning": "dog shit / worthless crap",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "ɡˈaʊʃi",
+    "ipa_norm": "ɡaʊʃi"
+  },
+  {
+    "word": "made",
+    "display": "妈的",
+    "lang": "zh",
+    "meaning": "damn it / shit (common expletive)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "mˈeɪd",
+    "ipa_norm": "meɪd"
+  },
+  {
+    "word": "erbi",
+    "display": "二逼",
+    "lang": "zh",
+    "meaning": "dumb cunt / idiot",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "ˈɜːbaɪ",
+    "ipa_norm": "ɜbaɪ"
+  },
+  {
+    "word": "hundan",
+    "display": "混蛋",
+    "lang": "zh",
+    "meaning": "bastard / jerk",
+    "severity": 2,
+    "category": "general",
+    "ipa": "hˈʌndən",
+    "ipa_norm": "hʌndən"
+  },
+  {
+    "word": "wangbadang",
+    "display": "王八蛋",
+    "lang": "zh",
+    "meaning": "bastard / son of a bitch",
+    "severity": 2,
+    "category": "general",
+    "ipa": "wˈæŋɡbɐdˌæŋ",
+    "ipa_norm": "wæŋɡbɐdæŋ"
+  },
+  {
+    "word": "liumang",
+    "display": "流氓",
+    "lang": "zh",
+    "meaning": "hooligan / rogue",
+    "severity": 1,
+    "category": "general",
+    "ipa": "lˈɪjuːmˌæŋ",
+    "ipa_norm": "lɪjumæŋ"
+  },
+  {
+    "word": "baichi",
+    "display": "白痴",
+    "lang": "zh",
+    "meaning": "idiot / moron",
+    "severity": 1,
+    "category": "general",
+    "ipa": "bˈeɪtʃaɪ",
+    "ipa_norm": "beɪtʃaɪ"
+  },
+  {
+    "word": "taoyangui",
+    "display": "讨厌鬼",
+    "lang": "zh",
+    "meaning": "annoying pest",
+    "severity": 1,
+    "category": "general",
+    "ipa": "taʊjˈɑːŋwi",
+    "ipa_norm": "taʊjɑŋwi"
+  },
+  {
+    "word": "shaizi",
+    "display": "傻子",
+    "lang": "zh",
+    "meaning": "fool / idiot",
+    "severity": 1,
+    "category": "general",
+    "ipa": "ʃˈeɪzi",
+    "ipa_norm": "ʃeɪzi"
+  },
+  {
+    "word": "daizi",
+    "display": "呆子",
+    "lang": "zh",
+    "meaning": "dolt / fool",
+    "severity": 1,
+    "category": "general",
+    "ipa": "dˈeɪzi",
+    "ipa_norm": "deɪzi"
+  },
+  {
+    "word": "yinjin",
+    "display": "阴茎",
+    "lang": "zh",
+    "meaning": "penis (vulgar term)",
+    "severity": 2,
+    "category": "sexual",
+    "ipa": "jˈɪndʒɪn",
+    "ipa_norm": "jɪndʒɪn"
+  },
+  {
+    "word": "chedan",
+    "display": "扯蛋",
+    "lang": "zh",
+    "meaning": "bullshit / talk nonsense",
+    "severity": 2,
+    "category": "general",
+    "ipa": "tʃˈɛdən",
+    "ipa_norm": "tʃɛdən"
+  },
+  {
+    "word": "jianren",
+    "display": "贱人",
+    "lang": "zh",
+    "meaning": "bitch / lowlife",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "dʒˈaɪənɹən",
+    "ipa_norm": "dʒaɪənɹən"
+  },
+  {
+    "word": "daben",
+    "display": "大便",
+    "lang": "zh",
+    "meaning": "shit / feces",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "dˈeɪbən",
+    "ipa_norm": "deɪbən"
+  },
+  {
+    "word": "gun dan",
+    "display": "滚蛋",
+    "lang": "zh",
+    "meaning": "get lost / scram",
+    "severity": 1,
+    "category": "general",
+    "ipa": "ɡˈʌn dˈæn",
+    "ipa_norm": "ɡʌn dæn"
+  },
+  {
+    "word": "hunqiu",
+    "display": "混球",
+    "lang": "zh",
+    "meaning": "jerk / asshole",
+    "severity": 2,
+    "category": "general",
+    "ipa": "hˈʌŋkɪˌuː",
+    "ipa_norm": "hʌŋkɪu"
+  },
+  {
+    "word": "pimin",
+    "display": "屁民",
+    "lang": "zh",
+    "meaning": "nobodies / commoners (derogatory)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "pˈɪmɪn",
+    "ipa_norm": "pɪmɪn"
+  },
+  {
+    "word": "biaozi",
+    "display": "婊子",
+    "lang": "zh",
+    "meaning": "whore / bitch",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "bˌaɪəˈoʊzi",
+    "ipa_norm": "baɪəoʊzi"
+  },
+  {
+    "word": "shengkou",
+    "display": "牲口",
+    "lang": "zh",
+    "meaning": "beast / brute",
+    "severity": 2,
+    "category": "general",
+    "ipa": "ʃˈɛŋkuː",
+    "ipa_norm": "ʃɛŋku"
+  },
+  {
+    "word": "kutiya",
+    "display": "کتیا",
+    "lang": "ur",
+    "meaning": "bitch / female dog (insult)",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kjˈuːɾɪjə",
+    "ipa_norm": "kjuɾɪjə"
+  },
+  {
+    "word": "bhenchod",
+    "display": "بھنچود",
+    "lang": "ur",
+    "meaning": "sisterfucker",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "bˈɛntʃɑːd",
+    "ipa_norm": "bɛntʃɑd"
+  },
+  {
+    "word": "be-gunah",
+    "display": "بیگناہ",
+    "lang": "ur",
+    "meaning": "innocent (sarcastic/mocking)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "biːɡˈʌnə",
+    "ipa_norm": "biɡʌnə"
+  },
+  {
+    "word": "kameena",
+    "display": "کمینہ",
+    "lang": "ur",
+    "meaning": "lowlife / rascal",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kˈæmiːnə",
+    "ipa_norm": "kæminə"
+  },
+  {
+    "word": "gadha",
+    "display": "گدھے",
+    "lang": "ur",
+    "meaning": "donkey / idiot",
+    "severity": 1,
+    "category": "general",
+    "ipa": "ɡˈædhə",
+    "ipa_norm": "ɡædhə"
+  },
+  {
+    "word": "khota",
+    "display": "کھوتا",
+    "lang": "ur",
+    "meaning": "donkey / mule (stupid)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "kˈoʊɾə",
+    "ipa_norm": "koʊɾə"
+  },
+  {
+    "word": "kacher",
+    "display": "کچر",
+    "lang": "ur",
+    "meaning": "scum / worthless person",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kˈæʃɚ",
+    "ipa_norm": "kæʃɚ"
+  },
+  {
+    "word": "chakala",
+    "display": "چکلا",
+    "lang": "ur",
+    "meaning": "brothel / pimp house",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "tʃækˈɑːlə",
+    "ipa_norm": "tʃækɑlə"
+  },
+  {
+    "word": "kuntol",
+    "display": "کنٹول",
+    "lang": "ur",
+    "meaning": "cunt / idiot (vulgar)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "kˈʌntɑːl",
+    "ipa_norm": "kʌntɑl"
+  },
+  {
+    "word": "madari",
+    "display": "مداری",
+    "lang": "ur",
+    "meaning": "monkey trainer / trickster (insult)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "mædˈɑːɹɹi",
+    "ipa_norm": "mædɑɹɹi"
+  },
+  {
+    "word": "khoti",
+    "display": "کھوتی",
+    "lang": "ur",
+    "meaning": "female donkey (stupid woman)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "kˈoʊɾi",
+    "ipa_norm": "koʊɾi"
+  },
+  {
+    "word": "najis",
+    "display": "نجس",
+    "lang": "ur",
+    "meaning": "impure / filthy",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "nˈædʒiz",
+    "ipa_norm": "nædʒiz"
+  },
+  {
+    "word": "haramzada",
+    "display": "حرامزادہ",
+    "lang": "ur",
+    "meaning": "bastard / illegitimate",
+    "severity": 3,
+    "category": "general",
+    "ipa": "hˌæɹɐmzˈɑːdə",
+    "ipa_norm": "hæɹɐmzɑdə"
+  },
+  {
+    "word": "lund",
+    "display": "لنڈ",
+    "lang": "ur",
+    "meaning": "dick / cock",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "lˈʌnd",
+    "ipa_norm": "lʌnd"
+  },
+  {
+    "word": "bewaqoof",
+    "display": "بیوقوف",
+    "lang": "ur",
+    "meaning": "fool / idiot",
+    "severity": 1,
+    "category": "general",
+    "ipa": "bᵻwˈækuːf",
+    "ipa_norm": "bᵻwækuf"
+  },
+  {
+    "word": "oont",
+    "display": "اونٹ",
+    "lang": "ur",
+    "meaning": "camel (awkward/ugly insult)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "ˈuːnt",
+    "ipa_norm": "unt"
+  },
+  {
+    "word": "bandar",
+    "display": "بندر",
+    "lang": "ur",
+    "meaning": "monkey (stupid/ugly)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "bˈændɑːɹ",
+    "ipa_norm": "bændɑɹ"
+  },
+  {
+    "word": "bakwas",
+    "display": "بکواس",
+    "lang": "ur",
+    "meaning": "nonsense / bullshit",
+    "severity": 1,
+    "category": "general",
+    "ipa": "bˈækwəz",
+    "ipa_norm": "bækwəz"
+  },
+  {
+    "word": "behaya",
+    "display": "بے حیائی",
+    "lang": "ur",
+    "meaning": "shamelessness / indecency",
+    "severity": 2,
+    "category": "general",
+    "ipa": "bᵻhˈeɪə",
+    "ipa_norm": "bᵻheɪə"
+  },
+  {
+    "word": "kameeni",
+    "display": "کمینی",
+    "lang": "ur",
+    "meaning": "low woman / bitch",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kˈæmiːni",
+    "ipa_norm": "kæmini"
+  },
+  {
+    "word": "gaand",
+    "display": "گانڈ",
+    "lang": "ur",
+    "meaning": "ass / butt (vulgar)",
+    "severity": 2,
+    "category": "bodily",
+    "ipa": "ɡˈɑːnd",
+    "ipa_norm": "ɡɑnd"
+  },
+  {
+    "word": "makhi",
+    "display": "مکھی",
+    "lang": "ur",
+    "meaning": "fly (annoying pest)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "mˈækaɪ",
+    "ipa_norm": "mækaɪ"
+  },
+  {
+    "word": "khwar",
+    "display": "خوار",
+    "lang": "ur",
+    "meaning": "disgraced / lowly",
+    "severity": 2,
+    "category": "general",
+    "ipa": "kˌeɪˈeɪtʃwˈɔːɹ",
+    "ipa_norm": "keɪeɪtʃwɔɹ"
+  },
+  {
+    "word": "dafaa",
+    "display": "دفا",
+    "lang": "ur",
+    "meaning": "get lost / scram",
+    "severity": 1,
+    "category": "general",
+    "ipa": "dˈæfɑː",
+    "ipa_norm": "dæfɑ"
+  },
+  {
+    "word": "laund",
+    "display": "لونڈ",
+    "lang": "ur",
+    "meaning": "boy / catamite (derogatory)",
+    "severity": 3,
+    "category": "sexual",
+    "ipa": "lˈɔːnd",
+    "ipa_norm": "lɔnd"
+  },
+  {
+    "word": "pancher",
+    "display": "پنکچر",
+    "lang": "ur",
+    "meaning": "broken / useless (mocking)",
+    "severity": 1,
+    "category": "general",
+    "ipa": "pˈæntʃɚ",
+    "ipa_norm": "pæntʃɚ"
+  },
+  {
+    "word": "fahish",
+    "display": "فحش",
+    "lang": "ur",
+    "meaning": "obscene / vulgar",
+    "severity": 2,
+    "category": "general",
+    "ipa": "fˈæhɪʃ",
+    "ipa_norm": "fæhɪʃ"
+  },
+  {
+    "word": "haram",
+    "display": "حرام",
+    "lang": "ur",
+    "meaning": "forbidden / sinful (insult context)",
+    "severity": 2,
+    "category": "religious",
+    "ipa": "hˈæɹæm",
+    "ipa_norm": "hæɹæm"
   }
 ]
