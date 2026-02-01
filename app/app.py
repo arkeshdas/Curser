@@ -27,10 +27,12 @@ from datetime import datetime
 import subprocess
 import hashlib
 
-import streamlit as st
+import os, streamlit as st
+os.environ["ELEVEN_API_KEY"] = st.secrets["ELEVENLABS_API_KEY"]
 import elevenlabs
 
-st.write("elevenlabs version:", getattr(elevenlabs, "__version__", "unknown"))
+k = st.secrets["ELEVENLABS_API_KEY"]
+st.write("Using ElevenLabs key preview:", k[:6] + "..." + k[-4:])
 
 # ElevenLabs is optional, keep app runnable even if not installed
 try:
