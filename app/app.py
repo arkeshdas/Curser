@@ -7,15 +7,17 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-import os
 import json
 import tempfile
 import time
 from datetime import datetime
 import subprocess
+import hashlib
 
 import streamlit as st
 import numpy as np
+import html
+import pandas as pd
 from langdetect import detect
 from scipy.io.wavfile import write as wav_write
 
@@ -29,16 +31,17 @@ from src.core import (
 )
 from src.g2p import text_to_ipa
 
+# -----------------------
+# Mic backends
+# -----------------------
 try:
     from streamlit_mic_recorder import mic_recorder  # type: ignore
+
     BROWSER_MIC_AVAILABLE = True
 except Exception:
     mic_recorder = None
     BROWSER_MIC_AVAILABLE = False
 
-# -----------------------
-# Optional mic support (often unavailable on Streamlit Cloud)
-# -----------------------
 SD_AVAILABLE = False
 sd = None
 try:
@@ -50,25 +53,30 @@ except Exception:
     SD_AVAILABLE = False
     sd = None
 
+
 def get_default_input_device_index() -> int | None:
     if not SD_AVAILABLE or sd is None:
         return None
-
     try:
         devices = sd.query_devices()
     except Exception:
         return None
 
-    input_devices = [(i, d) for i, d in enumerate(devices) if d.get("max_input_channels", 0) > 0]
-    if not input_devices:
+    candidates: list[tuple[int, dict]] = [
+        (i, d)
+        for i, d in enumerate(devices)
+        if int(d.get("max_input_channels", 0) or 0) > 0
+    ]
+    if not candidates:
         return None
 
-    for i, d in input_devices:
+    for i, d in candidates:
         name = (d.get("name") or "").lower()
-        if "macbook" in name or "built-in" in name:
+        if ("macbook" in name) or ("built-in" in name):
             return int(i)
 
-    return int(input_devices[0][0])
+    return int(candidates[0][0])
+
 
 def infer_lang(text: str) -> str:
     try:
@@ -97,153 +105,144 @@ st.set_page_config(page_title="Curser", page_icon="🖱️", layout="centered")
 
 st.markdown(
     """
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-      :root {
-        --curser-font: 'Press Start 2P', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+:root{
+  --curser-font:'Press Start 2P', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --ui-font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
 
-        --ui-font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-        --card-bg: rgba(10, 10, 12, 0.58);
-        --card-border: rgba(255, 255, 255, 0.12);
-        --control-bg: rgba(15,15,18,0.92);
-        --control-border: rgba(255,255,255,0.18);
-        --accent: rgba(255,70,70,0.92);
-        --text: rgba(255,255,255,0.92);
-        --text-dim: rgba(255,255,255,0.78);
-      }
+  --card-bg: rgba(10,10,12,0.58);
+  --card-border: rgba(255,255,255,0.12);
+  --control-bg: rgba(15,15,18,0.92);
+  --control-border: rgba(255,255,255,0.18);
 
-      /* Background */
-      .stApp {
-        background: linear-gradient(180deg, #ff4646 0%, #bdbdbd 100%);
-      }
+  --text: rgba(255,255,255,0.92);
+  --text-dim: rgba(255,255,255,0.78);
+}
 
-      .block-container {
-        max-width: 980px;
-        padding-top: 1.1rem;
-        padding-bottom: 2.5rem;
-      }
+/* Background */
+.stApp{
+  background: linear-gradient(180deg, #ff4646 0%, #bdbdbd 100%);
+}
 
-      header[data-testid="stHeader"] {
-        background: transparent;
-      }
+.block-container{
+  max-width: 980px;
+  padding-top: 1.1rem;
+  padding-bottom: 2.5rem;
+}
 
-      /* Pixel font: apply to your content, not the entire app */
-      .curser-title,
-      .curser-subtitle,
-      [data-testid="stMarkdownContainer"],
-      [data-testid="stMarkdownContainer"] *,
-      [data-testid="stText"] *,
-      [data-testid="stCaptionContainer"] *,
-      label, small {
-        font-family: var(--curser-font) !important;
-      }
+header[data-testid="stHeader"]{ background: transparent; }
 
-      /* Keep icons and SVGs on normal font rendering */
-      [data-testid="stIcon"], 
-      [data-testid="stIcon"] *,
-      svg, svg * {
-        font-family: var(--ui-font) !important;
-      }
+/* Pixel font: apply to your content, not the entire app */
+.curser-title,
+.curser-subtitle,
+[data-testid="stMarkdownContainer"],
+[data-testid="stMarkdownContainer"] *,
+[data-testid="stText"] *,
+[data-testid="stCaptionContainer"] *,
+label, small{
+  font-family: var(--curser-font) !important;
+}
 
-      /* Crisp logo rendering */
-      img {
-        image-rendering: pixelated;
-        image-rendering: crisp-edges;
-      }
+/* Keep icons and SVGs on normal font rendering */
+[data-testid="stIcon"],
+[data-testid="stIcon"] *,
+svg, svg *{
+  font-family: var(--ui-font) !important;
+}
 
-      /* Header text */
-      .curser-title {
-        font-size: 26px;
-        font-weight: 800;
-        letter-spacing: 0.5px;
-        margin: 0;
-        line-height: 1.05;
-        color: rgba(255,255,255,0.96);
-        text-shadow: 0 2px 10px rgba(0,0,0,0.35);
-      }
-      .curser-subtitle {
-        font-size: 10px;
-        letter-spacing: 0.25px;
-        margin-top: 6px;
-        color: rgba(255,255,255,0.85);
-      }
+/* Crisp logo rendering */
+img{
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
 
-      /* Cards */
-      .curser-card {
-        background: var(--card-bg);
-        border: 1px solid var(--card-border);
-        border-radius: 16px;
-        padding: 16px 16px 12px 16px;
-        box-shadow: 0 10px 28px rgba(0,0,0,0.24);
-        backdrop-filter: blur(7px);
-        -webkit-backdrop-filter: blur(7px);
-        margin: 12px 0;
-      }
+/* Header text */
+.curser-title{
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin: 0;
+  line-height: 1.05;
+  color: rgba(255,255,255,0.96);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+}
+.curser-subtitle{
+  font-size: 10px;
+  letter-spacing: 0.25px;
+  margin-top: 6px;
+  color: rgba(255,255,255,0.85);
+}
 
-      /* Text color */
-      h1, h2, h3, h4, h5, h6, p, span, small, li, div {
-        color: var(--text) !important;
-      }
+/* Cards */
+.curser-card{
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 16px 16px 12px 16px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.24);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  margin: 12px 0;
+}
 
-      /* Inputs */
-      .stTextInput input,
-      .stSelectbox div[data-baseweb="select"] > div,
-      .stTextArea textarea {
-        font-family: var(--curser-font) !important;
-        background: var(--control-bg) !important;
-        color: rgba(255,255,255,0.96) !important;
-        border: 1px solid var(--control-border) !important;
-        border-radius: 12px !important;
-      }
+/* Default text color */
+h1,h2,h3,h4,h5,h6,p,span,small,li,div{
+  color: var(--text) !important;
+}
 
-      /* Buttons */
-      .stButton > button,
-      button[kind="secondary"],
-      button[kind="primary"] {
-        font-family: var(--curser-font) !important;
-        background: var(--control-bg) !important;
-        color: rgba(255,255,255,0.96) !important;
-        border: 1px solid rgba(255,70,70,0.78) !important;
-        border-radius: 12px !important;
-        padding: 10px 14px !important;
-        box-shadow: 0 7px 20px rgba(0,0,0,0.28);
-      }
+/* Inputs */
+.stTextInput input,
+.stSelectbox div[data-baseweb="select"] > div,
+.stTextArea textarea{
+  font-family: var(--curser-font) !important;
+  background: var(--control-bg) !important;
+  color: rgba(255,255,255,0.96) !important;
+  border: 1px solid var(--control-border) !important;
+  border-radius: 12px !important;
+}
 
-      /* Dataframe: force normal UI font so it stays readable */
-      [data-testid="stDataFrame"],
-      [data-testid="stDataFrame"] * {
-        font-family: var(--ui-font) !important;
-        font-size: 12px !important;
-        line-height: 1.2 !important;
-        color: rgba(255,255,255,0.92) !important;
-      }
+/* Buttons */
+.stButton > button,
+button[kind="secondary"],
+button[kind="primary"]{
+  font-family: var(--curser-font) !important;
+  background: var(--control-bg) !important;
+  color: rgba(255,255,255,0.96) !important;
+  border: 1px solid rgba(255,70,70,0.78) !important;
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  box-shadow: 0 7px 20px rgba(0,0,0,0.28);
+}
 
-      [data-testid="stDataFrame"] {
-        background: rgba(15,15,18,0.62) !important;
-        border-radius: 14px !important;
-        border: 1px solid rgba(255,255,255,0.10) !important;
-        overflow: hidden;
-      }
+/* Dataframe container only.
+   Streamlit's dataframe body uses canvas in some versions, CSS cannot always recolor cells. */
+[data-testid="stDataFrame"]{
+  background: rgba(15,15,18,0.78) !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  overflow: hidden;
+}
 
-      /* File uploader fixes */
-      [data-testid="stFileUploader"] * {
-        font-size: 12px !important;
-        line-height: 1.25 !important;
-      }
-      [data-testid="stFileUploader"] section {
-        padding: 10px 12px !important;
-      }
-      [data-testid="stFileUploader"] [data-testid="stFileDropzone"] * {
-        white-space: normal !important;
-      }
-      [data-testid="stFileUploader"] small {
-        display: block !important;
-        margin-top: 6px !important;
-        opacity: 0.85 !important;
-        color: var(--text-dim) !important;
-      }
-    </style>
+/* File uploader fixes */
+[data-testid="stFileUploader"] *{
+  font-size: 12px !important;
+  line-height: 1.25 !important;
+}
+[data-testid="stFileUploader"] section{
+  padding: 10px 12px !important;
+}
+[data-testid="stFileUploader"] [data-testid="stFileDropzone"] *{
+  white-space: normal !important;
+}
+[data-testid="stFileUploader"] small{
+  display: block !important;
+  margin-top: 6px !important;
+  opacity: 0.85 !important;
+  color: var(--text-dim) !important;
+}
+</style>
     """,
     unsafe_allow_html=True,
 )
@@ -260,7 +259,7 @@ def card_close():
 
 
 # -----------------------
-# Header: logo + title (no clipping)
+# Header: logo + title
 # -----------------------
 logo_path = Path(__file__).resolve().parent / "static" / "curser-logo.png"
 
@@ -282,7 +281,7 @@ with col_text:
         unsafe_allow_html=True,
     )
 
-st.write("")  # small spacer before the first card
+st.write("")
 
 # -----------------------
 # TTS helpers (espeak -> wav bytes)
@@ -318,27 +317,22 @@ def tts_espeak_wav_bytes(text: str, lang_code: str) -> bytes | None:
 # -----------------------
 # Session state
 # -----------------------
-if "text_phrase" not in st.session_state:
-    st.session_state["text_phrase"] = ""
-if "audio_lang" not in st.session_state:
-    st.session_state["audio_lang"] = None
-if "last_audio_sig" not in st.session_state:
-    st.session_state["last_audio_sig"] = None
-if "live_mode" not in st.session_state:
-    st.session_state["live_mode"] = False
-if "history" not in st.session_state:
-    st.session_state["history"] = []
-if "last_live_text" not in st.session_state:
-    st.session_state["last_live_text"] = ""
-if "current_result" not in st.session_state:
-    st.session_state["current_result"] = None
+st.session_state.setdefault("text_phrase", "")
+st.session_state.setdefault("audio_lang", None)
+st.session_state.setdefault("last_audio_sig", None)
+st.session_state.setdefault("live_mode", False)
+st.session_state.setdefault("history", [])
+st.session_state.setdefault("last_live_text", "")
+st.session_state.setdefault("current_result", None)
+st.session_state.setdefault("sfw_mode", True)
+st.session_state.setdefault("last_browser_live_sig", None)
+st.session_state.setdefault("last_browser_oneshot_sig", None)
 
 do_rerun = False
 rerun_sleep_s = 0.0
 
-
 # -----------------------
-# Level meter helpers
+# Level meter helpers (sounddevice path only)
 # -----------------------
 def rms_level(x: np.ndarray) -> float:
     if x.size == 0:
@@ -355,18 +349,18 @@ def rms_to_meter(rms: float, floor: float = 1e-4, ceil: float = 0.2) -> float:
 
 
 def record_audio_with_meter(
-    device_index: int,
+    device_index: int | None,
     seconds: float,
     fs: int = 16000,
     block_ms: int = 50,
     meter_placeholder=None,
     meter_label: str = "Level",
 ) -> np.ndarray:
-    if not SD_AVAILABLE or sd is None:
+    if (not SD_AVAILABLE) or (sd is None) or (device_index is None):
         return np.array([], dtype=np.float32)
 
     blocksize = max(1, int(fs * block_ms / 1000))
-    frames = []
+    frames: list[np.ndarray] = []
     t0 = time.time()
 
     try:
@@ -375,7 +369,7 @@ def record_audio_with_meter(
             channels=1,
             dtype="float32",
             blocksize=blocksize,
-            device=device_index,
+            device=int(device_index),
         ) as stream:
             while True:
                 elapsed = time.time() - t0
@@ -386,10 +380,8 @@ def record_audio_with_meter(
                 block = np.asarray(block).reshape(-1)
                 frames.append(block)
 
-                rms = rms_level(block)
-                meter_val = rms_to_meter(rms)
-
                 if meter_placeholder is not None:
+                    meter_val = rms_to_meter(rms_level(block))
                     meter_placeholder.progress(
                         meter_val, text=f"{meter_label}: {meter_val:.2f}"
                     )
@@ -400,6 +392,7 @@ def record_audio_with_meter(
         return np.array([], dtype=np.float32)
 
     return np.concatenate(frames).astype(np.float32)
+
 
 # -----------------------
 # Silence trimming
@@ -569,19 +562,62 @@ def push_history(result: dict):
     st.session_state["history"] = st.session_state["history"][:25]
 
 
+def compute_and_store(text: str, chosen_override_lang: str | None, *, push: bool = True):
+    text = (text or "").strip()
+    if not text:
+        st.session_state["current_result"] = None
+        return
+    result = compute_results(text, chosen_override_lang)
+    st.session_state["current_result"] = result
+    if push and result.get("ok"):
+        push_history(result)
+
+
 # -----------------------
-# Mode selector UI
+# Mode selector UI (only once)
 # -----------------------
 MODES_ALL = ["Listen (live-ish)", "Record (one-shot)", "Upload audio"]
 MODES_UPLOAD_ONLY = ["Upload audio"]
 
 MIC_ANY_AVAILABLE = bool(BROWSER_MIC_AVAILABLE) or bool(SD_AVAILABLE)
-
 if MIC_ANY_AVAILABLE:
     mode = st.selectbox("Mode", MODES_ALL, index=0)
 else:
     st.warning("Mic input is unavailable in this environment, only Upload mode is enabled.")
     mode = st.selectbox("Mode", MODES_UPLOAD_ONLY, index=0)
+
+# Local mic selector (optional, local dev only)
+device_index: int | None = None
+if SD_AVAILABLE and sd is not None:
+    device_index = get_default_input_device_index()
+    with st.expander("Local mic settings (advanced)", expanded=False):
+        try:
+            devices = sd.query_devices()
+            input_devices = [
+                (i, d.get("name", f"Device {i}"))
+                for i, d in enumerate(devices)
+                if int(d.get("max_input_channels", 0) or 0) > 0
+            ]
+        except Exception:
+            input_devices = []
+
+        if input_devices:
+            default_k = 0
+            if device_index is not None:
+                for k, (i, _name) in enumerate(input_devices):
+                    if int(i) == int(device_index):
+                        default_k = k
+                        break
+
+            choice = st.selectbox(
+                "Select local microphone",
+                input_devices,
+                index=default_k,
+                format_func=lambda x: f"{x[0]}: {x[1]}",
+            )
+            device_index = int(choice[0])
+        else:
+            st.info("No local input devices detected by sounddevice.")
 
 # -----------------------
 # G2P language override UI + SFW mode
@@ -599,13 +635,9 @@ if override:
         index=0,
     )
 
-# SFW mode is display filtering only, no need to change src/ logic
-if "sfw_mode" not in st.session_state:
-    st.session_state["sfw_mode"] = True
-
 st.session_state["sfw_mode"] = st.toggle(
     "SFW mode (hide severity 3+)",
-    value=st.session_state["sfw_mode"],
+    value=bool(st.session_state.get("sfw_mode", True)),
 )
 
 # -----------------------
@@ -613,39 +645,64 @@ st.session_state["sfw_mode"] = st.toggle(
 # -----------------------
 if mode == "Upload audio":
     st.subheader("Upload audio")
-    colU1, colU2 = st.columns([1, 1])
+    colU1, colU2, colU3 = st.columns([2, 1, 1])
+
     with colU1:
-        audio_file = st.file_uploader("Upload a .wav, .mp3, or .m4a", type=["wav", "mp3", "m4a"])
+        audio_file = st.file_uploader(
+            "Upload a .wav, .mp3, or .m4a",
+            type=["wav", "mp3", "m4a"],
+            key="uploader_audio",
+        )
+
     with colU2:
-        if st.button("Clear upload state"):
+        process_clicked = st.button("Process upload", use_container_width=True)
+
+    with colU3:
+        if st.button("Clear upload state", use_container_width=True):
             st.session_state["last_audio_sig"] = None
             st.session_state["audio_lang"] = None
             st.session_state["text_phrase"] = ""
             st.session_state["current_result"] = None
+            st.session_state["processed_upload_sig"] = None
             st.rerun()
+
+    # track what we've already processed, across reruns
+    st.session_state.setdefault("processed_upload_sig", None)
 
     if audio_file is not None:
         audio_sig = (audio_file.name, audio_file.size)
-        if st.session_state["last_audio_sig"] != audio_sig:
-            st.session_state["last_audio_sig"] = audio_sig
+
+        # show the file we currently have loaded
+        st.caption(f"Loaded: {audio_file.name} ({audio_file.size} bytes)")
+
+        # only process when user clicks, and only once per unique file
+        if process_clicked and st.session_state["processed_upload_sig"] != audio_sig:
+            st.session_state["processed_upload_sig"] = audio_sig
+
             with tempfile.NamedTemporaryFile(
                 delete=False, suffix="." + audio_file.name.split(".")[-1]
             ) as tmp:
-                tmp.write(audio_file.read())
+                tmp.write(audio_file.getvalue())
                 tmp_path = tmp.name
 
             with st.spinner("Transcribing upload..."):
                 text_from_audio, lang_from_audio = transcribe_audio_file(tmp_path, model_name="base")
 
-            st.session_state["text_phrase"] = (text_from_audio or "").strip()
+            text_from_audio = (text_from_audio or "").strip()
+
+            st.session_state["text_phrase"] = text_from_audio
             st.session_state["audio_lang"] = lang_from_audio
-            st.session_state["current_result"] = None
+
+            # compute immediately so UI updates without needing rerun loops
+            compute_and_store(text_from_audio, chosen_override_lang, push=True)
+
+            st.success("Processed.")
             st.rerun()
 
+    # display current state (whether processed or typed)
     if st.session_state.get("text_phrase"):
         st.write("Transcribed text:", st.session_state["text_phrase"])
         st.write("Whisper language:", st.session_state.get("audio_lang"))
-
 
 # -----------------------
 # Mode: Record one-shot
@@ -653,47 +710,93 @@ if mode == "Upload audio":
 if mode == "Record (one-shot)":
     st.subheader("One-shot recording")
 
-    device_index = get_default_input_device_index()
-    if device_index is None:
-        st.error("Local device mic is not available here. Use Upload audio or Listen (browser mic).")
-        st.stop()
+    backends: list[str] = []
+    if BROWSER_MIC_AVAILABLE and mic_recorder is not None:
+        backends.append("Browser mic (recommended)")
+    if SD_AVAILABLE and device_index is not None:
+        backends.append("Local mic (sounddevice)")
 
-    dur_s = st.slider("Record seconds", 1.0, 8.0, 3.0, 0.5)
-    rel_thr = st.slider("Silence sensitivity (relative)", 0.02, 0.20, 0.08, 0.01)
-    abs_thr = st.slider("Silence floor (absolute)", 0.0003, 0.0050, 0.0010, 0.0001)
-
-    if st.button("Record now"):
-        fs = 16000
-        st.info("Recording...")
-
-        meter = st.progress(0.0, text="Level: 0.00")
-        x = record_audio_with_meter(
-            device_index=device_index,
-            seconds=float(dur_s),
-            fs=fs,
-            meter_placeholder=meter,
-            meter_label="Level",
+    if not backends:
+        st.error(
+            "No mic backend available. Install streamlit-mic-recorder or sounddevice."
         )
-        meter.empty()
+    else:
+        backend = st.radio("Recording backend", backends, index=0, horizontal=True)
 
-        if x.size == 0:
-            st.error("No audio captured. Check mic selection and permissions.")
-            st.stop()
+        if backend.startswith("Browser"):
+            st.caption("Click Record, then Stop to process.")
+            audio = mic_recorder(
+            start_prompt="Record",
+            stop_prompt="Stop and process",
+            just_once=True,
+            use_container_width=True,
+            key="browser_mic_oneshot",
+        )
 
-        x_trim = trim_silence(x, fs, rel_thresh=float(rel_thr), abs_thresh=float(abs_thr))
+        if audio and isinstance(audio, dict) and audio.get("bytes"):
+            b = audio["bytes"]
+            sig = hashlib.sha256(b).hexdigest()
 
-        if x_trim.size == 0:
-            st.error("Only silence detected. Try again or change mic.")
-            st.stop()
+            # only transcribe once per unique recording
+            if st.session_state.get("last_browser_oneshot_sig") != sig:
+                st.session_state["last_browser_oneshot_sig"] = sig
 
-        wav_path = write_temp_wav(x_trim, fs=fs)
-        with st.spinner("Transcribing..."):
-            text_from_audio, lang_from_audio = transcribe_audio_file(wav_path, model_name="base")
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+                    tmp.write(b)
+                    wav_path = tmp.name
 
-        st.session_state["text_phrase"] = (text_from_audio or "").strip()
-        st.session_state["audio_lang"] = lang_from_audio
-        st.session_state["current_result"] = None
-        st.rerun()
+                with st.spinner("Transcribing..."):
+                    text_from_audio, lang_from_audio = transcribe_audio_file(wav_path, model_name="base")
+
+                text_from_audio = (text_from_audio or "").strip()
+                st.session_state["text_phrase"] = text_from_audio
+                st.session_state["audio_lang"] = lang_from_audio
+
+                compute_and_store(text_from_audio, chosen_override_lang, push=True)
+                st.rerun()
+
+        else:
+            dur_s = st.slider("Record seconds", 1.0, 8.0, 3.0, 0.5, key="oneshot_dur")
+            rel_thr = st.slider(
+                "Silence sensitivity (relative)", 0.02, 0.20, 0.08, 0.01, key="oneshot_rel"
+            )
+            abs_thr = st.slider(
+                "Silence floor (absolute)", 0.0003, 0.0050, 0.0010, 0.0001, key="oneshot_abs"
+            )
+
+            if st.button("Record now", key="oneshot_record_btn"):
+                fs = 16000
+                st.info("Recording...")
+                meter = st.progress(0.0, text="Level: 0.00")
+
+                x = record_audio_with_meter(
+                    device_index=device_index,
+                    seconds=float(dur_s),
+                    fs=fs,
+                    meter_placeholder=meter,
+                    meter_label="Level",
+                )
+                meter.empty()
+
+                if x.size == 0:
+                    st.error("No audio captured. Check mic selection and permissions.")
+                else:
+                    x_trim = trim_silence(x, fs, rel_thresh=float(rel_thr), abs_thresh=float(abs_thr))
+                    if x_trim.size == 0:
+                        st.error("Only silence detected. Try again or change mic.")
+                    else:
+                        wav_path = write_temp_wav(x_trim, fs=fs)
+                        with st.spinner("Transcribing..."):
+                            text_from_audio, lang_from_audio = transcribe_audio_file(
+                                wav_path, model_name="base"
+                            )
+
+                        text_from_audio = (text_from_audio or "").strip()
+                        st.session_state["text_phrase"] = text_from_audio
+                        st.session_state["audio_lang"] = lang_from_audio
+
+                        compute_and_store(text_from_audio, chosen_override_lang, push=True)
+                        st.rerun()
 
 # -----------------------
 # Mode: Listen live-ish
@@ -701,144 +804,131 @@ if mode == "Record (one-shot)":
 if mode == "Listen (live-ish)":
     st.subheader("Live-ish listening")
 
-    # Default to browser mic because it works on Streamlit Cloud + locally
-    use_browser_mic = True
-    if SD_AVAILABLE and BROWSER_MIC_AVAILABLE:
-        use_browser_mic = st.toggle("Use browser mic (recommended)", value=True)
-    elif BROWSER_MIC_AVAILABLE and not SD_AVAILABLE:
-        st.info("Browser mic enabled, local device mic is unavailable in this environment.")
-        use_browser_mic = True
-    elif SD_AVAILABLE and not BROWSER_MIC_AVAILABLE:
-        st.warning("Browser mic component missing. Install streamlit-mic-recorder.")
-        use_browser_mic = False
+    backends: list[str] = []
+    if BROWSER_MIC_AVAILABLE and mic_recorder is not None:
+        backends.append("Browser mic (recommended)")
+    if SD_AVAILABLE and device_index is not None:
+        backends.append("Local mic (sounddevice)")
+
+    if not backends:
+        st.error("No mic backend available. Install streamlit-mic-recorder or sounddevice.")
     else:
-        st.error("No mic input available. Use Upload audio mode instead.")
-        st.stop()
+        backend = st.radio("Listening backend", backends, index=0, horizontal=True)
 
-    colA, colB, colC = st.columns([1, 1, 2])
-    if colA.button("Start listening"):
-        st.session_state["live_mode"] = True
-        st.rerun()
-    if colB.button("Stop listening"):
-        st.session_state["live_mode"] = False
-    if colC.button("Clear history"):
-        st.session_state["history"] = []
+        colA, colB, colC = st.columns([1, 1, 2])
+        if colA.button("Start listening", key="live_start"):
+            st.session_state["live_mode"] = True
+            st.rerun()
+        if colB.button("Stop listening", key="live_stop"):
+            st.session_state["live_mode"] = False
+        if colC.button("Clear history", key="live_clear_hist"):
+            st.session_state["history"] = []
 
-    st.caption("Tip: speak, then stop to process a chunk. Browser mic works online and offline.")
+        if not st.session_state.get("live_mode", False):
+            st.info("Click Start listening to begin.")
+        else:
+            fs = 16000
 
-    if not st.session_state.get("live_mode", False):
-        st.stop()
+            if backend.startswith("Browser"):
+                audio = mic_recorder(
+                start_prompt="Record chunk",
+                stop_prompt="Stop and process",
+                just_once=False,
+                use_container_width=True,
+                key="browser_mic_live",
+            )
 
-    fs = 16000
+            if audio and isinstance(audio, dict) and audio.get("bytes"):
+                b = audio["bytes"]
+                sig = hashlib.sha256(b).hexdigest()
 
-    if use_browser_mic:
-        if not BROWSER_MIC_AVAILABLE or mic_recorder is None:
-            st.error("Browser mic is not available. Install streamlit-mic-recorder.")
-            st.stop()
+                # only transcribe when the audio bytes change
+                if st.session_state.get("last_browser_live_sig") != sig:
+                    st.session_state["last_browser_live_sig"] = sig
 
-        st.markdown("**Browser mic**")
-        audio = mic_recorder(
-            start_prompt="Record chunk",
-            stop_prompt="Stop and process",
-            just_once=False,
-            use_container_width=True,
-            key="browser_mic_live",
-        )
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+                        tmp.write(b)
+                        wav_path = tmp.name
 
-        # mic_recorder returns a dict like {"bytes": ..., "sample_rate": ..., ...}
-        if audio and isinstance(audio, dict) and audio.get("bytes"):
-            wav_bytes = audio["bytes"]
+                    with st.spinner("Transcribing..."):
+                        text_from_audio, lang_from_audio = transcribe_audio_file(wav_path, model_name="base")
 
-            # Save bytes to a temp wav file and transcribe
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
-                tmp.write(wav_bytes)
-                wav_path = tmp.name
+                    text_from_audio = (text_from_audio or "").strip()
+                    if text_from_audio and text_from_audio != st.session_state.get("last_live_text", ""):
+                        st.session_state["last_live_text"] = text_from_audio
+                        st.session_state["text_phrase"] = text_from_audio
+                        st.session_state["audio_lang"] = lang_from_audio
 
-            with st.spinner("Transcribing..."):
-                text_from_audio, lang_from_audio = transcribe_audio_file(wav_path, model_name="base")
+                        compute_and_store(text_from_audio, chosen_override_lang, push=True)
+                        st.rerun()
 
-            text_from_audio = (text_from_audio or "").strip()
-            if text_from_audio and text_from_audio != st.session_state.get("last_live_text", ""):
-                st.session_state["last_live_text"] = text_from_audio
-                st.session_state["text_phrase"] = text_from_audio
-                st.session_state["audio_lang"] = lang_from_audio
+            else:
+                colL, colR = st.columns([1, 1])
+                with colL:
+                    chunk_s = st.slider("Chunk seconds", 1.0, 4.0, 2.0, 0.5, key="live_chunk_s")
+                with colR:
+                    pause_s = st.slider("Pause between chunks", 0.0, 1.0, 0.2, 0.1, key="live_pause_s")
 
-                live_result = compute_results(text_from_audio, chosen_override_lang)
-                st.session_state["current_result"] = live_result
-                if live_result.get("ok"):
-                    push_history(live_result)
+                rel_thr = st.slider(
+                    "Silence sensitivity (relative)", 0.02, 0.20, 0.08, 0.01, key="live_rel"
+                )
+                abs_thr = st.slider(
+                    "Silence floor (absolute)", 0.0003, 0.0050, 0.0010, 0.0001, key="live_abs"
+                )
 
-                st.rerun()
+                level_box = st.empty()
+                meter = level_box.progress(0.0, text="Listening level: 0.00")
+                x = record_audio_with_meter(
+                    device_index=device_index,
+                    seconds=float(chunk_s),
+                    fs=fs,
+                    meter_placeholder=meter,
+                    meter_label="Listening level",
+                )
+                level_box.empty()
 
-    else:
-        # Advanced local mode using sounddevice (works only on your machine)
-        st.markdown("**Local device mic (advanced)**")
+                x_trim = trim_silence(x, fs, rel_thresh=float(rel_thr), abs_thresh=float(abs_thr))
+                if x_trim.size > 0:
+                    wav_path = write_temp_wav(x_trim, fs=fs)
+                    with st.spinner("Transcribing..."):
+                        text_from_audio, lang_from_audio = transcribe_audio_file(
+                            wav_path, model_name="base"
+                        )
 
-        colL, colR = st.columns([1, 1])
-        with colL:
-            chunk_s = st.slider("Chunk seconds", 1.0, 4.0, 2.0, 0.5)
-        with colR:
-            pause_s = st.slider("Pause between chunks", 0.0, 1.0, 0.2, 0.1)
+                    text_from_audio = (text_from_audio or "").strip()
+                    if text_from_audio and text_from_audio != st.session_state.get("last_live_text", ""):
+                        st.session_state["last_live_text"] = text_from_audio
+                        st.session_state["text_phrase"] = text_from_audio
+                        st.session_state["audio_lang"] = lang_from_audio
 
-        rel_thr = st.slider("Silence sensitivity (relative)", 0.02, 0.20, 0.08, 0.01, key="live_rel")
-        abs_thr = st.slider("Silence floor (absolute)", 0.0003, 0.0050, 0.0010, 0.0001, key="live_abs")
+                        compute_and_store(text_from_audio, chosen_override_lang, push=True)
 
-        level_box = st.empty()
-        meter = level_box.progress(0.0, text="Listening level: 0.00")
-
-        x = record_audio_with_meter(
-            device_index=device_index,
-            seconds=float(chunk_s),
-            fs=fs,
-            meter_placeholder=meter,
-            meter_label="Listening level",
-        )
-        level_box.empty()
-
-        x_trim = trim_silence(x, fs, rel_thresh=float(rel_thr), abs_thresh=float(abs_thr))
-        if x_trim.size > 0:
-            wav_path = write_temp_wav(x_trim, fs=fs)
-            text_from_audio, lang_from_audio = transcribe_audio_file(wav_path, model_name="base")
-            text_from_audio = (text_from_audio or "").strip()
-
-            if text_from_audio and text_from_audio != st.session_state.get("last_live_text", ""):
-                st.session_state["last_live_text"] = text_from_audio
-                st.session_state["text_phrase"] = text_from_audio
-                st.session_state["audio_lang"] = lang_from_audio
-
-                live_result = compute_results(text_from_audio, chosen_override_lang)
-                st.session_state["current_result"] = live_result
-                if live_result.get("ok"):
-                    push_history(live_result)
-
-        # Keep your old loop behavior for local mode
-        do_rerun = True
-        rerun_sleep_s = float(pause_s)
+                do_rerun = True
+                rerun_sleep_s = float(pause_s)
 
 # -----------------------
-# Results section (always renders, all modes)
+# Results section (always renders)
 # -----------------------
 st.subheader("Input text")
 text = st.text_input("Type a phrase", key="text_phrase")
 
-result = None
+# If user edits text manually, recompute (no history push for manual edits)
 if text and text.strip():
     cached = st.session_state.get("current_result")
-    if cached and cached.get("text", "") == text.strip():
-        result = cached
-    else:
-        result = compute_results(text.strip(), chosen_override_lang)
-        st.session_state["current_result"] = result
+    if not (cached and cached.get("text", "") == text.strip()):
+        compute_and_store(text.strip(), chosen_override_lang, push=False)
+
+result = st.session_state.get("current_result")
 
 if result:
     st.subheader("Result")
-    if not result["ok"]:
+    if not result.get("ok"):
         st.warning("No IPA produced, try a different input or language.")
     else:
         why = result["why"]
-
         st.subheader("Top matches")
-        rows_all = list(result["top"] or [])
+
+        rows_all = list(result.get("top") or [])
 
         # normalize types for display
         for r in rows_all:
@@ -849,7 +939,6 @@ if result:
             if "display" not in r:
                 r["display"] = r.get("word", "")
 
-        # SFW filter (display-only, applied to table + speak list + top card)
         sfw_on = bool(st.session_state.get("sfw_mode", True))
         if sfw_on:
             rows = [r for r in rows_all if int(r.get("severity", 0)) < 3]
@@ -874,7 +963,9 @@ if result:
                 st.markdown(f"**Similarity:** `{top1['similarity']:.3f}`")
                 st.markdown(f"**Distance:** `{top1['distance']:.3f}`")
 
-            # TTS for top match
+            # -----------------------
+            # TTS + full width table (NOT inside the right column)
+            # -----------------------
             colT1, colT2 = st.columns([1, 2])
             with colT1:
                 if st.button("Speak top match", key="speak_top_match"):
@@ -886,17 +977,78 @@ if result:
             with colT2:
                 st.caption("Uses espeak voices, some languages may not be installed or may differ.")
 
-            st.dataframe(
-                rows,
-                use_container_width=True,
-                hide_index=True,
-                column_config={
-                    "display": st.column_config.TextColumn("word"),
-                    "word": st.column_config.TextColumn("word_raw"),
-                    "distance": st.column_config.NumberColumn("distance", format="%.3f"),
-                    "similarity": st.column_config.NumberColumn("similarity", format="%.3f"),
-                    "severity": st.column_config.NumberColumn("severity", format="%d"),
-                },
+            # IMPORTANT: table is rendered OUTSIDE the columns, so it can span full width
+            df = pd.DataFrame(rows)
+
+            cols = [
+                "display",
+                "word",
+                "lang",
+                "meaning",
+                "severity",
+                "ipa",
+                "source_token",
+                "best_window",
+                "distance",
+                "similarity",
+            ]
+            cols = [c for c in cols if c in df.columns]
+            df = df[cols]
+
+            df = df.fillna("").astype(str).applymap(html.escape)
+            table_html = df.to_html(index=False, escape=False)
+
+            st.markdown(
+                """
+                <style>
+                .curser-table-wrap {
+                    width: 100%;
+                    max-width: 100%;
+                    background: #0f1117;
+                    border: 1px solid rgba(255,255,255,0.12);
+                    border-radius: 14px;
+                    padding: 10px;
+                    overflow-x: auto;
+                    box-sizing: border-box;
+                }
+                .curser-table-wrap table {
+                    width: 100%;
+                    min-width: 900px;
+                    border-collapse: collapse;
+                    background: #0f1117;
+                    color: #ffffff;
+                    font-family: var(--ui-font) !important;
+                    font-size: 12px;
+                }
+                .curser-table-wrap th {
+                    background: #12141a;
+                    color: #ffffff;
+                    text-align: left;
+                    padding: 8px 10px;
+                    border-bottom: 1px solid rgba(255,255,255,0.12);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1;
+                }
+                .curser-table-wrap td {
+                    background: #0f1117;
+                    color: #ffffff;
+                    padding: 8px 10px;
+                    border-bottom: 1px solid rgba(255,255,255,0.08);
+                    vertical-align: top;
+                    white-space: nowrap;
+                }
+                .curser-table-wrap tr:hover td {
+                    background: rgba(255,70,70,0.12);
+                }
+                </style>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            st.markdown(
+                f'<div class="curser-table-wrap" dir="auto">{table_html}</div>',
+                unsafe_allow_html=True,
             )
 
             with st.expander("Speak a match"):
@@ -929,9 +1081,7 @@ if result:
             st.write("Best window:", why["best_window"])
             st.write("Distance:", round(why["distance"], 3), "Similarity:", round(why["similarity"], 3))
 
-        # Export respects SFW mode to avoid leaking hidden results
         export_top = rows if bool(st.session_state.get("sfw_mode", True)) else rows_all
-
         export_obj = {
             "text": result.get("text"),
             "best_span": result.get("best_span"),
@@ -956,9 +1106,8 @@ if result:
             with st.expander("Show JSON"):
                 st.code(export_json, language="json")
 
-
 # -----------------------
-# History
+# History (always renders)
 # -----------------------
 st.subheader("History (latest first)")
 if not st.session_state["history"]:
@@ -1000,10 +1149,9 @@ else:
         mime="application/json",
     )
 
-
 # -----------------------
-# Rerun scheduling for Listen mode (must be last)
+# Rerun scheduling for local Listen mode only
 # -----------------------
-if do_rerun and st.session_state.get("live_mode", False):
+if do_rerun and st.session_state.get("live_mode", False) and mode == "Listen (live-ish)":
     time.sleep(rerun_sleep_s)
     st.rerun()
