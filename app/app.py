@@ -32,7 +32,7 @@ os.environ["ELEVEN_API_KEY"] = st.secrets["ELEVENLABS_API_KEY"]
 import elevenlabs
 
 k = st.secrets["ELEVENLABS_API_KEY"]
-st.write("Using ElevenLabs key preview:", k[:6] + "..." + k[-4:])
+
 
 # ElevenLabs is optional, keep app runnable even if not installed
 try:
