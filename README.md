@@ -11,50 +11,56 @@ And so the other day, that's I did. I started calling her a nickname over the ph
 
 That's because, the nickname that I innocently gave her sounded *very close* to a slang word for a certain reproductive organ in Bengali.
 
-
 I learned Bengali when I was a kid speaking with my parents and relatives, so unfortunately, the slang aspect of my lexicon is not up to par with the rest of my Bengali knowledge. On one hand, this was a great learning experience that allowed me to add a great linguistic tool to my sparse tool belt, but I also didn't want to run into this issue again where I spend all this brain power brainstorming a nickname, only for it get shot down.
+
+## Why this App Exists: Naming Things Without Accidentally Ruining Your Life
+
+It turns out that coming up with names is hard, especially when you want them to be unique, abstract, and not accidentally offensive in some other language.
+
+Pharmaceutical companies deal with this exact problem all the time. When creating brand names for drugs, they are required to use names that are clearly distinct from existing medications and are not allowed to imply efficacy, mechanism, or outcomes. You cannot call a drug something that sounds like it cures cancer, even if you really wish it did. This forces companies into inventing strange, abstract, made up names that are legally safe but can linguistically questionable when the drug starts to get sold over-seas.
+
+The same problem shows up in tech, just with fewer lawyers involved. If you are at a hackathon, YC, or convincing yourself that your next LLM wrapper is definitely the next big thing, you probably want a name that sounds catchy and unique. Names like Hulu, Zillow, Spotify, Stripe, or Airbnb work because they are abstract enough to be distinctive, but that also means you are one unlucky phonetic collision away from naming your startup something deeply cursed in another language.
+
+Curser sits right in that uncomfortable gap. It is a tool for answering the question, “Does this innocent sounding word get me in trouble somewhere else?”, before you commit to it as a nickname, product name, brand, or inside joke.
+
+In other words, this is a nickname QA tool that accidentally doubles as a bad idea detector for naming things.
+
 
 ## Overview
 
-In its current state, this project is a (locally-run) interactive webpage/application that takes in spoken or typed imputs and finds the closest curse word in multiple languages to the input.
+In its current state, this project is an interactive web application that takes spoken or typed input and identifies the closest potentially offensive or curse-like words across multiple languages based on phonetic similarity.
 
+At a high level, the app records or accepts audio, transcribes speech locally using Whisper, converts candidate text spans into IPA phonemes using eSpeak, and compares them against a curated multilingual database of words. PanPhon is then used to compute phonetic distances between the input and database entries. Results are ranked by similarity and presented through an interactive interface with explanations, sortable tables, and optional text-to-speech playback.
 
-At a high level: the app records or accepts audio, transcribes speech locally using Whisper, converts candidate text spans into IPA phonemes with eSpeak, and compares them against the database of words and asks PanPhon to calculate distances from the input word/phrase to the db entries. Results then are ranked by phonetic similarity and presented with explanations, sortable tables, and optional text-to-speech playback on the web page.
-
-
-Like I said before, its entirely local and supports live microphone input, one-shot recording, and audio uploads, with real-time level metering and session history tracking. The interface is built off of pure Streamlit for the interface, Whisper from OpenAI for speech recognition.
+The entire pipeline runs locally by default and supports live microphone input, one-shot recording, and audio uploads, complete with real-time level metering and session-based history tracking. The interface is built entirely with Streamlit, while speech recognition is powered by OpenAI’s Whisper. Together, these components make Curser a practical tool for detecting accidental phonetic collisions across languages, especially useful when evaluating names, brands, or terminology that must avoid unintended offensive meanings.
 
 ## Set-up
 
-This project supports the `conda` environment setup. The `environment.yml` file contains all the project dependencies (as far as I know), so to be able to run this project, simply activate the conda environment.
+This project uses a standard Python virtual environment with pip-based dependency management.
 
-To set up the `conda` environment, first make sure that you have a distribution of conda installed on your machine, such as Anaconda, Mini-Conda or Miniforge.
+To get started, first make sure you have a recent version of Python installed (Python 3.10 or newer is recommended). Then, clone this repository locally.
 
-Then, pull this repository locally. 
-
-Once you've done that, navigate to your remote clone of the repository and install the required dependencies using the command:
-
+From the root of the repository, create and activate a virtual environment:
 ```
-conda env create -f environment.yml
+python -m venv .venv
+source .venv/bin/activate   (for macOS/Linux)
 ```
-
-*Note: this may take a while, as there are a lot of packages that are not available in conda, so they are being pip-installed instead.*
-
-Once the environment has been created, run this command to activate the environment:
-
+Next, install the required dependencies:
 ```
-conda activate curserio
+pip install -r requirements.txt
 ```
 
-Now, you should have all the packages to run the Curser application. Navigate to the **Quick Start** section for instructions on how to do that. 
+Now, you should have all the packages to run the Curser application locally . Navigate to the **Quick Start** section for instructions on how to do that. 
 
-# Structure
+## Structure
 
 ```
 Curser/
 │
 ├── app/
-│   └── app.py                 # Main Streamlit application 
+│   ├── app.py                 # Main Streamlit application
+│   └── static/
+│       └── curser-logo.png    # Application logo
 │
 ├── audios/
 │   ├── coolio.m4a             # Sample audio input
@@ -63,69 +69,97 @@ Curser/
 │
 ├── db/
 │   ├── build_db.py            # Script to construct the phonetic database
-│   ├── db_seed.json           # Seed data for initializing database
+│   ├── db_seed.json           # Seed data for initializing the database
 │   └── db.json                # Generated phonetic database
-
 │
 ├── old_tests/
-│   ├── db.py                  # Database access and helper functions
+│   ├── db.py                  # Early database helpers
 │   ├── demo_text.py           # Early prototype for text-based testing
-│   └── test_soundalike.py     # Testing sound-alike word matching
+│   └── test_soundalike.py     # Initial sound-alike matching experiments
 │
-├── scr/
-│   ├── __pycache__/           # Cached Python bytecode
+├── src/
 │   ├── __init__.py            # Package initializer
-│   ├── asr.py                 # Automatic speech recognition logic
-│   ├── core.py                # Core application logic
-│   └── g2p.py                 # Grapheme-to-phoneme conversion module
+│   ├── asr.py                 # Speech recognition and language handling
+│   ├── core.py                # Core phonetic matching and scoring logic
+│   └── g2p.py                 # Grapheme-to-phoneme conversion utilities
 │
+├── requirements.txt           # pip-based Python dependencies
+├── packages.txt               # System-level dependencies for deployment
+├── runtime.txt                # Python runtime specification
 ├── .gitignore                 # Git ignore rules
-├── environment.yml            # Conda environment specification
 └── README.md                  # Project documentation
 ```
 
-Currently, there are 5 main sub-directories.
+### Directory Overview
 
-The `app` folder contains the main `app.py` file, which contains the main app launcher and website structure. This is the piece that needs to be run to launch the app. See the **Quick Start** section below for more info.
+Currently, there are five main sub-directories.
 
-The `audios` folder contains a few testing audios, so that if you chose to test the app by uploading a pre-recorded audio to the app. One is intentionally unclear, while the other two are meant to be slighly clearer test cases.
+The `app` directory contains the Streamlit application entry point (`app.py`) along with static assets such as the application logo. Running this file launches the Curser web interface For more information on how to run the app, see the **Quick Start** section below.
 
-The `db` folder contains both the current database of words and a script that builds a data base given a `seed` json file. See the **Customizing the Word Database** for information on how to create your own database of words (in-case you want to use this project to do something useful). 
+The `audios` directory includes sample audio files used to test transcription and phonetic matching. These range from clearly spoken inputs to intentionally ambiguous pronunciations for stress-testing the pipeline.
 
-The `old_tets` folder contains old python code that I used to make sure the core parts of the app work. The app no longer needs these files to function.
+The `db` directory contains the phonetic database and supporting scripts. `db_seed.json` defines the raw word entries, while `build_db.py` converts them into IPA representations and produces the final searchable database (`db.json`). See the **Customizing the Word Database** for information on how to create your own database of words.
 
-The `scr` folder contains the actual meat of the app. In order for the app to recognize these python files and import them, I had to create an init file, but its empty. 
+The `old_tests` directory contains legacy scripts and early prototypes that were used to validate core ideas during development. These files are no longer required for the application to function.
 
-The `asr.py` file is used to determine the language if the user uses the auto language detect function. 
+The `src` directory holds the core logic of the project.
+	•	`asr.py` (Automatic Speech Recognition) handles speech transcription and language inference.
+	•	`core.py` implements the phonetic matching engine, including tokenization, IPA normalization, distance computation, and result ranking.
+	•	`g2p.py` (Grapheme-to-Phoneme) converts text into cleaned IPA using eSpeak, with multilingual support and fallback handling.
 
-The `core.py` contains the core logic for the app. It's basically the scoring and phonetic matching engine of the project. It contains utility functions for tokenizing text, normalizing IPA, computing phonetic distances, ranking database candidates, and choosing the best word span from user input. Everything is organized into functions so they can be easily used seperately and debugged/modified if needed. 
-
-The `g2p.py` file is what turns the text imput into a cleaned IPA (International Phonetic Alphabet) string using espeak, with special handling for multiple languages and Korean fallback logic.
-
+The remaining files (`requirements.txt`, `packages.txt`, and `runtime.txt`) define the Python and system dependencies needed for local execution and deployment. See the **Set-up** section below for directions on how to install the dependencies needed for the project to run.
+ 
 
 ## Quick Start
 
-If you want to test out the application, run the `app.py` python file in a terminal window using the command:
+If you want to test out the application, run the `app.py` Python file from a terminal using:
 
 ```
 streamlit run app/app.py
 ```
 
-to launch the website. Make sure that you are running this command from the project root, NOT inside the app sub-folder, or any other sub folder, as that will cause Streamlit's pathfinding to fail. Example audio files can be found in the audios directory, or you can record your own audio from the app itself.
+This launches the Streamlit web interface. Make sure you run this command from the project root, not from inside the `app/` directory or any other subfolder, otherwise Streamlit’s path resolution will fail.
 
-## Curstomizing the Word Database
+Example audio files are provided in the audios/ directory, but you can also record live audio or upload your own recordings directly through the app interface.
 
-So, if you want to use this app to do something actually useful (like do some basic speech recognition), you can modify the database of words that this app pulls from.
 
-The `seed` file is much simpler than the main database, so it is much easier to add words to. It contains the categories for the word, the language, the meaning, the severity, and the category. This structure is general enough so that you could theoretically use it to recognize words for any purpose and rank them based off any quality just by changing what the severity field refers to.
+## Customizing the Word Database
 
-To set up a new database, paste/create a file in the same simplified format as `db_seed.json` and run the `build_db.py` file to build the JSON database that the app will use. In order to actually use your newly generated database, rename the file to `db.json`. 
+While the default database is focused on identifying curse words across languages, the underlying system is intentionally more general. You can adapt it for lightweight language detection, phonetic screening, name vetting, brand safety checks, or any task where “what this sounds like” matters more than how it is spelled.
 
-The output database adds 2 new categories and reformats the data so that the app scripts can read it. The two new categories are `ipa` and `ipa_norm`. These two categories are what are used to actually determine the closest word(s) to the input.
+### Seed database structure
 
-The `ipa` category is the `ipa` pronunciation of the word. This contains stress marks, tone indicators, and other subtle markers (I'm not a linguistics expert) that reflect closely how the word is pronounced in the standard pronunciation of whatever language the word comes from.
+The database is defined in two stages. The first is a simplified seed file, such as `db_seed.json`. This file is intentionally human-readable and easy to edit. Each entry includes fields like:
+	•	`word`: the canonical form used for phonetic matching
+	•	`display`: the version shown in the UI (optional but recommended)
+	•	`lang`: language code
+	•	`meaning`: human-readable explanation
+	•	`severity`: a numeric score you define
+	•	`category`: any grouping label you want
 
-Unfortunately, this alone does not guarantee accurate analysis, since there are various ways that words can be pronounced. This problem is usually addressed in larger (and more complicated) language detection models by encoding multiple `ipa` pronunciations, however, for the purposes of this app, the best compromise that I found was just using a category called `ipa_norm`, which is essentially the IPA pronunciation without the additional pronunciation markers. 
+The key distinction is between word and display:
+	•	`word` is the form that gets converted to IPA and used internally for phonetic comparison
+	•	`display` is what the user sees in the UI and result tables
+
+This allows you to store words in a normalized or romanized form for consistent phonetic processing, while still displaying the correct native script, accents, or diacritics to users. For Latin-based languages, display can simply be the correctly accented spelling. For non-Latin scripts, this separation becomes especially important, since grapheme-to-phoneme behavior can vary by language, input encoding, and voice configuration, and phonetic consistency matters more than orthographic fidelity for sound-alike matching.
+
+The `severity` field is intentionally abstract. In the default setup it represents offensiveness, but you can reinterpret it freely, for example as risk level, confidence score, priority, or any other ranking dimension relevant to your use case.
+
+### Building the phonetic database
+
+Once you have a seed file in the same format as `db_seed.json`, run:
+```
+python db/build_db.py
+```
+This script generates the full database that the app actually consumes. The output file includes two additional fields for each entry:
+	•	`ipa`: the raw IPA transcription generated by eSpeak
+	•	`ipa_norm`: a normalized version of the IPA string
+
+The `ipa` field preserves stress marks, length markers, and other phonetic annotations that reflect a more precise pronunciation. However, exact IPA matches are often too strict for real-world audio, accents, and imperfect pronunciation.
+
+To make matching more robust, the app relies primarily on `ipa_norm`, which strips out many of these markers and produces a more stable phonetic representation. This normalized form enables practical, cross-language sound-alike matching without requiring large neural models or multiple pronunciation variants per word.
+
+After generation, rename the output file to `db.json` (if it is not already), and the app will automatically load it on the next run.
 
 ## Challenges I ran into
 

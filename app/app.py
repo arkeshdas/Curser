@@ -69,45 +69,47 @@ DB = load_db()
 # Page config + CSS theme
 # -----------------------
 st.set_page_config(page_title="Curser", page_icon="🖱️", layout="centered")
+
 st.markdown(
     """
     <style>
-      /* Pixel font */
       @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
       :root {
         --curser-font: 'Press Start 2P', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       }
 
-      /* Force pixel font everywhere (Streamlit can be stubborn) */
-      html, body, .stApp, .stApp * {
+      /* Pixel font for normal text and headings */
+      html, body, .stApp {
+        font-family: var(--curser-font) !important;
+      }
+      h1, h2, h3, h4, h5, h6, p, label, span, small, li {
         font-family: var(--curser-font) !important;
       }
 
-      /* Background gradient: top (red) to bottom (gray) */
+      /* Background gradient: top to bottom */
       .stApp {
         background: linear-gradient(180deg, #ff4646 0%, #bdbdbd 100%);
       }
 
-      /* Center column, more vertical */
+      /* Center column */
       .block-container {
         max-width: 980px;
         padding-top: 1.1rem;
         padding-bottom: 2.5rem;
       }
 
-      /* Remove default header background */
       header[data-testid="stHeader"] {
         background: transparent;
       }
 
-      /* Header row: logo + title */
-      .curser-header {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        margin: 0 0 12px 0;
+      /* Crisp logo rendering */
+      img {
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
       }
+
+      /* Header text */
       .curser-title {
         font-family: var(--curser-font) !important;
         font-size: 26px;
@@ -124,12 +126,6 @@ st.markdown(
         letter-spacing: 0.25px;
         margin-top: 6px;
         color: rgba(255,255,255,0.85);
-      }
-
-      /* Force crisp logo rendering */
-      img {
-        image-rendering: pixelated;
-        image-rendering: crisp-edges;
       }
 
       /* Dark translucent cards */
@@ -155,18 +151,20 @@ st.markdown(
         color: rgba(255,255,255,0.92) !important;
       }
 
-      /* Inputs: darker, clear borders */
+      /* Inputs */
       .stTextInput input,
       .stSelectbox div[data-baseweb="select"] > div,
       .stTextArea textarea {
+        font-family: var(--curser-font) !important;
         background: rgba(15,15,18,0.92) !important;
         color: rgba(255,255,255,0.96) !important;
         border: 1px solid rgba(255,255,255,0.18) !important;
         border-radius: 12px !important;
       }
 
-      /* Buttons: dark with red accent */
+      /* Buttons */
       .stButton > button {
+        font-family: var(--curser-font) !important;
         background: rgba(15,15,18,0.92) !important;
         color: rgba(255,255,255,0.96) !important;
         border: 1px solid rgba(255,70,70,0.78) !important;
@@ -179,7 +177,7 @@ st.markdown(
         transform: translateY(-1px);
       }
 
-      /* Sliders: increase contrast */
+      /* Sliders */
       div[data-testid="stSlider"] > div {
         color: rgba(255,255,255,0.92) !important;
       }
@@ -188,7 +186,7 @@ st.markdown(
         border: 2px solid rgba(0,0,0,0.40) !important;
       }
 
-      /* Dataframe: dark-ish */
+      /* Dataframe */
       [data-testid="stDataFrame"] {
         background: rgba(15,15,18,0.62) !important;
         border-radius: 14px !important;
@@ -196,14 +194,41 @@ st.markdown(
         overflow: hidden;
       }
 
-      /* Tighten headings */
+      /* Headings spacing */
       h2, h3 {
         margin-top: 0.65rem !important;
+      }
+
+      /* --- File uploader fixes (pixel font causes overlap) --- */
+      [data-testid="stFileUploader"] * {
+        font-size: 12px !important;
+        line-height: 1.25 !important;
+      }
+      [data-testid="stFileUploader"] label {
+        margin-bottom: 6px !important;
+      }
+      [data-testid="stFileUploader"] section {
+        padding: 10px 12px !important;
+      }
+      [data-testid="stFileUploader"] [data-testid="stFileDropzone"] * {
+        white-space: normal !important;
+      }
+      [data-testid="stFileUploader"] small,
+      [data-testid="stFileUploader"] [data-testid="stFileDropzone"] small {
+        display: block !important;
+        margin-top: 6px !important;
+        opacity: 0.85 !important;
+      }
+      [data-testid="stFileUploader"] button {
+        font-family: var(--curser-font) !important;
+        padding: 8px 12px !important;
+        border-radius: 12px !important;
       }
     </style>
     """,
     unsafe_allow_html=True,
 )
+
 # -----------------------
 # Helpers: card wrappers
 # -----------------------
@@ -527,11 +552,22 @@ def push_history(result: dict):
 # -----------------------
 # Mode selector UI
 # -----------------------
-mode = st.selectbox("Mode", ["Listen (live-ish)", "Record (one-shot)", "Upload audio"], index=0)
+MODES_ALL = ["Listen (live-ish)", "Record (one-shot)", "Upload audio"]
+MODES_NO_MIC = ["Upload audio"]
+
+if SD_AVAILABLE:
+    mode = st.selectbox("Mode", MODES_ALL, index=0)
+else:
+    st.warning("Mic input is unavailable in this environment, only Upload mode is enabled.")
+    mode = st.selectbox("Mode", MODES_NO_MIC, index=0)
 
 # Mic selector for listen + record
 device_index = None
 if mode in ("Listen (live-ish)", "Record (one-shot)"):
+    if not SD_AVAILABLE or sd is None:
+        st.error("Mic input is not available. Use Upload audio mode instead.")
+        st.stop()
+
     st.subheader("Microphone")
     devices = sd.query_devices()
     input_devices = [
