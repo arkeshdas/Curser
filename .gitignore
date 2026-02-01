@@ -214,3 +214,5 @@ environment.yml
 .AppleDouble
 .LSOverride
 .streamlit/secrets.toml
+
+.streamlit/secrets.toml
