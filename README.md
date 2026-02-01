@@ -13,17 +13,17 @@ That's because, the nickname that I innocently gave her sounded *very close* to 
 
 I learned Bengali when I was a kid speaking with my parents and relatives, so unfortunately, the slang aspect of my lexicon is not up to par with the rest of my Bengali knowledge. On one hand, this was a great learning experience that allowed me to add a great linguistic tool to my sparse tool belt, but I also didn't want to run into this issue again where I spend all this brain power brainstorming a nickname, only for it get shot down.
 
-## Why this App Exists: Naming Things Without Accidentally Ruining Your Life
+## Why This App Exists: Because Bad Names Are Forever
 
-It turns out that coming up with names is hard, especially when you want them to be unique, abstract, and not accidentally offensive in some other language.
+It turns out that coming up with names is hard, especially when you want them to be unique, abstract, and not accidentally offensive in some other language. A bad name doesn't just tell potential customers and investors that you don't care, it quietly puts you at a disadvantage before anyone even looks at what you built.
 
-Pharmaceutical companies deal with this exact problem all the time. When creating brand names for drugs, they are required to use names that are clearly distinct from existing medications and are not allowed to imply efficacy, mechanism, or outcomes. You cannot call a drug something that sounds like it cures cancer, even if you really wish it did. This forces companies into inventing strange, abstract, made up names that are legally safe but can linguistically questionable when the drug starts to get sold over-seas.
+Pharmaceutical companies deal with this exact problem constantly. When creating brand names for drugs, they are required to use names that are clearly distinct from existing medications and are not allowed to imply efficacy, mechanism, or outcomes. You cannot call a drug something that sounds like it cures cancer, even if you really wish it did. This pushes companies toward strange, abstract, made up names that are legally safe, but often linguistically fragile once the drug is sold overseas. A name that passed every legal review can still fall apart the moment it hits another language or culture.
 
-The same problem shows up in tech, just with fewer lawyers involved. If you are at a hackathon, YC, or convincing yourself that your next LLM wrapper is definitely the next big thing, you probably want a name that sounds catchy and unique. Names like Hulu, Zillow, Spotify, Stripe, or Airbnb work because they are abstract enough to be distinctive, but that also means you are one unlucky phonetic collision away from naming your startup something deeply cursed in another language.
+The same problem shows up in tech, just with fewer lawyers involved and more optimism. If you are at a hackathon, YC, or convincing yourself that your next LLM wrapper is definitely the next big thing, you probably want a name that sounds catchy and distinctive. Names like Hulu, Zillow, Spotify, Stripe, or Airbnb work because they are abstract enough to stand out. That abstraction is also a risk, because you are always one unlucky phonetic collision away from naming your product something unintentionally cursed somewhere else. At that point, it does not matter how good the idea is, the damage is already done.
 
 Curser sits right in that uncomfortable gap. It is a tool for answering the question, “Does this innocent sounding word get me in trouble somewhere else?”, before you commit to it as a nickname, product name, brand, or inside joke.
 
-In other words, this is a nickname QA tool that accidentally doubles as a bad idea detector for naming things.
+In other words, this is a nickname QA tool that doubles as a way to avoid very preventable naming regret.
 
 
 ## Overview
