@@ -134,3 +134,6 @@ Unfortunately, this alone does not guarantee accurate analysis, since there are 
 
 
 ## What's next for Curser
+
+https://github.com/4troDev/profanity.csv/tree/main
+I used this database, but removed compound swear words

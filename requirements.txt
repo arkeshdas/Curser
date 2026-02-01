@@ -1,0 +1,8 @@
+streamlit==1.52.2
+numpy
+scipy
+torch
+openai-whisper==20250625
+panphon==0.22.2
+hangul-romanize==0.1.0
+langdetect==1.0.9
