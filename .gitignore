@@ -213,3 +213,4 @@ environment.yml
 .DS_Store
 .AppleDouble
 .LSOverride
+.streamlit/secrets.toml
