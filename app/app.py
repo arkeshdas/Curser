@@ -29,6 +29,12 @@ from src.core import (
 )
 from src.g2p import text_to_ipa
 
+try:
+    from streamlit_mic_recorder import mic_recorder  # type: ignore
+    BROWSER_MIC_AVAILABLE = True
+except Exception:
+    mic_recorder = None
+    BROWSER_MIC_AVAILABLE = False
 
 # -----------------------
 # Optional mic support (often unavailable on Streamlit Cloud)
@@ -44,6 +50,25 @@ except Exception:
     SD_AVAILABLE = False
     sd = None
 
+def get_default_input_device_index() -> int | None:
+    if not SD_AVAILABLE or sd is None:
+        return None
+
+    try:
+        devices = sd.query_devices()
+    except Exception:
+        return None
+
+    input_devices = [(i, d) for i, d in enumerate(devices) if d.get("max_input_channels", 0) > 0]
+    if not input_devices:
+        return None
+
+    for i, d in input_devices:
+        name = (d.get("name") or "").lower()
+        if "macbook" in name or "built-in" in name:
+            return int(i)
+
+    return int(input_devices[0][0])
 
 def infer_lang(text: str) -> str:
     try:
@@ -78,23 +103,21 @@ st.markdown(
       :root {
         --curser-font: 'Press Start 2P', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
+        --ui-font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
         --card-bg: rgba(10, 10, 12, 0.58);
         --card-border: rgba(255, 255, 255, 0.12);
-
         --control-bg: rgba(15,15,18,0.92);
         --control-border: rgba(255,255,255,0.18);
-
         --accent: rgba(255,70,70,0.92);
         --text: rgba(255,255,255,0.92);
         --text-dim: rgba(255,255,255,0.78);
       }
 
-      /* Background gradient: top (red) to bottom (gray) */
+      /* Background */
       .stApp {
         background: linear-gradient(180deg, #ff4646 0%, #bdbdbd 100%);
       }
 
-      /* Center column, more vertical */
       .block-container {
         max-width: 980px;
         padding-top: 1.1rem;
@@ -105,9 +128,22 @@ st.markdown(
         background: transparent;
       }
 
-      /* Pixel font everywhere */
-      html, body, .stApp, .stApp * {
+      /* Pixel font: apply to your content, not the entire app */
+      .curser-title,
+      .curser-subtitle,
+      [data-testid="stMarkdownContainer"],
+      [data-testid="stMarkdownContainer"] *,
+      [data-testid="stText"] *,
+      [data-testid="stCaptionContainer"] *,
+      label, small {
         font-family: var(--curser-font) !important;
+      }
+
+      /* Keep icons and SVGs on normal font rendering */
+      [data-testid="stIcon"], 
+      [data-testid="stIcon"] *,
+      svg, svg * {
+        font-family: var(--ui-font) !important;
       }
 
       /* Crisp logo rendering */
@@ -116,7 +152,7 @@ st.markdown(
         image-rendering: crisp-edges;
       }
 
-      /* Curser header text (your custom header divs) */
+      /* Header text */
       .curser-title {
         font-size: 26px;
         font-weight: 800;
@@ -145,31 +181,27 @@ st.markdown(
         margin: 12px 0;
       }
 
-      /* Make normal Streamlit text readable on dark background */
-      h1, h2, h3, h4, h5, h6,
-      p, label, span, small, li, div {
+      /* Text color */
+      h1, h2, h3, h4, h5, h6, p, span, small, li, div {
         color: var(--text) !important;
       }
 
-      /* Inputs: selectbox, text input, textarea */
+      /* Inputs */
       .stTextInput input,
       .stSelectbox div[data-baseweb="select"] > div,
       .stTextArea textarea {
+        font-family: var(--curser-font) !important;
         background: var(--control-bg) !important;
         color: rgba(255,255,255,0.96) !important;
         border: 1px solid var(--control-border) !important;
         border-radius: 12px !important;
       }
 
-      /* Selectbox dropdown text + placeholder */
-      .stSelectbox [data-baseweb="select"] * {
-        color: rgba(255,255,255,0.96) !important;
-      }
-
       /* Buttons */
       .stButton > button,
       button[kind="secondary"],
       button[kind="primary"] {
+        font-family: var(--curser-font) !important;
         background: var(--control-bg) !important;
         color: rgba(255,255,255,0.96) !important;
         border: 1px solid rgba(255,70,70,0.78) !important;
@@ -177,29 +209,16 @@ st.markdown(
         padding: 10px 14px !important;
         box-shadow: 0 7px 20px rgba(0,0,0,0.28);
       }
-      .stButton > button:hover,
-      button[kind="secondary"]:hover,
-      button[kind="primary"]:hover {
-        border-color: rgba(255,70,70,1.0) !important;
-        transform: translateY(-1px);
+
+      /* Dataframe: force normal UI font so it stays readable */
+      [data-testid="stDataFrame"],
+      [data-testid="stDataFrame"] * {
+        font-family: var(--ui-font) !important;
+        font-size: 12px !important;
+        line-height: 1.2 !important;
+        color: rgba(255,255,255,0.92) !important;
       }
 
-      /* Sliders: label + thumb */
-      div[data-testid="stSlider"] * {
-        color: var(--text) !important;
-      }
-      div[data-testid="stSlider"] [role="slider"] {
-        background: rgba(255,70,70,0.98) !important;
-        border: 2px solid rgba(0,0,0,0.40) !important;
-      }
-
-      /* Checkbox / toggle text */
-      div[data-testid="stCheckbox"] label,
-      div[data-testid="stToggle"] label {
-        color: var(--text) !important;
-      }
-
-      /* Dataframe container */
       [data-testid="stDataFrame"] {
         background: rgba(15,15,18,0.62) !important;
         border-radius: 14px !important;
@@ -207,42 +226,22 @@ st.markdown(
         overflow: hidden;
       }
 
-      /* Tighten headings spacing a bit */
-      h2, h3 {
-        margin-top: 0.65rem !important;
-      }
-
-      /* --- File uploader fixes (pixel font causes overlap) --- */
+      /* File uploader fixes */
       [data-testid="stFileUploader"] * {
         font-size: 12px !important;
         line-height: 1.25 !important;
       }
-
-      [data-testid="stFileUploader"] label {
-        font-size: 12px !important;
-        line-height: 1.25 !important;
-        margin-bottom: 6px !important;
-      }
-
       [data-testid="stFileUploader"] section {
         padding: 10px 12px !important;
       }
-
       [data-testid="stFileUploader"] [data-testid="stFileDropzone"] * {
         white-space: normal !important;
       }
-
-      [data-testid="stFileUploader"] small,
-      [data-testid="stFileUploader"] [data-testid="stFileDropzone"] small {
+      [data-testid="stFileUploader"] small {
         display: block !important;
         margin-top: 6px !important;
         opacity: 0.85 !important;
         color: var(--text-dim) !important;
-      }
-
-      [data-testid="stFileUploader"] button {
-        padding: 8px 12px !important;
-        border-radius: 12px !important;
       }
     </style>
     """,
@@ -574,42 +573,15 @@ def push_history(result: dict):
 # Mode selector UI
 # -----------------------
 MODES_ALL = ["Listen (live-ish)", "Record (one-shot)", "Upload audio"]
-MODES_NO_MIC = ["Upload audio"]
+MODES_UPLOAD_ONLY = ["Upload audio"]
 
-if SD_AVAILABLE:
+MIC_ANY_AVAILABLE = bool(BROWSER_MIC_AVAILABLE) or bool(SD_AVAILABLE)
+
+if MIC_ANY_AVAILABLE:
     mode = st.selectbox("Mode", MODES_ALL, index=0)
 else:
     st.warning("Mic input is unavailable in this environment, only Upload mode is enabled.")
-    mode = st.selectbox("Mode", MODES_NO_MIC, index=0)
-
-# Mic selector for listen + record
-device_index = None
-if mode in ("Listen (live-ish)", "Record (one-shot)"):
-    if not SD_AVAILABLE or sd is None:
-        st.error("Mic input is not available. Use Upload audio mode instead.")
-        st.stop()
-
-    st.subheader("Microphone")
-    devices = sd.query_devices()
-    input_devices = [(i, d["name"]) for i, d in enumerate(devices) if d.get("max_input_channels", 0) > 0]
-    if not input_devices:
-        st.error("No input devices found.")
-        st.stop()
-
-    default_idx = 0
-    for k, (i, name) in enumerate(input_devices):
-        if "macbook" in name.lower() or "built-in" in name.lower():
-            default_idx = k
-            break
-
-    choice = st.selectbox(
-        "Select microphone",
-        input_devices,
-        index=default_idx,
-        format_func=lambda x: f"{x[0]}: {x[1]}",
-    )
-    device_index = choice[0]
-
+    mode = st.selectbox("Mode", MODES_UPLOAD_ONLY, index=0)
 
 # -----------------------
 # G2P language override UI + SFW mode
@@ -680,6 +652,12 @@ if mode == "Upload audio":
 # -----------------------
 if mode == "Record (one-shot)":
     st.subheader("One-shot recording")
+
+    device_index = get_default_input_device_index()
+    if device_index is None:
+        st.error("Local device mic is not available here. Use Upload audio or Listen (browser mic).")
+        st.stop()
+
     dur_s = st.slider("Record seconds", 1.0, 8.0, 3.0, 0.5)
     rel_thr = st.slider("Silence sensitivity (relative)", 0.02, 0.20, 0.08, 0.01)
     abs_thr = st.slider("Silence floor (absolute)", 0.0003, 0.0050, 0.0010, 0.0001)
@@ -717,20 +695,25 @@ if mode == "Record (one-shot)":
         st.session_state["current_result"] = None
         st.rerun()
 
-
 # -----------------------
 # Mode: Listen live-ish
 # -----------------------
 if mode == "Listen (live-ish)":
     st.subheader("Live-ish listening")
-    colL, colR = st.columns([1, 1])
-    with colL:
-        chunk_s = st.slider("Chunk seconds", 1.0, 4.0, 2.0, 0.5)
-    with colR:
-        pause_s = st.slider("Pause between chunks", 0.0, 1.0, 0.2, 0.1)
 
-    rel_thr = st.slider("Silence sensitivity (relative)", 0.02, 0.20, 0.08, 0.01, key="live_rel")
-    abs_thr = st.slider("Silence floor (absolute)", 0.0003, 0.0050, 0.0010, 0.0001, key="live_abs")
+    # Default to browser mic because it works on Streamlit Cloud + locally
+    use_browser_mic = True
+    if SD_AVAILABLE and BROWSER_MIC_AVAILABLE:
+        use_browser_mic = st.toggle("Use browser mic (recommended)", value=True)
+    elif BROWSER_MIC_AVAILABLE and not SD_AVAILABLE:
+        st.info("Browser mic enabled, local device mic is unavailable in this environment.")
+        use_browser_mic = True
+    elif SD_AVAILABLE and not BROWSER_MIC_AVAILABLE:
+        st.warning("Browser mic component missing. Install streamlit-mic-recorder.")
+        use_browser_mic = False
+    else:
+        st.error("No mic input available. Use Upload audio mode instead.")
+        st.stop()
 
     colA, colB, colC = st.columns([1, 1, 2])
     if colA.button("Start listening"):
@@ -741,14 +724,68 @@ if mode == "Listen (live-ish)":
     if colC.button("Clear history"):
         st.session_state["history"] = []
 
-    st.caption("Records short chunks repeatedly, trims silence, transcribes only if speech is present.")
+    st.caption("Tip: speak, then stop to process a chunk. Browser mic works online and offline.")
 
-    level_box = st.empty()
+    if not st.session_state.get("live_mode", False):
+        st.stop()
 
-    if st.session_state.get("live_mode", False):
-        fs = 16000
+    fs = 16000
 
+    if use_browser_mic:
+        if not BROWSER_MIC_AVAILABLE or mic_recorder is None:
+            st.error("Browser mic is not available. Install streamlit-mic-recorder.")
+            st.stop()
+
+        st.markdown("**Browser mic**")
+        audio = mic_recorder(
+            start_prompt="Record chunk",
+            stop_prompt="Stop and process",
+            just_once=False,
+            use_container_width=True,
+            key="browser_mic_live",
+        )
+
+        # mic_recorder returns a dict like {"bytes": ..., "sample_rate": ..., ...}
+        if audio and isinstance(audio, dict) and audio.get("bytes"):
+            wav_bytes = audio["bytes"]
+
+            # Save bytes to a temp wav file and transcribe
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
+                tmp.write(wav_bytes)
+                wav_path = tmp.name
+
+            with st.spinner("Transcribing..."):
+                text_from_audio, lang_from_audio = transcribe_audio_file(wav_path, model_name="base")
+
+            text_from_audio = (text_from_audio or "").strip()
+            if text_from_audio and text_from_audio != st.session_state.get("last_live_text", ""):
+                st.session_state["last_live_text"] = text_from_audio
+                st.session_state["text_phrase"] = text_from_audio
+                st.session_state["audio_lang"] = lang_from_audio
+
+                live_result = compute_results(text_from_audio, chosen_override_lang)
+                st.session_state["current_result"] = live_result
+                if live_result.get("ok"):
+                    push_history(live_result)
+
+                st.rerun()
+
+    else:
+        # Advanced local mode using sounddevice (works only on your machine)
+        st.markdown("**Local device mic (advanced)**")
+
+        colL, colR = st.columns([1, 1])
+        with colL:
+            chunk_s = st.slider("Chunk seconds", 1.0, 4.0, 2.0, 0.5)
+        with colR:
+            pause_s = st.slider("Pause between chunks", 0.0, 1.0, 0.2, 0.1)
+
+        rel_thr = st.slider("Silence sensitivity (relative)", 0.02, 0.20, 0.08, 0.01, key="live_rel")
+        abs_thr = st.slider("Silence floor (absolute)", 0.0003, 0.0050, 0.0010, 0.0001, key="live_abs")
+
+        level_box = st.empty()
         meter = level_box.progress(0.0, text="Listening level: 0.00")
+
         x = record_audio_with_meter(
             device_index=device_index,
             seconds=float(chunk_s),
@@ -759,7 +796,6 @@ if mode == "Listen (live-ish)":
         level_box.empty()
 
         x_trim = trim_silence(x, fs, rel_thresh=float(rel_thr), abs_thresh=float(abs_thr))
-
         if x_trim.size > 0:
             wav_path = write_temp_wav(x_trim, fs=fs)
             text_from_audio, lang_from_audio = transcribe_audio_file(wav_path, model_name="base")
@@ -772,13 +808,12 @@ if mode == "Listen (live-ish)":
 
                 live_result = compute_results(text_from_audio, chosen_override_lang)
                 st.session_state["current_result"] = live_result
-
                 if live_result.get("ok"):
                     push_history(live_result)
 
+        # Keep your old loop behavior for local mode
         do_rerun = True
         rerun_sleep_s = float(pause_s)
-
 
 # -----------------------
 # Results section (always renders, all modes)
