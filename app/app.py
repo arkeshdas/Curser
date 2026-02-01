@@ -77,22 +77,24 @@ st.markdown(
 
       :root {
         --curser-font: 'Press Start 2P', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+        --card-bg: rgba(10, 10, 12, 0.58);
+        --card-border: rgba(255, 255, 255, 0.12);
+
+        --control-bg: rgba(15,15,18,0.92);
+        --control-border: rgba(255,255,255,0.18);
+
+        --accent: rgba(255,70,70,0.92);
+        --text: rgba(255,255,255,0.92);
+        --text-dim: rgba(255,255,255,0.78);
       }
 
-      /* Pixel font for normal text and headings */
-      html, body, .stApp {
-        font-family: var(--curser-font) !important;
-      }
-      h1, h2, h3, h4, h5, h6, p, label, span, small, li {
-        font-family: var(--curser-font) !important;
-      }
-
-      /* Background gradient: top to bottom */
+      /* Background gradient: top (red) to bottom (gray) */
       .stApp {
         background: linear-gradient(180deg, #ff4646 0%, #bdbdbd 100%);
       }
 
-      /* Center column */
+      /* Center column, more vertical */
       .block-container {
         max-width: 980px;
         padding-top: 1.1rem;
@@ -103,15 +105,19 @@ st.markdown(
         background: transparent;
       }
 
+      /* Pixel font everywhere */
+      html, body, .stApp, .stApp * {
+        font-family: var(--curser-font) !important;
+      }
+
       /* Crisp logo rendering */
       img {
         image-rendering: pixelated;
         image-rendering: crisp-edges;
       }
 
-      /* Header text */
+      /* Curser header text (your custom header divs) */
       .curser-title {
-        font-family: var(--curser-font) !important;
         font-size: 26px;
         font-weight: 800;
         letter-spacing: 0.5px;
@@ -121,17 +127,16 @@ st.markdown(
         text-shadow: 0 2px 10px rgba(0,0,0,0.35);
       }
       .curser-subtitle {
-        font-family: var(--curser-font) !important;
         font-size: 10px;
         letter-spacing: 0.25px;
         margin-top: 6px;
         color: rgba(255,255,255,0.85);
       }
 
-      /* Dark translucent cards */
+      /* Cards */
       .curser-card {
-        background: rgba(10, 10, 12, 0.58);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
         border-radius: 16px;
         padding: 16px 16px 12px 16px;
         box-shadow: 0 10px 28px rgba(0,0,0,0.24);
@@ -140,53 +145,61 @@ st.markdown(
         margin: 12px 0;
       }
 
-      /* Make text readable on dark cards */
-      .curser-card label,
-      .curser-card p,
-      .curser-card span,
-      .curser-card div,
-      .curser-card h1,
-      .curser-card h2,
-      .curser-card h3 {
-        color: rgba(255,255,255,0.92) !important;
+      /* Make normal Streamlit text readable on dark background */
+      h1, h2, h3, h4, h5, h6,
+      p, label, span, small, li, div {
+        color: var(--text) !important;
       }
 
-      /* Inputs */
+      /* Inputs: selectbox, text input, textarea */
       .stTextInput input,
       .stSelectbox div[data-baseweb="select"] > div,
       .stTextArea textarea {
-        font-family: var(--curser-font) !important;
-        background: rgba(15,15,18,0.92) !important;
+        background: var(--control-bg) !important;
         color: rgba(255,255,255,0.96) !important;
-        border: 1px solid rgba(255,255,255,0.18) !important;
+        border: 1px solid var(--control-border) !important;
         border-radius: 12px !important;
       }
 
+      /* Selectbox dropdown text + placeholder */
+      .stSelectbox [data-baseweb="select"] * {
+        color: rgba(255,255,255,0.96) !important;
+      }
+
       /* Buttons */
-      .stButton > button {
-        font-family: var(--curser-font) !important;
-        background: rgba(15,15,18,0.92) !important;
+      .stButton > button,
+      button[kind="secondary"],
+      button[kind="primary"] {
+        background: var(--control-bg) !important;
         color: rgba(255,255,255,0.96) !important;
         border: 1px solid rgba(255,70,70,0.78) !important;
         border-radius: 12px !important;
         padding: 10px 14px !important;
         box-shadow: 0 7px 20px rgba(0,0,0,0.28);
       }
-      .stButton > button:hover {
+      .stButton > button:hover,
+      button[kind="secondary"]:hover,
+      button[kind="primary"]:hover {
         border-color: rgba(255,70,70,1.0) !important;
         transform: translateY(-1px);
       }
 
-      /* Sliders */
-      div[data-testid="stSlider"] > div {
-        color: rgba(255,255,255,0.92) !important;
+      /* Sliders: label + thumb */
+      div[data-testid="stSlider"] * {
+        color: var(--text) !important;
       }
       div[data-testid="stSlider"] [role="slider"] {
         background: rgba(255,70,70,0.98) !important;
         border: 2px solid rgba(0,0,0,0.40) !important;
       }
 
-      /* Dataframe */
+      /* Checkbox / toggle text */
+      div[data-testid="stCheckbox"] label,
+      div[data-testid="stToggle"] label {
+        color: var(--text) !important;
+      }
+
+      /* Dataframe container */
       [data-testid="stDataFrame"] {
         background: rgba(15,15,18,0.62) !important;
         border-radius: 14px !important;
@@ -194,7 +207,7 @@ st.markdown(
         overflow: hidden;
       }
 
-      /* Headings spacing */
+      /* Tighten headings spacing a bit */
       h2, h3 {
         margin-top: 0.65rem !important;
       }
@@ -204,23 +217,30 @@ st.markdown(
         font-size: 12px !important;
         line-height: 1.25 !important;
       }
+
       [data-testid="stFileUploader"] label {
+        font-size: 12px !important;
+        line-height: 1.25 !important;
         margin-bottom: 6px !important;
       }
+
       [data-testid="stFileUploader"] section {
         padding: 10px 12px !important;
       }
+
       [data-testid="stFileUploader"] [data-testid="stFileDropzone"] * {
         white-space: normal !important;
       }
+
       [data-testid="stFileUploader"] small,
       [data-testid="stFileUploader"] [data-testid="stFileDropzone"] small {
         display: block !important;
         margin-top: 6px !important;
         opacity: 0.85 !important;
+        color: var(--text-dim) !important;
       }
+
       [data-testid="stFileUploader"] button {
-        font-family: var(--curser-font) !important;
         padding: 8px 12px !important;
         border-radius: 12px !important;
       }
@@ -245,12 +265,12 @@ def card_close():
 # -----------------------
 logo_path = Path(__file__).resolve().parent / "static" / "curser-logo.png"
 
-col_logo, col_text = st.columns([0.12, 0.88], vertical_alignment="center")
+col_logo, col_text = st.columns([0.10, 0.90], vertical_alignment="center")
 with col_logo:
     if logo_path.exists():
-        st.image(str(logo_path), width=48)
+        st.image(str(logo_path), width=44)
     else:
-        st.write("")
+        st.error(f"Logo not found at: {logo_path}")
 
 with col_text:
     st.markdown(
@@ -263,6 +283,7 @@ with col_text:
         unsafe_allow_html=True,
     )
 
+st.write("")  # small spacer before the first card
 
 # -----------------------
 # TTS helpers (espeak -> wav bytes)
@@ -370,7 +391,9 @@ def record_audio_with_meter(
                 meter_val = rms_to_meter(rms)
 
                 if meter_placeholder is not None:
-                    meter_placeholder.progress(meter_val, text=f"{meter_label}: {meter_val:.2f}")
+                    meter_placeholder.progress(
+                        meter_val, text=f"{meter_label}: {meter_val:.2f}"
+                    )
     except Exception:
         return np.array([], dtype=np.float32)
 
@@ -378,7 +401,6 @@ def record_audio_with_meter(
         return np.array([], dtype=np.float32)
 
     return np.concatenate(frames).astype(np.float32)
-
 
 # -----------------------
 # Silence trimming
@@ -452,7 +474,7 @@ def resolve_lang(span_text: str, chosen_override_lang: str | None) -> str:
 def compute_results(text: str, chosen_override_lang: str | None) -> dict:
     tokens = tokenize(text)
 
-    def g2p_fn(span_text: str):
+    def g2p_fn(span_text: str) -> str:
         return text_to_ipa(span_text, lang=resolve_lang(span_text, chosen_override_lang))
 
     def match_fn(user_ipa: str) -> float:
@@ -490,7 +512,7 @@ def compute_results(text: str, chosen_override_lang: str | None) -> dict:
     top10 = scored[:10]
 
     best_dist, best_sim, best_win, best_tok, best_e = top10[0]
-    
+
     why = {
         "user_ipa_raw": ipa,
         "user_ipa_norm": normalize_ipa(ipa),
@@ -505,23 +527,22 @@ def compute_results(text: str, chosen_override_lang: str | None) -> dict:
         "similarity": float(best_sim),
     }
 
-    top_rows = []
+    top_rows: list[dict] = []
     for dist, sim, win, tok, e in top10:
         top_rows.append(
-    {
-        "display": e.get("display", e.get("word")),
-        "word": e.get("word"),
-        "lang": e.get("lang"),
-        "meaning": e.get("meaning", ""),
-        "severity": e.get("severity", ""),
-        "ipa": e.get("ipa", ""),
-        "source_token": tok,
-        "best_window": win,
-        "distance": float(dist),
-        "similarity": float(sim),
-    }
-)
-
+            {
+                "display": e.get("display", e.get("word")),
+                "word": e.get("word"),
+                "lang": e.get("lang"),
+                "meaning": e.get("meaning", ""),
+                "severity": e.get("severity", ""),
+                "ipa": e.get("ipa", ""),
+                "source_token": tok,
+                "best_window": win,
+                "distance": float(dist),
+                "similarity": float(sim),
+            }
+        )
 
     return {
         "ok": True,
@@ -570,9 +591,7 @@ if mode in ("Listen (live-ish)", "Record (one-shot)"):
 
     st.subheader("Microphone")
     devices = sd.query_devices()
-    input_devices = [
-        (i, d["name"]) for i, d in enumerate(devices) if d.get("max_input_channels", 0) > 0
-    ]
+    input_devices = [(i, d["name"]) for i, d in enumerate(devices) if d.get("max_input_channels", 0) > 0]
     if not input_devices:
         st.error("No input devices found.")
         st.stop()
@@ -593,7 +612,7 @@ if mode in ("Listen (live-ish)", "Record (one-shot)"):
 
 
 # -----------------------
-# G2P language override UI
+# G2P language override UI + SFW mode
 # -----------------------
 st.subheader("G2P language")
 auto_lang = st.session_state.get("audio_lang")
@@ -608,6 +627,14 @@ if override:
         index=0,
     )
 
+# SFW mode is display filtering only, no need to change src/ logic
+if "sfw_mode" not in st.session_state:
+    st.session_state["sfw_mode"] = True
+
+st.session_state["sfw_mode"] = st.toggle(
+    "SFW mode (hide severity 3+)",
+    value=st.session_state["sfw_mode"],
+)
 
 # -----------------------
 # Mode: Upload
@@ -629,7 +656,9 @@ if mode == "Upload audio":
         audio_sig = (audio_file.name, audio_file.size)
         if st.session_state["last_audio_sig"] != audio_sig:
             st.session_state["last_audio_sig"] = audio_sig
-            with tempfile.NamedTemporaryFile(delete=False, suffix="." + audio_file.name.split(".")[-1]) as tmp:
+            with tempfile.NamedTemporaryFile(
+                delete=False, suffix="." + audio_file.name.split(".")[-1]
+            ) as tmp:
                 tmp.write(audio_file.read())
                 tmp_path = tmp.name
 
@@ -771,39 +800,13 @@ if result:
     if not result["ok"]:
         st.warning("No IPA produced, try a different input or language.")
     else:
-        top1 = result["top"][0]
         why = result["why"]
 
-        c1, c2, c3 = st.columns([2, 1, 1])
-        with c1:
-            st.markdown(f"**Best span:** `{result['best_span']}`")
-            st.markdown(f"**G2P lang:** `{result['g2p_lang']}`")
-            st.markdown(f"**IPA:** `{result['ipa']}`")
-        with c2:
-            st.markdown(f"**Top match:** `{top1.get('display', top1['word'])}`")
-            st.markdown(f"**Lang:** `{top1['lang']}`")
-            st.markdown(f"**Severity:** `{top1.get('severity','')}`")
-        with c3:
-            st.markdown(f"**Similarity:** `{top1['similarity']:.3f}`")
-            st.markdown(f"**Distance:** `{top1['distance']:.3f}`")
-
-        # TTS for top match
-        colT1, colT2 = st.columns([1, 2])
-        with colT1:
-            if st.button("Speak top match", key="speak_top_match"):
-                wav_bytes = tts_espeak_wav_bytes(top1["word"], top1["lang"])
-                if wav_bytes:
-                    st.audio(wav_bytes, format="audio/wav")
-                else:
-                    st.warning("TTS failed for this word/voice.")
-        with colT2:
-            st.caption("Uses espeak voices, some languages may not be installed or may differ.")
-
         st.subheader("Top matches")
-        rows = result["top"]
+        rows_all = list(result["top"] or [])
 
         # normalize types for display
-        for r in rows:
+        for r in rows_all:
             r["distance"] = float(r.get("distance", 0.0))
             r["similarity"] = float(r.get("similarity", 0.0))
             sev = r.get("severity", "")
@@ -811,38 +814,75 @@ if result:
             if "display" not in r:
                 r["display"] = r.get("word", "")
 
-        st.dataframe(
-            rows,
-            use_container_width=True,
-            hide_index=True,
-            column_config={
-                "display": st.column_config.TextColumn("word"),
-                "word": st.column_config.TextColumn("word_raw"),
-                "distance": st.column_config.NumberColumn("distance", format="%.3f"),
-                "similarity": st.column_config.NumberColumn("similarity", format="%.3f"),
-                "severity": st.column_config.NumberColumn("severity", format="%d"),
-            },
-        )
+        # SFW filter (display-only, applied to table + speak list + top card)
+        sfw_on = bool(st.session_state.get("sfw_mode", True))
+        if sfw_on:
+            rows = [r for r in rows_all if int(r.get("severity", 0)) < 3]
+        else:
+            rows = rows_all
 
-        with st.expander("Speak a match"):
-            st.write("Click Speak to hear espeak pronounce the word using its language voice.")
-            for i, r in enumerate(rows[:10]):
-                shown = r.get("display", r.get("word", ""))
-                raw = r.get("word", "")
-                cA, cB, cC, cD = st.columns([1.2, 0.8, 3.0, 1.0])
-                with cA:
-                    st.write(f"**{shown}**")
-                with cB:
-                    st.write(r.get("lang", ""))
-                with cC:
-                    st.write(r.get("meaning", ""))
-                with cD:
-                    if st.button("Speak", key=f"speak_row_{i}_{raw}_{r.get('lang','')}"):
-                        wav_bytes = tts_espeak_wav_bytes(raw, r.get("lang", "en"))
-                        if wav_bytes:
-                            st.audio(wav_bytes, format="audio/wav")
-                        else:
-                            st.warning("TTS failed for this word/voice.")
+        if not rows:
+            st.warning("SFW mode hid all matches for this input.")
+        else:
+            top1 = rows[0]
+
+            c1, c2, c3 = st.columns([2, 1, 1])
+            with c1:
+                st.markdown(f"**Best span:** `{result['best_span']}`")
+                st.markdown(f"**G2P lang:** `{result['g2p_lang']}`")
+                st.markdown(f"**IPA:** `{result['ipa']}`")
+            with c2:
+                st.markdown(f"**Top match:** `{top1.get('display', top1['word'])}`")
+                st.markdown(f"**Lang:** `{top1['lang']}`")
+                st.markdown(f"**Severity:** `{top1.get('severity','')}`")
+            with c3:
+                st.markdown(f"**Similarity:** `{top1['similarity']:.3f}`")
+                st.markdown(f"**Distance:** `{top1['distance']:.3f}`")
+
+            # TTS for top match
+            colT1, colT2 = st.columns([1, 2])
+            with colT1:
+                if st.button("Speak top match", key="speak_top_match"):
+                    wav_bytes = tts_espeak_wav_bytes(top1["word"], top1["lang"])
+                    if wav_bytes:
+                        st.audio(wav_bytes, format="audio/wav")
+                    else:
+                        st.warning("TTS failed for this word/voice.")
+            with colT2:
+                st.caption("Uses espeak voices, some languages may not be installed or may differ.")
+
+            st.dataframe(
+                rows,
+                use_container_width=True,
+                hide_index=True,
+                column_config={
+                    "display": st.column_config.TextColumn("word"),
+                    "word": st.column_config.TextColumn("word_raw"),
+                    "distance": st.column_config.NumberColumn("distance", format="%.3f"),
+                    "similarity": st.column_config.NumberColumn("similarity", format="%.3f"),
+                    "severity": st.column_config.NumberColumn("severity", format="%d"),
+                },
+            )
+
+            with st.expander("Speak a match"):
+                st.write("Click Speak to hear espeak pronounce the word using its language voice.")
+                for i, r in enumerate(rows[:10]):
+                    shown = r.get("display", r.get("word", ""))
+                    raw = r.get("word", "")
+                    cA, cB, cC, cD = st.columns([1.2, 0.8, 3.0, 1.0])
+                    with cA:
+                        st.write(f"**{shown}**")
+                    with cB:
+                        st.write(r.get("lang", ""))
+                    with cC:
+                        st.write(r.get("meaning", ""))
+                    with cD:
+                        if st.button("Speak", key=f"speak_row_{i}_{raw}_{r.get('lang','')}"):
+                            wav_bytes = tts_espeak_wav_bytes(raw, r.get("lang", "en"))
+                            if wav_bytes:
+                                st.audio(wav_bytes, format="audio/wav")
+                            else:
+                                st.warning("TTS failed for this word/voice.")
 
         with st.expander("Why this match?"):
             st.write("User IPA (raw):", why["user_ipa_raw"])
@@ -854,14 +894,18 @@ if result:
             st.write("Best window:", why["best_window"])
             st.write("Distance:", round(why["distance"], 3), "Similarity:", round(why["similarity"], 3))
 
+        # Export respects SFW mode to avoid leaking hidden results
+        export_top = rows if bool(st.session_state.get("sfw_mode", True)) else rows_all
+
         export_obj = {
             "text": result.get("text"),
             "best_span": result.get("best_span"),
             "g2p_lang": result.get("g2p_lang"),
             "ipa": result.get("ipa"),
             "ipa_norm": result.get("ipa_norm"),
-            "top": result.get("top"),
+            "top": export_top,
             "why": result.get("why"),
+            "sfw_mode": bool(st.session_state.get("sfw_mode", True)),
         }
         export_json = json.dumps(export_obj, ensure_ascii=False, indent=2)
 
@@ -885,16 +929,33 @@ st.subheader("History (latest first)")
 if not st.session_state["history"]:
     st.write("No saved results yet.")
 else:
+    sfw_on = bool(st.session_state.get("sfw_mode", True))
+
     for item in st.session_state["history"]:
         top1 = item.get("top1") or {}
-        shown = top1.get("display", top1.get("word", ""))
-        title = f"{item['ts']} | {shown} [{top1.get('lang','')}] | {item.get('text','')}"
+        sev = top1.get("severity", 0)
+        try:
+            sev_int = int(sev)
+        except Exception:
+            sev_int = 0
+
+        if sfw_on and sev_int >= 3:
+            shown = "[hidden]"
+            lang = ""
+        else:
+            shown = top1.get("display", top1.get("word", ""))
+            lang = top1.get("lang", "")
+
+        title = f"{item['ts']} | {shown} [{lang}] | {item.get('text','')}"
         with st.expander(title):
             st.write("Text:", item.get("text"))
             st.write("Best span:", item.get("best_span"))
             st.write("G2P lang:", item.get("g2p_lang"))
             st.write("IPA:", item.get("ipa"))
-            st.write("Top1:", top1)
+            if sfw_on and sev_int >= 3:
+                st.write("Top1: hidden by SFW mode")
+            else:
+                st.write("Top1:", top1)
 
     hist_json = json.dumps(st.session_state["history"], ensure_ascii=False, indent=2)
     st.download_button(
