@@ -163,11 +163,34 @@ After generation, rename the output file to `db.json` (if it is not already), an
 
 ## Challenges I ran into
 
+This project was way more friction-heavy than I initially expected, mostly because a lot of the difficulty lived in executing my vision rather than the core idea. 
+
+Environment management was a constant source of problems.I initially accidentally installed all of the packages to my local conda installation, so I had to detangle everything from there. Then, once I got everything isolated into a conda environment, I realized that the streamlit application refused to cooperate with it, so I had to remake the entire thing using pip. System-level installs caused version conflicts that were hard to diagnose, especially when some packages were installed via distutils and could not be cleanly uninstalled. I ended up having to recreate environments multiple times just to get back to a known working state.
+
+Audio and language tooling introduced another layer of complexity. Speech-to-text, G2P, and phonetic libraries all have slightly different assumptions about language codes, encodings, and input formats. Small mismatches, like language auto-detection behaving differently than expected or IPA output formats not lining up across tools, caused silent failures or confusing outputs that took time to trace back to the source.
+
+Debugging was also harder than usual because many failures were not hard crashes. Instead, things would run but produce empty outputs, incorrect matches, or misleading results. That made it difficult to tell whether the issue was with my logic, the library behavior, or the input data itself. A lot of progress came from adding explicit checks, printing intermediate outputs, and simplifying the pipeline to isolate where things were breaking.
+
+Finally, scope control was a challenge. It was tempting to keep adding features, like live mic input or better ranking heuristics, before the core pipeline was fully stable. In hindsight, locking down a minimal, reproducible version earlier would have saved time and reduced mental overhead while debugging.
 
 ## What I learned
 
+This project was a much bigger learning experience than I initially expected. I learned a lot about language and phonetics. I have been interested in linguistics since taking an anthropology class in high school, but I had no formal training going into this. Working with IPA, grapheme-to-phoneme systems, and cross-language comparisons forced me to think more precisely about how spoken language is represented and where different tools succeed or fail.
+
+This was also my first time deploying a web application, and my first project where the explicit goal was to make the code safe and reproducible so that other people could run it locally (learned about virtual environments 2 weeks ago in one of my data science classes). Managing virtual environments, dependencies, and setup instructions showed me how easily projects can break without careful environment control, and why reproducibility is a core part of real software development.
+
+I also learned how to independently manage and iterate on a large project. Working alone, I had to define a minimal viable product, get a full pipeline working, then incrementally add new technologies and features while breaking and fixing things along the way. This process taught me how to scope work realistically, debug systematically, and prioritize stability and clarity over adding features too quickly.
 
 ## What's next for Curser
 
+## Data Sources and Credits
+
+The profanity database used in this project is compiled from multiple sources. One major source of seed words comes from the following repository:
+
 https://github.com/4troDev/profanity.csv/tree/main
-I used this database, but removed compound swear words
+
+I did not use this dataset as is.
+
+To make it usable for phonetic matching, I pulled the raw word lists and removed compound or multi word phrases. This was necessary because PanPhon operates at the phoneme level and compound phrases tended to produce misleading distance calculations that dominated the rankings for the wrong reasons.
+
+After filtering, the remaining words were scraped and converted into simplified seed files. These seed files were then processed through eSpeak to generate IPA representations, normalized IPA variants, and finally compiled into the phonetic database used by the app.
