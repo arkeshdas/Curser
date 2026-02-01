@@ -28,6 +28,7 @@ import subprocess
 import hashlib
 
 import streamlit as st
+st.write("Has key?", "ELEVENLABS_API_KEY" in st.secrets)
 
 # ElevenLabs is optional, keep app runnable even if not installed
 try:
